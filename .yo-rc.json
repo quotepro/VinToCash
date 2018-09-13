@@ -1,0 +1,21 @@
+{
+  "generator-ngx-rocket": {
+    "version": "5.1.0",
+    "props": {
+      "location": "path",
+      "target": [
+        "web"
+      ],
+      "pwa": false,
+      "ui": "bootstrap",
+      "auth": false,
+      "lazy": true,
+      "angulartics": true,
+      "analyticsProvider": "gtm",
+      "appName": "VinToCash",
+      "projectName": "vin-to-cash",
+      "packageManager": "npm",
+      "mobile": []
+    }
+  }
+}

@@ -1,0 +1,16 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+
+ .has-danger {
+     input, select {
+        border-color: $danger;
+     }
+ }
+
+ .has-success {
+     input, select {
+        border-color: $success;
+     }
+ }
