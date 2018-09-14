@@ -15,5 +15,6 @@ export const environment = {
     'English',
     'Español'
   ],
-  aq3Url: 'https://localhost:44349/DemoAgent'
+  aq3Url: 'https://aq3.processmyquote.com/DemoAgent'
+  // aq3Url: 'https://localhost:44349/DemoAgent'
 };
