@@ -1,4 +1,5 @@
-[
+{ 
+  "dealers": [
   {
     "Description": "Adobe Auto Sales",
     "Kiosk Name": "ADOBE1",
@@ -2232,3 +2233,4 @@
     "Start Dates": ""
   }
 ]
+}

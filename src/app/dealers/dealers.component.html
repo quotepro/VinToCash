@@ -1,3 +1,28 @@
-<p *ngFor="let dealer of closestDealers">
-  {{ dealer.Description }} {{ dealer.Distance }} miles away
-</p>
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <div class="d-flex flex-column justify-content-center flex-wrap">
+      <h1>Dealers Near You</h1>
+      <p>These dealers participate in our Vin to Cash program. You may trade your vehicle in at one of these locations and exchange it for a better vehicle, or sell it for cash on the spot.<sup>*</sup> </p>
+      <div class="d-flex flex-row justify-content-center flex-wrap">
+        <div *ngFor="let dealer of closestDealers" class="card col-md-3 m-2">
+          <div class="card-body">
+            <h5 class="card-title">{{ dealer.Description }}</h5>
+            <h6>{{ dealer.Distance }} miles away</h6>
+            <p class="card-text" [innerHtml]="toAddress(dealer.Location)"></p>
+            <a href="#" class="btn btn-primary">Get Directions</a>
+          </div>
+        </div>
+      </div>
+      <p class="center"><sup>*</sup>purchase price varies depending on an inspection of your vehicle, it's condition and mileage.</p>
+    </div>
+    <p>
+      <button
+        class="btn btn-warning"
+        angulartics2On="click"
+        angularticsAction="Click button below quote"
+        [angularticsCategory]="home" translate (click)="back()">
+        <i class="fas fa-chevron-left"></i> Back
+      </button>
+    </p>
+</div>
+</div>

@@ -8,4 +8,18 @@ export class DataSession {
     actualValue: number;
     latitude: number;
     longitude: number;
+    year: string;
+    make: string;
+    model: string;
+    mileage: string;
+    exterior: string;
+    payoff: boolean;
+    condition: string;
+    tradein: boolean;
+    runs: boolean;
+
+    constructor() {
+        this.exterior = '';
+        this.condition = '';
+    }
 }

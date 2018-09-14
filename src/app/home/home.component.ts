@@ -26,22 +26,13 @@ export class HomeComponent implements OnInit {
     return this.data.session;
   }
   lookup() {
-    if (this.data.isValid('vinLookup')) {
-      this.data.geoCode();
-      this.data.postData('Home', 'Prefill', this.model).subscribe(response => {
-        if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
-          this.data.postData('Vehicle', 'VinLookup', this.model).subscribe(vehicle => {
-            this.model.actualValue = vehicle.actualValue;
-          });
-        }
-      });
-    }
+    this.data.lookupVehicle();
   }
   back() {
     this.data.session.actualValue = null;
     this.data.updateSession();
   }
   continue() {
-    this.router.navigate(['photos']);
+    this.router.navigate(['details']);
   }
 }

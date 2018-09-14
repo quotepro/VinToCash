@@ -1,0 +1,139 @@
+<div class="container-fluid">
+    <div class="jumbotron text-center">
+      <h1>
+        <p translate>Vehicle Details</p>
+      </h1>
+      <form #jumboForm="ngForm" class="form-horizontal">
+          <p>We need a few more details about your vehicle in order to continue.</p>
+          <div class="d-flex flex-column align-items-center justify-content-center my-flex-container">
+              <div class="card col-md-6 m-2">
+                  <div class="card-body">
+                    <h5 class="card-title">Vehicle Information</h5>
+                    <h6>{{ model.year }} {{ model.make }} {{ model.model }}</h6>
+                    <p class="card-text">{{ model.vinNumber }}</p>
+                    <div class="d-flex flex-row align-items-center justify-content-center flex-wrap">
+                      <div class="form-group col-md-3" 
+                            [class.has-danger]="mileage.touched && mileage.invalid"
+                            [class.has-success]="mileage.valid">
+                        <input type="number" #mileage="ngModel" name="mileage" 
+                                placeholder="{{ 'Mileage' | translate }}"
+                                pattern="^\d+$" 
+                                [(ngModel)]="model.mileage" class="form-control" required maxlength="6"/>
+                        <span *ngIf="mileage.touched && mileage.invalid" class="text-danger">Please enter your vehicle's mileage</span>
+                      </div>
+                      <div class="form-group col-md-3" 
+                            [class.has-danger]="exterior.touched && exterior.invalid"
+                            [class.has-success]="exterior.valid">
+                        <select #exterior="ngModel" name="exterior" 
+                                [(ngModel)]="model.exterior" class="form-control" required>
+                            <option value="" disabled>Exterior Color</option>
+                            <option>Blue</option>
+                            <option>Black</option>
+                            <option>Brown</option>
+                            <option>Golden</option>
+                            <option>Gray</option>
+                            <option>Green</option>
+                            <option>Lime</option>
+                            <option>Maroon</option>
+                            <option>Orange</option>
+                            <option>Purple</option>
+                            <option>Red</option>
+                            <option>Silver</option>
+                            <option>Tan</option>
+                            <option>Teal</option>
+                            <option>Turquoise</option>
+                            <option>White</option>
+                        </select>
+                        <span *ngIf="exterior.touched && exterior.invalid" class="text-danger">Please select your vehicle's exterior color</span>
+                      </div>
+                      <div class="form-group col-md-3" 
+                            [class.has-danger]="condition.touched && condition.invalid"
+                            [class.has-success]="condition.valid">
+                        <select #condition="ngModel" name="condition" 
+                                [(ngModel)]="model.condition" class="form-control" required>
+                            <option value="" disabled>Vehicle Condition</option>
+                            <option>Like New</option>
+                            <option>Excellent</option>
+                            <option>Good</option>
+                            <option>Faded Paint</option>
+                            <option>Major Damage</option>
+                            <option>Some Dings or Scrapes</option>
+                            <option>Totaled</option>
+                            <option>Visible Rust</option>
+                            <option>Not Sure</option>
+                        </select>
+                        <span *ngIf="condition.touched && condition.invalid" class="text-danger">Please select your vehicle's condition</span>
+                      </div>
+                      <div class="form-group" 
+                            [class.has-danger]="tradein.touched && tradein.invalid"
+                            [class.has-success]="tradein.valid">
+                        <label class="control-label">Would you like to trade this vehicle in for a better vehicle?</label>
+                        <div class="btn-group btn-group-toggle">
+                          <label class="btn btn-primary">
+                            <i class="fas" [class.fa-check-square]="model.tradein" [class.fa-square]="!model.tradein"></i>
+                            <input #tradein="ngModel" type="radio" [(ngModel)]="model.tradein" name="tradein_true" [value]="true"> Yes
+                          </label>
+                          <label class="btn btn-primary">
+                              <i class="fas" [class.fa-check-square]="!model.tradein" [class.fa-square]="model.tradein"></i>
+                              <input #tradein="ngModel" type="radio" [(ngModel)]="model.tradein" name="tradein_false" [value]="false"> No
+                          </label>
+                        </div>
+                        <span *ngIf="tradein.touched && tradein.invalid" class="text-danger">Does this vehicle run?</span>
+                      </div>
+                      <div class="form-group" 
+                            [class.has-danger]="payoff.touched && payoff.invalid"
+                            [class.has-success]="payoff.valid">
+                        <label class="control-label">Do you have a loan or a lease on this vehicle?</label>
+                        <div class="btn-group btn-group-toggle">
+                          <label class="btn btn-primary">
+                            <i class="fas" [class.fa-check-square]="model.payoff" [class.fa-square]="!model.payoff"></i>
+                            <input #payoff="ngModel" type="radio" [(ngModel)]="model.payoff" name="payoff_true" [value]="true"> Yes
+                          </label>
+                          <label class="btn btn-primary">
+                              <i class="fas" [class.fa-check-square]="!model.payoff" [class.fa-square]="model.payoff"></i>
+                              <input #payoff="ngModel" type="radio" [(ngModel)]="model.payoff" name="payoff_false" [value]="false"> No
+                          </label>
+                        </div>
+                        <span *ngIf="payoff.touched && payoff.invalid" class="text-danger">Do you have a loan or a lease on this vehicle</span>
+                      </div>
+                      <div class="form-group" 
+                            [class.has-danger]="runs.touched && runs.invalid"
+                            [class.has-success]="runs.valid">
+                        <label class="control-label">Does this vehicle currently run?</label>
+                        <div class="btn-group btn-group-toggle">
+                          <label class="btn btn-primary">
+                            <i class="fas" [class.fa-check-square]="model.runs" [class.fa-square]="!model.runs"></i>
+                            <input #runs="ngModel" type="radio" [(ngModel)]="model.runs" name="runs_true" [value]="true"> Yes
+                          </label>
+                          <label class="btn btn-primary">
+                              <i class="fas" [class.fa-check-square]="!model.runs" [class.fa-square]="model.runs"></i>
+                              <input #runs="ngModel" type="radio" [(ngModel)]="model.runs" name="runs_false" [value]="false"> No
+                          </label>
+                        </div>
+                        <span *ngIf="runs.touched && runs.invalid" class="text-danger">Does this vehicle run?</span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            <p>
+              <button
+                class="btn btn-warning"
+                angulartics2On="click"
+                angularticsAction="Click button below quote"
+                [angularticsCategory]="quote" translate (click)="back()">
+                <i class="fas fa-chevron-left"></i> Back
+              </button>
+              <button
+                class="btn btn-primary"
+                angulartics2On="click"
+                angularticsAction="Click button below quote"
+                [angularticsCategory]="quote" translate (click)="continue()">
+                Continue <i class="fas fa-chevron-right"></i>
+              </button>
+            </p>        
+        </div>
+      </form>
+
+    </div>
+  </div>
+  

@@ -14,6 +14,11 @@ export class PhotosComponent implements OnInit {
   ngOnInit() {
   }
 
+  // to fix a compiler error with angularitics which
+  // is trying to bind to a property called 'home'
+  get home() {
+    return 'home';
+  }
   get urls(): Array<string> {
     return this.data.photos;
   }
@@ -37,7 +42,7 @@ export class PhotosComponent implements OnInit {
 
   back() {
     this.updatePhotos();
-    this.router.navigate(['home']);
+    this.router.navigate(['details']);
   }
   continue() {
     this.updatePhotos();

@@ -5,25 +5,20 @@ import { flatMap, concatMap, retry, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NearbyDealer } from '@app/model/nearby-dealer';
-import * as dealerData from 'assets/dealers.json';
+import * as dealerList from 'assets/dealers.json';
 import { Dealer } from '@app/model/dealer';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
   dealers: Array<Dealer> = [];
-
   session = new DataSession();
   photos: Array<string> = [];
   aq3Url = '';
 
-  constructor(private aq3: JsonApiService, private http: HttpClient) {
-    dealerData.forEach( (d: Dealer) => {
-      this.dealers.push(d);
-    });
-   }
+  constructor(private aq3: JsonApiService, private http: HttpClient) {}
 
   init(aq3Url: string) {
     const stored = sessionStorage.getItem('v2c_session');
@@ -33,6 +28,11 @@ export class DataService {
       this.session.sid = this.aq3.newGuid();
       this.updateSession(this.session);
     }
+    of(...dealerList['dealers']).subscribe( (d: Dealer) => {
+      if (d.Description.indexOf('z-') === -1) {
+        this.dealers.push(d);
+      }
+    });
     this.aq3.sid = this.session.sid;
     this.aq3.baseUrl = aq3Url;
     this.aq3Url = aq3Url;
@@ -95,6 +95,22 @@ export class DataService {
       }
     }
     return true;
+  }
+  lookupVehicle() {
+    if (this.isValid('vinLookup')) {
+      this.geoCode();
+      this.postData('Home', 'Prefill', this.session).subscribe(response => {
+        if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
+          this.postData('Vehicle', 'VinLookup', this.session).subscribe(vehicle => {
+            this.session.actualValue = vehicle.actualValue;
+            this.session.year = vehicle.year;
+            this.session.make = vehicle.make;
+            this.session.model = vehicle.model || vehicle.modelDescription;
+            this.updateSession();
+          });
+        }
+      });
+    }
   }
 
   geoCode() {
