@@ -26,4 +26,7 @@ export class DetailsComponent implements OnInit {
     this.data.updateSession();
   }
 
+  get quote(): string {
+    return 'quote';
+  }
 }

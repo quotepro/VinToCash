@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './sell.component.html',
+  styleUrls: ['./sell.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class SellComponent implements OnInit {
 
   isLoading: boolean;
 
@@ -24,13 +24,14 @@ export class HomeComponent implements OnInit {
   get model(): DataSession {
     return this.data.session;
   }
-  buy() {
-    this.router.navigate(['buy']);
+  lookup() {
+    this.data.lookupVehicle();
   }
-  sell() {
-    this.router.navigate(['sell']);
+  back() {
+    this.data.session.actualValue = null;
+    this.data.updateSession();
   }
-  trade() {
-    this.router.navigate(['trade']);
+  continue() {
+    this.router.navigate(['details']);
   }
 }

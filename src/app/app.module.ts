@@ -12,6 +12,8 @@ import { HomeModule } from './home/home.module';
 import { ShellModule } from './shell/shell.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { Ng5SliderModule } from 'ng5-slider';
+import { SliderComponent } from 'ng5-slider/slider.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,8 @@ import { AppRoutingModule } from './app-routing.module';
     ShellModule,
     HomeModule,
     Angulartics2Module.forRoot([]),
-    AppRoutingModule
+    AppRoutingModule,
+    Ng5SliderModule
   ],
   declarations: [AppComponent],
   providers: [

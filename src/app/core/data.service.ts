@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NearbyDealer } from '@app/model/nearby-dealer';
 import * as dealerList from 'assets/dealers.json';
 import { Dealer } from '@app/model/dealer';
-import { forEach } from '@angular/router/src/utils/collection';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,16 @@ export class DataService {
   session = new DataSession();
   photos: Array<string> = [];
   aq3Url = '';
+  loading = false;
 
-  constructor(private aq3: JsonApiService, private http: HttpClient) {}
+  constructor(
+    private aq3: JsonApiService,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    ) {}
 
   init(aq3Url: string) {
+
     const stored = sessionStorage.getItem('v2c_session');
     if (stored) {
       Object.assign(this.session, JSON.parse(stored));
@@ -31,6 +37,13 @@ export class DataService {
     of(...dealerList['dealers']).subscribe( (d: Dealer) => {
       if (d.Description.indexOf('z-') === -1) {
         this.dealers.push(d);
+      }
+    });
+    this.route.queryParams.subscribe( (parms: Params) => {
+      const url = parms['url'];
+      if (url) {
+        this.session.url = url;
+        this.updateSession();
       }
     });
     this.aq3.sid = this.session.sid;
@@ -98,15 +111,26 @@ export class DataService {
   }
   lookupVehicle() {
     if (this.isValid('vinLookup')) {
+      this.loading = true;
       this.geoCode();
-      this.postData('Home', 'Prefill', this.session).subscribe(response => {
+      this.postData('Home', 'Prefill', this.session)
+      .pipe(catchError( (err) => {
+        this.loading = false;
+        return of('an error occurred while posting the zip code');
+      }))
+      .subscribe(response => {
         if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
-          this.postData('Vehicle', 'VinLookup', this.session).subscribe(vehicle => {
+          this.postData('Vehicle', 'VinLookup', this.session).pipe(catchError( (err) => {
+            // this.loading = false;
+            return of('an error occurred while looking up the vin');
+          }))
+          .subscribe(vehicle => {
             this.session.actualValue = vehicle.actualValue;
             this.session.year = vehicle.year;
             this.session.make = vehicle.make;
             this.session.model = vehicle.model || vehicle.modelDescription;
             this.updateSession();
+            // this.loading = false;
           });
         }
       });

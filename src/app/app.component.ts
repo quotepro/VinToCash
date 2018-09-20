@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute, Params } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
@@ -18,20 +18,21 @@ const log = new Logger('App');
 })
 export class AppComponent implements OnInit {
 
+  url: string;
+
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private titleService: Title,
               private translateService: TranslateService,
               private i18nService: I18nService,
               private data: DataService
-            ) { }
+            ) {}
 
   ngOnInit() {
     // Setup logger
     if (environment.production) {
       Logger.enableProductionMode();
     }
-
     log.debug('init');
 
     // Setup translations

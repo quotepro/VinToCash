@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <h1>Buy A Car</h1>
+    <h5>Step 1: Calculate Purchasing Power</h5>
+    <p translate>Use the sliders below to determine what your suggested purchasing power is.</p>
+    <form #buyForm="ngForm">
+      <div class="container-fluid d-flex flex-column align-items-center grow">
+        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+          <label class="col-md-3" translate>Monthly Payment</label>
+          <ng5-slider class="col-md-9" [(value)]="model.installmentAmount" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
+        </div>
+        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+            <label class="col-md-3" translate>Down Payment</label>
+            <ng5-slider class="col-md-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
+        </div>
+        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+            <label class="col-md-3" translate>Loan Length</label>
+            <ng5-slider class="col-md-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
+        </div>
+        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+            <label class="col-md-3" translate>Payment Frequency</label>
+            <ng5-slider class="col-md-9" [(value)]="model.period" [options]="periodOptions" (userChange)="periodChanged()"></ng5-slider>
+        </div>
+        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+            <label class="col-md-3" translate>Credit Score</label>
+            <ng5-slider class="col-md-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <div class="d-flex flex-column flex-sm-row flex-wrap">
+      <div class="h5 col-sm-6 right">Intitial Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.purchaseAmount | currency }}</div>
+      <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.installmentAmount | currency }}</div>
+    </div>
+    <div *ngIf="model.period > 1" class="d-flex flex-column flex-sm-row flex-wrap align-items-center">
+      <hr class="col-12">
+      <h4 class="offset-sm-3 col-sm-6 center">TIP: Buying Smarter</h4>
+      <p class="offset-sm-3 col-sm-3 right">Increase your buying power without changing your monthly expense. Buy a better vehicle by simply paying {{ installmentLabel | lowercase }} instead of monthly.</p>
+      <p class="col-sm-6 left">GET A BETTER VEHICLE FOR<br>THE SAME MONTHLY COST!</p>
+      <div class="h5 col-sm-6 right">{{ installmentLabel }} Payment:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicAmount | currency }}</div>
+      <div class="h5 col-sm-6 right">Increased Purchase Power:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicPurchaseAmount - model.purchaseAmount | currency }} </div>
+      <div class="h5 col-sm-6 right">Suggested Vehicle Price:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicPurchaseAmount | currency }}</div>
+    </div>
+    <hr>
+    <p>
+      <button (click)="back()"
+        class="btn btn btn-default">
+        <i class="fas fa-chevron-left"></i>
+        Back
+      </button>
+      <button (click)="continue()"
+        class="btn btn-2x btn-primary">
+        2. Search
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </p>        
+    <p><sup>*</sup>purchasing power after discounts &amp; incentives (includes TTL)</p>
+
+  </div>
+</div>

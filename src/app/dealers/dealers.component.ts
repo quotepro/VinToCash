@@ -20,6 +20,10 @@ export class DealersComponent implements OnInit {
     return this.data.getNearbyDealers(10);
   }
 
+  get home(): string {
+    return 'home';
+  }
+
   toAddress(location: string) {
     return location.replace(/^(.*)\s([^\s]*\s[^\s]*\s[^\s]*)$/, '$1<br/>$2');
   }

@@ -17,9 +17,11 @@ export class DataSession {
     condition: string;
     tradein: boolean;
     runs: boolean;
+    url: string;
 
     constructor() {
         this.exterior = '';
         this.condition = '';
+        this.url = '';
     }
 }

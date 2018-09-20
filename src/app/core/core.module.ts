@@ -1,5 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,7 +35,8 @@ import { DataService } from '@app/core/data.service';
       useClass: RouteReusableStrategy
     },
     JsonApiService,
-    DataService
+    DataService,
+    CurrencyPipe
   ]
 })
 export class CoreModule {

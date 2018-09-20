@@ -15,3 +15,30 @@
 
 // Theme customization
 @import "theme/theme";
+
+.btn-2x {
+    padding: 0.5rem 1rem;
+    font-size: 2rem;
+    line-height: 1.5;
+    border-radius: 0.6rem;
+}
+.btn-3x {
+    padding: 0.5rem 1rem;
+    font-size: 3rem;
+    line-height: 1.5;
+    border-radius: 0.6rem;
+}
+span.x2 {
+    font-size: 2rem;
+    vertical-align: middle;
+}
+span.x3 {
+    font-size: 3rem;
+    vertical-align: middle;
+}
+.right {
+    text-align: right;
+}
+.left {
+    text-align: left;
+}

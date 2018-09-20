@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <h1>
+      <img class="logo" src="assets/Vin2Cash.png" alt="angular logo"/>
+      <p translate>Give us your VIN, get Cash</p>
+    </h1>
+    <form #jumboForm="ngForm" *ngIf="!model.actualValue" class="form-horizontal">
+        <p>See how much your vehicle is worth in seconds! Trade it in for cash or upgrade to a more reliable vehicle today.</p>
+        <div class="d-flex flex-column align-items-center justify-content-center my-flex-container">
+          <div class="form-group col-md-2" 
+               [class.has-danger]="vin.touched && vin.invalid"
+               [class.has-success]="vin.valid">
+            <input type="text" #vin="ngModel" name="vin" 
+                   placeholder="{{ 'VIN Number' | translate }}"
+                   pattern="^[A-Ha-hJ-Nj-nPpR-Zr-z0-9]{17}$" 
+                   [(ngModel)]="model.vinNumber" class="form-control" required maxlength="17"/>
+            <span *ngIf="vin.touched && vin.invalid" class="text-danger">Your VIN is incorrect</span>
+          </div>
+          <div class="form-group col-md-2"
+               [class.has-danger]="name.touched && name.invalid"
+               [class.has-success]="name.valid">
+              <input type="text" #name="ngModel" name="name" 
+                     placeholder="{{ 'Your Name' | translate }}"
+                     pattern="\w{2,}\s+\w{2,}"
+                     [(ngModel)]="model.name" class="form-control" required/>
+            <span *ngIf="name.touched && name.invalid" class="text-danger">Enter your first and last name</span>
+          </div>
+          <div class="form-group col-md-2"
+                [class.has-danger]="email.touched && email.invalid"
+                [class.has-success]="email.valid">
+            <input type="email" #email="ngModel" name="email" 
+                   placeholder="{{ 'Email' | translate }}" 
+                   pattern='^[^ @]+@[^ @]+\.[^ \.@]{2,5}$'
+                   [(ngModel)]="model.email" class="form-control" required/>
+          </div>
+          <div class="form-group col-md-2"
+              [class.has-danger]="phone.touched && phone.invalid"
+              [class.has-success]="phone.valid">
+           <input type="phone" #phone="ngModel" name="phone" 
+                   placeholder="{{ 'Phone Number' | translate }}" 
+                   pattern="^\(?\d{3}[\)-\s\.]*\d{3}[-\s\.]*\d{4}$"
+                   [(ngModel)]="model.phone" class="form-control" required/>
+          </div>
+          <div class="form-group col-md-2"
+              [class.has-danger]="zipcode.touched && zipcode.invalid"
+              [class.has-success]="zipcode.valid">
+        <input type="tel" #zipcode="ngModel" name="zipcode" 
+                   placeholder="{{ 'Zip Code' | translate }}" 
+                   pattern="^\d{5}(-\d{4})?$"
+                   [(ngModel)]="model.zipcode" class="form-control" required/>
+          </div>
+          <p>
+            <button
+              class="btn btn-primary"
+              angulartics2On="click"
+              angularticsAction="Click button below quote"
+              [angularticsCategory]="quote" translate (click)="lookup()">              
+              {{ loading ? "Loading" : "Continue" }} <i class="fas {{ loading ? 'fas fa-circle-o-notch fa-spin' : 'fa-chevron-right' }}"></i>
+            </button>
+          </p>        
+      </div>
+    </form>
+    <div *ngIf="model.actualValue">
+        <p>Your vehicle could be worth between </p>
+        <h1>{{ model.actualValue * .85 | currency }}</h1>
+        <p>and</p>
+        <h1>{{ model.actualValue * 1.05 | currency }}</h1>
+        <p>depending on it's condition, if it runs and is driveable.</p>
+        <p>
+            <button
+              class="btn btn-warning"
+              angulartics2On="click"
+              angularticsAction="Click button below quote"
+              [angularticsCategory]="home" translate (click)="back()">
+              <i class="fas fa-chevron-left"></i> Back
+            </button>
+            <button
+              class="btn btn-primary"
+              angulartics2On="click"
+              angularticsAction="Click button below quote"
+              [angularticsCategory]="quote" translate (click)="continue()">
+              I'm interested! <i class="fas fa-chevron-right"></i>
+            </button>
+          </p>        
+    </div>
+  </div>
+</div>
