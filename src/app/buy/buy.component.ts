@@ -4,6 +4,7 @@ import { Options } from 'ng5-slider';
 import { CurrencyPipe } from '@angular/common';
 import { Payment } from '@app/model/payment';
 import { Calculator } from '@app/model/calculator';
+import { DataService } from '@app/core/data.service';
 
 @Component({
   selector: 'app-buy',
@@ -12,21 +13,27 @@ import { Calculator } from '@app/model/calculator';
 })
 export class BuyComponent implements OnInit {
 
-  model: Calculator = new Calculator({
-    purchaseAmount: 0,
-    downPayment: 200,
-    loanAmount: 9000,
-    loanLength: 6,
-    creditScore: 600,
-    period: 2,
-    installmentAmount: 500,
-    totalCost: 0,
-    interestPaid: 0,
-    installments: 0,
-    periodicAmount: 0,
-    totalPaid: 0,
-    payment: 0
-  });
+  get model() {
+    if (!this.data.session.calc) {
+      this.data.session.calc = new Calculator({
+        purchaseAmount: 0,
+        downPayment: 200,
+        loanAmount: 9000,
+        loanLength: 6,
+        creditScore: 600,
+        period: 2,
+        installmentAmount: 500,
+        totalCost: 0,
+        interestPaid: 0,
+        installments: 0,
+        periodicAmount: 0,
+        totalPaid: 0,
+        payment: 0
+      });
+    }
+    return this.data.session.calc;
+  }
+
 
   amortization: Array<Payment> = [];
   // source: https://www.valuepenguin.com/auto-loans/average-auto-loan-interest-rates as of 9/19/2018
@@ -128,7 +135,7 @@ export class BuyComponent implements OnInit {
       return '#2AE02A';
     }  };
 
-  constructor(private router: Router, private cp: CurrencyPipe) { }
+  constructor(private router: Router, private cp: CurrencyPipe, private data: DataService) { }
 
   ngOnInit() {
     this.resetDownOptions();
@@ -203,6 +210,8 @@ export class BuyComponent implements OnInit {
     const periodicLoanAmount = Math.round((this.model.periodicAmount *
       ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 500) * 500;
     this.model.periodicPurchaseAmount = periodicLoanAmount + this.model.downPayment;
+
+    this.data.updateSession();
   }
 
   calculatePayment() {

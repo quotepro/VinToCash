@@ -1,3 +1,5 @@
+import { Calculator } from '@app/model/calculator';
+
 export class DataSession {
     sid: string;
     vinNumber: string;
@@ -18,6 +20,7 @@ export class DataSession {
     tradein: boolean;
     runs: boolean;
     url: string;
+    calc: Calculator;
 
     constructor() {
         this.exterior = '';
