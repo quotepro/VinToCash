@@ -190,7 +190,7 @@ export class BuyComponent implements OnInit {
     let interest = this.interestRate / periods;
     let payments = this.model.loanLength * periods;
     this.model.loanAmount = Math.round((this.model.installmentAmount *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 200) * 200;
+      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 500) * 500;
     this.model.totalCost = this.model.installmentAmount * payments;
     this.model.totalInterest = this.model.totalCost - this.model.loanAmount;
     this.model.purchaseAmount = this.model.loanAmount + this.model.downPayment;
@@ -201,7 +201,7 @@ export class BuyComponent implements OnInit {
 
     this.model.periodicAmount = this.model.installmentAmount / (this.model.period === 2 ? 2 : 4);
     const periodicLoanAmount = Math.round((this.model.periodicAmount *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 200) * 200;
+      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 500) * 500;
     this.model.periodicPurchaseAmount = periodicLoanAmount + this.model.downPayment;
   }
 
