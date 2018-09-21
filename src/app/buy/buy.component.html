@@ -28,20 +28,19 @@
       </div>
     </form>
     <hr>
-    <div class="d-flex flex-column flex-sm-row flex-wrap">
-      <div class="h5 col-sm-6 right">Intitial Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.purchaseAmount | currency }}</div>
-      <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.installmentAmount | currency }}</div>
-    </div>
-    <div *ngIf="model.period > 1" class="d-flex flex-column flex-sm-row flex-wrap align-items-center">
+    <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
+      <div class="d-flex flex-column flex-sm-row flex-wrap col-md-4">
+        <h4 class="col-md-12">Monthly</h4>
+        <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.installmentAmount | currency }}</div>
+        <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.purchaseAmount | currency }}</div>
+      </div>
+      <div *ngIf="model.period > 1" class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-4">
+        <h4 class="col-md-12">{{ installmentLabel }}</h4>
+        <div class="h5 col-sm-6 right">{{ installmentLabel }} Payment:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.periodicAmount | currency }}</div>
+        <div class="h5 col-sm-6 right">Purchasing Power:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.periodicPurchaseAmount | currency }}</div>
+      </div>  
       <hr class="col-12">
-      <h4 class="offset-sm-3 col-sm-6 center">TIP: Buying Smarter</h4>
-      <p class="offset-sm-3 col-sm-3 right">Increase your buying power without changing your monthly expense. Buy a better vehicle by simply paying {{ installmentLabel | lowercase }} instead of monthly.</p>
-      <p class="col-sm-6 left">GET A BETTER VEHICLE FOR<br>THE SAME MONTHLY COST!</p>
-      <div class="h5 col-sm-6 right">{{ installmentLabel }} Payment:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicAmount | currency }}</div>
-      <div class="h5 col-sm-6 right">Increased Purchase Power:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicPurchaseAmount - model.purchaseAmount | currency }} </div>
-      <div class="h5 col-sm-6 right">Suggested Vehicle Price:</div><div class="h5 col-sm-3 col-lg-2 col-xl-1 right">{{ model.periodicPurchaseAmount | currency }}</div>
     </div>
-    <hr>
     <p>
       <button (click)="back()"
         class="btn btn btn-default">
@@ -53,8 +52,12 @@
         2. Prequalify
         <i class="fas fa-chevron-right"></i>
       </button>
-    </p>        
-    <p><sup>*</sup>purchasing power after discounts &amp; incentives (includes TTL)</p>
-
+    </p>
+    <div class="d-flex align-items-center justify-content-center">
+        <p class="col-6"><sup>*</sup>Purchasing power is roughly equal to the cost of vehicles within your price range, based upon the monthly 
+          payment that you can afford to pay. Additional dealer discounts, sales & promotions may actually increase your purchasing power even higher. 
+          We'll help you search for vehicles priced below {{ model.periodicPurchaseAmount | currency }}.
+          <br>Click the button above to get pre-qualified for the perfect vehicle in this price range.</p>    
+    </div>
   </div>
 </div>
