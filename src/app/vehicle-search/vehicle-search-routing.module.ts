@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { extract } from '@app/core';
-import { SellComponent } from './sell.component';
+import { VehicleSearchComponent } from './vehicle-search.component';
 
 const routes: Routes = [
-  { path: '', component: SellComponent, data: { title: extract('Sell') } }
+  { path: '', component: VehicleSearchComponent, data: { title: extract('Search') } }
 ];
 
 @NgModule({
@@ -13,4 +13,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class SellRoutingModule { }
+export class VehicleSearchRoutingModule { }

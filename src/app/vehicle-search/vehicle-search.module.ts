@@ -3,26 +3,29 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Angulartics2Module } from 'angulartics2';
 
-import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-import { SellRoutingModule } from './sell-routing.module';
-import { SellComponent } from './sell.component';
+import { VehicleSearchRoutingModule } from './vehicle-search-routing.module';
+import { VehicleSearchComponent } from './vehicle-search.component';
 import { FormsModule } from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { EllipsisPipe } from '@app/ellipsis.pipe';
+
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
-    CoreModule,
     SharedModule,
     Angulartics2Module,
-    SellRoutingModule,
-    FormsModule
+    VehicleSearchRoutingModule,
+    FormsModule,
+    NgxPaginationModule
   ],
   declarations: [
-    SellComponent
+    VehicleSearchComponent,
+    EllipsisPipe
   ],
   providers: [
   ]
 })
-export class SellModule { }
+export class VehicleSearchModule { }

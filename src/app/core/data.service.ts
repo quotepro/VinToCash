@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { JsonApiService } from '@quotepro/aq3';
-import { flatMap, concatMap, retry, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { flatMap, concatMap, retry, catchError, map, filter } from 'rxjs/operators';
+import { of, Observable, from } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { NearbyDealer } from '@app/model/nearby-dealer';
 import * as dealerList from 'assets/dealers.json';
 import { Dealer } from '@app/model/dealer';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ChromaCar } from '@app/model/chroma-car';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class DataService {
   photos: Array<string> = [];
   aq3Url = '';
   loading = false;
+  vehicles: ChromaCar[];
 
   constructor(
     private aq3: JsonApiService,
@@ -206,6 +208,27 @@ export class DataService {
 
     const d = Math.round(R * c * 10) / 10;
     return d;
+  }
+
+  getInventory() {
+    // implement dealer/zipcode searching later.
+
+    const queryParams = new HttpParams()
+      .append('dealer_id', 'ewaldkia')
+      .append('sale_price', this.session.calc.periodicPurchaseAmount.toString())
+      .append('filter', this.session.filter)
+      .append('limit', '100')
+      .append('page', '1');
+
+    this.vehicles = [];
+    return this.http.get('/api/cars/search', { params: queryParams })
+    .subscribe((response: Partial<ChromaCar>[]) => {
+      of(...response)
+      .pipe(filter(car => car['image_urls'].length > 0))
+      .subscribe((car: Partial<ChromaCar>) => {
+        this.vehicles.push(new ChromaCar(car));
+      });
+    });
   }
 
   degrees2Radians(degrees: number): number {

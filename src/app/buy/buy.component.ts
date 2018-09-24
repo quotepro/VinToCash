@@ -263,5 +263,15 @@ export class BuyComponent implements OnInit {
   }
   continue() {
 
+    this.router.navigate(['vehicle-search']);
+
+    /* this would link back to eWald's inventory page filled in.
+    document.location.href = 'https://www.ewaldkia.com/vehicle-inventory.php?' +
+    'dealer=2&sort_certified=201&sort_year=2000&sort_to_year=10000' +
+    '&sort_make=Kia&sort_model=&sort_trim=&sort_cab=&sort_bed=' +
+    '&sort_exterior=&sort_mileage=&sort_to_mileage=&sort_price=1&sort_to_price=' +
+    this.model.periodicPurchaseAmount + '&sort_style=&sort_drivetrain=' +
+    '&sort_transmission=&sort_fueltype=&sort_city=&sort_highway=&sort_sortby=4&keyword_search=&returny=0';
+    */
   }
 }

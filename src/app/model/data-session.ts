@@ -1,30 +1,32 @@
 import { Calculator } from '@app/model/calculator';
 
 export class DataSession {
-    sid: string;
-    vinNumber: string;
-    name: string;
-    email: string;
-    phone: string;
-    zipcode: string;
     actualValue: number;
+    calc: Calculator;
+    condition: string;
+    email: string;
+    exterior: string;
+    filter: string;
     latitude: number;
     longitude: number;
-    year: string;
     make: string;
-    model: string;
     mileage: string;
-    exterior: string;
+    model: string;
+    name: string;
     payoff: boolean;
-    condition: string;
-    tradein: boolean;
+    phone: string;
     runs: boolean;
+    sid: string;
+    tradein: boolean;
     url: string;
-    calc: Calculator;
+    vinNumber: string;
+    year: string;
+    zipcode: string;
 
     constructor() {
         this.exterior = '';
         this.condition = '';
         this.url = '';
+        this.filter = '';
     }
 }

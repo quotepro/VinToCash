@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <h1>Search Results</h1>
+    <p>Here are the vehicles matching your purchasing power. We've sorted these to show the best vehicles first.</p>
+    <div class="input-group col-md-4 col-lg-2 offset-8 ">
+        <input type="text" [(ngModel)]="model.filter" placeholder="search" class="form-control">
+        <div class="input-group-append">
+            <i *ngIf="model.filter.length > 0" class="input-group-text fas fa-times-circle" (click)="clearFilter()"></i>
+            <i class="input-group-text fas fa-search" (click)="search()"></i>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap text-left">
+      <div *ngFor="let car of vehicleList | paginate: { itemsPerPage: 12, currentPage: page }" class="col-lg-4 col-md-6 carResult d-flex flex-row flex-wrap">
+        <h4 class="col-12">{{ car.year }} {{ car.make }} {{car.model }}</h4>
+        <div class="col-md-4">
+          <img *ngIf="car.imageList && car.imageList.length > 0" [src]="car.imageList[0]"/><br/>    
+        </div>
+        <div class="col-md-4">
+          Exterior:<br/>
+          Interior:<br/>
+          VIN: {{ car.vin }}<br/>
+
+        </div>
+        <div class="col-md-4 d-flex flex-column text-right">
+            MSRP: {{ car.retail_price | currency }}<br/>
+            Sale Price: {{ car.sale_price | currency }}<br/>
+  
+          </div>
+          <div class="col-12">
+          {{ car.descriptions | ellipsis: 300}}
+          <a *ngIf="car.descriptions.length > 200" href="#">Read More</a>
+          <p>
+            <button class="btn btn-primary">Buy Now <i class="fas fa-chevron-right"></i></button>
+            <button class="btn btn-danger">Details <i class="fas fa-search"></i></button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <p>
+        <button (click)="back()"
+          class="btn btn btn-default">
+          <i class="fas fa-chevron-left"></i>
+          Back
+        </button>
+    </p>  
+  </div>
+</div>
