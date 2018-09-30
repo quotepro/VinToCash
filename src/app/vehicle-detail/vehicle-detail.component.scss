@@ -1,0 +1,20 @@
+.jumbotron h1 {
+    position: relative;
+    margin-top: -3rem;
+}
+.jumbotron h1 i {
+     display: inline-block;
+     text-align: right;
+     position: absolute;
+     top: 0;
+     right: 0;
+}
+.thumb {
+    padding: 2px !important;
+}
+.thumb img {
+    width: 100%;
+}
+.picture img {
+    width: 100%;
+}

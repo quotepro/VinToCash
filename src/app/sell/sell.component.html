@@ -50,6 +50,11 @@
                    [(ngModel)]="model.zipcode" class="form-control" required/>
           </div>
           <p>
+            <button (click)="back()"
+              class="btn btn btn-default">
+              <i class="fas fa-chevron-left"></i>
+              Back
+            </button>
             <button
               class="btn btn-primary"
               angulartics2On="click"
@@ -71,7 +76,7 @@
               class="btn btn-warning"
               angulartics2On="click"
               angularticsAction="Click button below quote"
-              [angularticsCategory]="home" translate (click)="back()">
+              [angularticsCategory]="home" translate (click)="clear()">
               <i class="fas fa-chevron-left"></i> Back
             </button>
             <button

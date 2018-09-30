@@ -16,49 +16,26 @@ export class BuyComponent implements OnInit {
   get model() {
     if (!this.data.session.calc) {
       this.data.session.calc = new Calculator({
-        purchaseAmount: 0,
-        downPayment: 200,
+        downPayment: 1000,
         loanAmount: 9000,
-        loanLength: 6,
-        creditScore: 600,
-        period: 2,
-        installmentAmount: 500,
-        totalCost: 0,
-        interestPaid: 0,
-        installments: 0,
-        periodicAmount: 0,
-        totalPaid: 0,
-        payment: 0
+        loanLength: 7,
+        creditScore: 700,
+        monthlyPayment: 500,
+        downChanged: false
       });
     }
     return this.data.session.calc;
   }
 
 
-  amortization: Array<Payment> = [];
   // source: https://www.valuepenguin.com/auto-loans/average-auto-loan-interest-rates as of 9/19/2018
   get interestRate(): number {
-    if (this.model.creditScore > 780) {
-      return .0360;
-    }
-    if (this.model.creditScore > 690) {
-      return .0495;
-    }
-    if (this.model.creditScore > 660) {
-      return .0700;
-    }
-    if (this.model.creditScore > 620) {
-      return .0972;
-    }
-    if (this.model.creditScore > 590) {
-      return .1406;
-    }
-    return .1525;
+    return this.data.getInterestRate();
   }
 
   installmentOptions: Options = {
-    floor: 50,
-    ceil: 1000,
+    floor: 100,
+    ceil: 2000,
     step: 10,
     translate: (value: number): string => {
       return this.cp.transform(value);
@@ -77,11 +54,11 @@ export class BuyComponent implements OnInit {
   downOptions: Options;
 
   lengthOptions: Options = {
-    floor: 3,
+    floor: 5,
     ceil: 7,
     showTicks: true,
     translate: (value: number): string => {
-      return value + ' years';
+      return (value * 12) + ' months';
     }
   };
 
@@ -91,11 +68,11 @@ export class BuyComponent implements OnInit {
     showTicks: true,
     translate: (value: number): string => {
       switch (value) {
-        case 1:
+        case 3:
           return 'Monthly';
         case 2:
           return 'Bi-Weekly';
-        case 3:
+        case 1:
           return 'Weekly';
       }
     }
@@ -139,33 +116,25 @@ export class BuyComponent implements OnInit {
 
   ngOnInit() {
     this.resetDownOptions();
-    this.calculateLoanAmount();
+    this.calculatePurchasingPower();
   }
 
   back() {
     this.router.navigate(['home']);
   }
 
-  get installmentLabel() {
-    switch (this.model.period) {
-      case 1:
-        return 'Monthly';
-      case 2:
-        return 'Bi-Weekly';
-      case 3:
-        return 'Weekly';
-    }
-  }
-
   installmentAmountChanged() {
     this.resetDownOptions();
-    this.calculateLoanAmount();
+    this.calculatePurchasingPower();
   }
 
   resetDownOptions() {
+    if (!this.model.downChanged) {
+      this.model.downPayment = Math.min(this.model.monthlyPayment * 2, 1000);
+    }
     this.downOptions = {
       floor: 0,
-      ceil: this.model.installmentAmount * 3,
+      ceil: 2000,
       step: 10,
       translate: (value: number): string => {
         return this.cp.transform(value);
@@ -175,93 +144,32 @@ export class BuyComponent implements OnInit {
 
   downPaymentChanged() {
     // do something
-    this.calculateLoanAmount();
+    this.model.downChanged = true;
+    this.calculatePurchasingPower();
   }
 
   loanLengthChanged() {
     // do something
-    this.calculateLoanAmount();
+    this.calculatePurchasingPower();
   }
 
   periodChanged() {
-    this.calculateLoanAmount();
+    this.calculatePurchasingPower();
   }
 
   creditScoreChanged() {
     // do something
-    this.calculateLoanAmount();
+    this.calculatePurchasingPower();
   }
 
-  calculateLoanAmount() {
-    let periods = 12;
-    let interest = this.interestRate / periods;
-    let payments = this.model.loanLength * periods;
-    this.model.loanAmount = Math.round((this.model.installmentAmount *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 500) * 500;
-    this.model.totalCost = this.model.installmentAmount * payments;
-    this.model.totalInterest = this.model.totalCost - this.model.loanAmount;
-    this.model.purchaseAmount = this.model.loanAmount + this.model.downPayment;
-
-    periods = this.model.period === 2 ? 26 : 52;
-    interest = this.interestRate / periods;
-    payments = this.model.loanLength * periods;
-
-    this.model.periodicAmount = this.model.installmentAmount / (this.model.period === 2 ? 2 : 4);
-    const periodicLoanAmount = Math.round((this.model.periodicAmount *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) / 500) * 500;
-    this.model.periodicPurchaseAmount = periodicLoanAmount + this.model.downPayment;
+  calculatePurchasingPower() {
+    this.data.calculatePurchasingPower();
 
     this.data.updateSession();
   }
+  continue(selectedPriod: number) {
 
-  calculatePayment() {
-    const principal = this.model.loanAmount;
-    const periods = 12;
-    const interest = this.interestRate / periods;
-    const payments = this.model.loanLength * periods;
-
-    // compute the monthly payment figure
-    const x = Math.pow(1 + interest, payments); // Math.pow computes powers
-    this.model.installmentAmount = Math.round((principal * x * interest) / (x - 1) * 100) / 100;
-    this.model.totalCost = this.model.installmentAmount * payments;
-    this.model.totalInterest = this.model.totalCost - this.model.loanAmount;
-
-    this.amortizePayments();
-  }
-
-  amortizePayments() {
-    // apply payments using semi-monthly payments.
-    if (this.model.period > 1) {
-      let periods = 12;
-      let interest = this.interestRate / periods;
-      periods = this.model.period === 1 ? 12 : this.model.period === 2 ? 26 : 52;
-      this.model.payment = Math.round(this.model.installmentAmount * 100 / (this.model.period === 2 ? 2 : 4)) / 100;
-      interest = this.interestRate / periods;
-      let balance = this.model.loanAmount;
-      this.amortization = [];
-      this.model.periodicAmount = this.model.payment;
-      this.model.interestPaid = 0;
-      this.model.installments = 0;
-      this.model.totalPaid = 0;
-      while (balance > 0 ) {
-        const accrued = Math.round(balance * interest * 100) / 100;
-        const currBal = balance;
-        balance = balance + accrued - this.model.payment;
-        const nextPayment = new Payment({
-          balance: currBal,
-          interest: accrued,
-          principle: balance > 0 ? this.model.payment - accrued : currBal,
-          amount: balance > 0 ? this.model.payment : currBal + accrued
-        });
-        this.model.interestPaid += nextPayment.interest;
-        this.model.installments++;
-        this.model.totalPaid += nextPayment.amount;
-        this.amortization.push(nextPayment);
-      }
-      console.log(this.amortization);
-    }
-  }
-  continue() {
+    this.model.selectedPeriod = selectedPriod;
 
     this.router.navigate(['vehicle-search']);
 

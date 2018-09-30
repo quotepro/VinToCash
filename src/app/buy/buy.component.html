@@ -8,38 +8,43 @@
       <div class="container-fluid d-flex flex-column align-items-center grow">
         <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
           <label class="col-md-3" translate>Monthly Payment</label>
-          <ng5-slider class="col-md-9" [(value)]="model.installmentAmount" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
+          <ng5-slider class="col-md-9" [(value)]="model.monthlyPayment" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
         </div>
         <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
             <label class="col-md-3" translate>Down Payment</label>
             <ng5-slider class="col-md-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
         </div>
-        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-            <label class="col-md-3" translate>Loan Length</label>
-            <ng5-slider class="col-md-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
-        </div>
-        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-            <label class="col-md-3" translate>Payment Frequency</label>
-            <ng5-slider class="col-md-9" [(value)]="model.period" [options]="periodOptions" (userChange)="periodChanged()"></ng5-slider>
-        </div>
-        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-            <label class="col-md-3" translate>Credit Score</label>
-            <ng5-slider class="col-md-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
+        <div *ngIf="model.advanced" class="container-fluid d-flex flex-column align-items-center grow">
+          <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+              <label class="col-md-3" translate>Loan Length</label>
+              <ng5-slider class="col-md-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
+          </div>
+          <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
+              <label class="col-md-3" translate>Credit Score</label>
+              <ng5-slider class="col-md-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
+          </div>
         </div>
       </div>
     </form>
     <hr>
-    <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
-      <div class="d-flex flex-column flex-sm-row flex-wrap col-md-4">
-        <h4 class="col-md-12">Monthly</h4>
-        <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.installmentAmount | currency }}</div>
-        <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.purchaseAmount | currency }}</div>
+    <div  class="d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
+      <div *ngIf="false" class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-5 col-lg-5 col-xl-4">
+        <p class="col-md-12"><button (click)="continue(1)" class="btn btn-2x btn-primary">Pay Weekly <i class="fas fa-chevron-right"></i></button></p>
+        <div class="h5 col-sm-6 right">Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Maximum Price:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPurchasePower | currency }}</div>
       </div>
-      <div *ngIf="model.period > 1" class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-4">
-        <h4 class="col-md-12">{{ installmentLabel }}</h4>
-        <div class="h5 col-sm-6 right">{{ installmentLabel }} Payment:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.periodicAmount | currency }}</div>
-        <div class="h5 col-sm-6 right">Purchasing Power:</div><div class="h5 col-sm-6 col-md-4 right">{{ model.periodicPurchaseAmount | currency }}</div>
-      </div>  
+      <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
+          <p class="col-md-12"><button (click)="continue(2)" class="btn btn-2x btn-success">Pay Bi-Weekly <i class="fas fa-chevron-right"></i></button></p>
+          <div class="h5 col-sm-6 right">Bi-Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Maximum Price:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
+        <div class="h5 col-sm-6 right bold">Additional Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right bold">{{ model.biWeeklyPurchasePower - model.monthlyPurchasePower | currency }}</div>
+      </div>
+      <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
+        <p class="col-md-12"><button (click)="continue(3)" class="btn btn-danger btn-2x">Pay Monthly <i class="fas fa-chevron-right"></i></button></p>
+        <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Maximum Price<sup>*</sup>:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPurchasePower | currency }}</div>
+        <div class="h5 col-sm-6 right bold">Additional Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right bold">{{ 0 | currency }}</div>
+      </div>
       <hr class="col-12">
     </div>
     <p>
@@ -48,17 +53,14 @@
         <i class="fas fa-chevron-left"></i>
         Back
       </button>
-      <button (click)="continue()"
-        class="btn btn-2x btn-primary">
-        2. Search
-        <i class="fas fa-chevron-right"></i>
-      </button>
     </p>
     <div class="d-flex align-items-center justify-content-center">
         <p class="col-6"><sup>*</sup>Purchasing power is roughly equal to the cost of vehicles within your price range, based upon the monthly 
           payment that you can afford to pay. Additional dealer discounts, sales & promotions may actually increase your purchasing power even higher. 
-          We'll help you search for vehicles priced below {{ model.periodicPurchaseAmount | currency }}.
-          <br>Click the button above to get pre-qualified for the perfect vehicle in this price range.</p>    
+          We'll help you search for vehicles priced below {{ model.selectedPayment | currency }}.<br/>
+          Click the button above to get pre-qualified for the perfect vehicle in this price range.<br>
+          Prices shown are based upon a {{ model.loanLength*12 }} month loan at {{ model.interestRate | percent }} interest. <button class="btn btn-default btn-sm" (click)="model.advanced = !model.advanced">{{ model.advanced ? 'Hide' : 'Adjust' }}</button>
+        </p>   
     </div>
   </div>
 </div>

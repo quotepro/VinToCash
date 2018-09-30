@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="jumbotron text-center">
+  <div *ngIf="!showDetail" class="jumbotron text-center">
     <h1>Search Results</h1>
     <p>Here are the vehicles matching your purchasing power. We've sorted these to show the best vehicles first.</p>
     <div class="input-group col-md-4 col-lg-2 offset-8 ">
@@ -10,30 +10,25 @@
         </div>
     </div>
     <div class="d-flex flex-row flex-wrap text-left">
-      <div *ngFor="let car of vehicleList | paginate: { itemsPerPage: 12, currentPage: page }" class="col-lg-4 col-md-6 carResult d-flex flex-row flex-wrap">
+      <div *ngFor="let car of vehicleList | paginate: { itemsPerPage: 12, currentPage: page }; let i=index" class="col-lg-4 col-md-6 carResult d-flex flex-row flex-wrap">
+        <a id="car_{{i}}"></a>
         <h4 class="col-12">{{ car.year }} {{ car.make }} {{car.model }}</h4>
-        <div class="col-md-4">
+        <div class="col-md-12">
           <img *ngIf="car.imageList && car.imageList.length > 0" [src]="car.imageList[0]"/><br/>    
         </div>
-        <div class="col-md-4">
-          Exterior:<br/>
-          Interior:<br/>
-          VIN: {{ car.vin }}<br/>
-
+        <div class="col-md-6 d-flex flex-column text-left">
+          <span class="msrp">MSRP: {{ car.msrp | currency }}</span>
+          <span class="dlr_discount">Savings: {{ car.sale_price - car.msrp | currency }}</span>
+          <span class="sale_price">Sale Price: {{ car.sale_price | currency }}</span>
+          <span>Mileage: {{ car.mileage }}</span>
         </div>
-        <div class="col-md-4 d-flex flex-column text-right">
-            MSRP: {{ car.retail_price | currency }}<br/>
-            Sale Price: {{ car.sale_price | currency }}<br/>
-  
-          </div>
-          <div class="col-12">
-          {{ car.descriptions | ellipsis: 300}}
-          <a *ngIf="car.descriptions.length > 200" href="#">Read More</a>
-          <p>
-            <button class="btn btn-primary">Buy Now <i class="fas fa-chevron-right"></i></button>
-            <button class="btn btn-danger">Details <i class="fas fa-search"></i></button>
-          </p>
+        <div class="col-md-6 d-flex flex-column text-left text-md-right">
+          <p>{{ installmentLabel }} Payment: <span class="payment">{{ calculatePayment(car) | currency }}</span></p>
+          <p><button class="btn btn-primary">Buy Now <i class="fas fa-chevron-right"></i></button></p>
         </div>
+        <p class="text-right">
+          <button class="btn btn-danger" (click)="showVehicleDetail(car, i)">Details <i class="fas fa-chevron-down"></i></button>
+        </p>
       </div>
     </div>
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
@@ -45,4 +40,5 @@
         </button>
     </p>  
   </div>
+  <app-vehicle-detail id="vehicleDetail" *ngIf="showDetail" [car]="selectedVehicle" (closed)="closeDetail()"></app-vehicle-detail>
 </div>

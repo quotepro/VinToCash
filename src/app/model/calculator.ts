@@ -1,21 +1,30 @@
 export class Calculator {
-    purchaseAmount: number;
     downPayment: number;
     loanAmount: number;
     loanLength: number;
     creditScore: number;
-    period: number;
-    installmentAmount: number;
-    totalCost: number;
-    interestPaid: number;
-    installments: number;
-    periodicAmount: number;
-    totalPaid: number;
-    payment: number;
-    totalInterest: number;
-    periodicPurchaseAmount: number;
+    selectedPeriod: number;
+    monthlyPayment: number;
+    biWeeklyPayment: number;
+    weeklyPayment: number;
+    biWeeklyPurchasePower: number;
+    weeklyPurchasePower: number;
+    monthlyPurchasePower: number;
+    downChanged: boolean;
+    advanced: boolean;
 
     constructor(copy?: Partial<Calculator>) {
         Object.assign(this, copy);
+    }
+
+    get selectedPayment(): number {
+        switch (this.selectedPeriod) {
+            case 1:
+                return this.weeklyPayment;
+            case 2:
+                return this.biWeeklyPayment;
+            case 3:
+                return this.monthlyPayment;
+        }
     }
 }

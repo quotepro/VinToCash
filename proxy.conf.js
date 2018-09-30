@@ -12,7 +12,7 @@ const proxyConfig = [
   {
     context: '/api',
     pathRewrite: { '^/api': '' },
-    target: 'http://www.dealerone.com',
+    target: 'http://dealerone.processmyquote.com',
     changeOrigin: true,
     secure: false
   }

@@ -1,17 +1,13 @@
 <div class="container-fluid">
   <div class="jumbotron text-center">
-    <h1>
-      <img class="logo" src="assets/Vin2Cash.png" alt="angular logo"/>
-      <p translate>We can save you serious cash</p>
-    </h1>
-    <p translate>Buying, Selling or Trading In. We've got a truckload of savings waiting for you.</p>
+    <img src="assets/Featured.png" class="col-md-6"/>
     <p>
       <button (click)="buy()"
         class="btn btn-2x btn-primary">
         <i class="fas fa-car"></i>
         Buy
       </button>
-      <button
+      <button (click)="sell()"
         class="btn btn-2x btn-success">
         <i class="fas fa-dollar-sign"></i>
         Sell

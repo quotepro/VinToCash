@@ -27,9 +27,12 @@ export class SellComponent implements OnInit {
   lookup() {
     this.data.lookupVehicle();
   }
-  back() {
+  clear() {
     this.data.session.actualValue = null;
     this.data.updateSession();
+  }
+  back() {
+    this.router.navigate(['home']);
   }
   continue() {
     this.router.navigate(['details']);

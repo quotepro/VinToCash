@@ -11,3 +11,26 @@
 .navbar-brand img {
   height: 50px;
 }
+
+.brand-dealer {
+  color: royalblue;
+  font-weight: bold;
+  font-size: 3rem;
+  -webkit-text-stroke: 1px white;
+  text-shadow:
+   -1px -1px 0 royalblue,  
+    1px -1px 0 royalblue,
+    -1px 1px 0 royalblue,
+     1px 1px 0 royalblue;
+}
+.brand-one {
+  color: goldenrod;
+  font-weight: bold;
+  font-size: 3rem;
+  -webkit-text-stroke: 1px white;
+  text-shadow:
+   -1px -1px 0 goldenrod,  
+    1px -1px 0 goldenrod,
+    -1px 1px 0 goldenrod,
+     1px 1px 0 goldenrod;
+  }

@@ -1,14 +1,23 @@
 export class ChromaCar {
-    'dealer_id': string;
-    'imageList': string;
-    'vin': string;
-    'year': number;
-    'make': string;
-    'model': string;
-    'retail_price': number;
-    'sale_price': number;
-    'optionList': string;
-    'descriptions': string;
+    dealer_id: string;
+    imageList: Array<string>;
+    vin: string;
+    year: number;
+    make: string;
+    model: string;
+    retail_price: number;
+    sale_price: number;
+    optionList: string;
+    descriptions: string;
+    ext_color: string;
+    int_color: string;
+    mileage: string;
+    engine: string;
+    model_number: string;
+    stock_number: string;
+    msrp: number;
+    adjusted_price: number;
+    manufacturer_rebates_price: number;
 
     constructor(copy?: Partial<ChromaCar>) {
         if (copy) {

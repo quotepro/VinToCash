@@ -14,6 +14,7 @@ import { ChromaCar } from '@app/model/chroma-car';
   providedIn: 'root'
 })
 export class DataService {
+
   dealers: Array<Dealer> = [];
   session = new DataSession();
   photos: Array<string> = [];
@@ -63,6 +64,26 @@ export class DataService {
       return of(result);
     }));
   }
+  getInterestRate(): any {
+    const calc = this.session.calc;
+    if (calc.creditScore > 780) {
+      return .0360;
+    }
+    if (calc.creditScore > 690) {
+      return .0495;
+    }
+    if (calc.creditScore > 660) {
+      return .0700;
+    }
+    if (calc.creditScore > 620) {
+      return .0972;
+    }
+    if (calc.creditScore > 590) {
+      return .1406;
+    }
+    return .1525;
+  }
+
 
   postData(controller: string, action: string, data: any) {
     this.updateSession(data);
@@ -212,10 +233,22 @@ export class DataService {
 
   getInventory() {
     // implement dealer/zipcode searching later.
+    let purchasePrice = 0;
+    switch (this.session.calc.selectedPeriod) {
+      case 1:
+        purchasePrice = this.session.calc.weeklyPurchasePower;
+        break;
+      case 2:
+        purchasePrice = this.session.calc.biWeeklyPurchasePower;
+        break;
+      case 3:
+        purchasePrice = this.session.calc.monthlyPurchasePower;
+        break;
+    }
 
     const queryParams = new HttpParams()
       .append('dealer_id', 'ewaldkia')
-      .append('sale_price', this.session.calc.periodicPurchaseAmount.toString())
+      .append('sale_price', purchasePrice.toString())
       .append('filter', this.session.filter)
       .append('limit', '100')
       .append('page', '1');
@@ -231,7 +264,68 @@ export class DataService {
     });
   }
 
+  calculatePaymentAmount(vehiclePrice: number) {
+    const calc = this.session.calc;
+    let freq;
+    switch (calc.selectedPeriod) {
+      case 1:
+        freq = 52;
+        break;
+      case 2:
+        freq = 26;
+        break;
+      case 3:
+        freq = 12;
+        break;
+    }
+    const loanLength = calc.loanLength * freq;
+    const principal = vehiclePrice * 1.10; // add vehicle warranty
+    // the 1st month of insurance is deducted from the downpayment,
+    // because it's not financeable.
+    return this.periodicPayment(principal, freq, this.getInterestRate(), loanLength);
+  }
+
+  calculatePurchasingPower(): any {
+    const calc = this.session.calc;
+
+    let periods = 12;
+    // deduct 1st month insurance from purchasing power.
+    const insurancePrice = 65;
+    let interest = this.getInterestRate() / periods;
+    let payments = calc.loanLength * periods;
+    // the warranty is 10% of the purchase price.
+    const monthlyFunds = Math.max(25, calc.monthlyPayment * .9);
+
+    calc.loanAmount = Math.round(((monthlyFunds *
+      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+    calc.monthlyPurchasePower = calc.loanAmount + calc.downPayment;
+
+    periods = 26;
+    interest = this.getInterestRate() / periods;
+    payments = calc.loanLength * periods;
+
+    calc.biWeeklyPayment = calc.monthlyPayment / 2;
+    let periodicLoanAmount = Math.round(((monthlyFunds / 2 *
+      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+    calc.biWeeklyPurchasePower = periodicLoanAmount + calc.downPayment;
+
+    periods = 52;
+    interest = this.getInterestRate() / periods;
+    payments = calc.loanLength * periods;
+
+    calc.weeklyPayment = calc.monthlyPayment / 4;
+    periodicLoanAmount = Math.round(((monthlyFunds / 4 *
+      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+    calc.weeklyPurchasePower = periodicLoanAmount + calc.downPayment;
+  }
+
   degrees2Radians(degrees: number): number {
     return degrees * Math.PI / 180;
+  }
+
+  periodicPayment(pv: number, freq: number, apr: number, periods: number): number {
+      const rate = apr / freq;
+      const x = Math.pow(1 + rate, periods);
+      return (pv * x * rate) / (x - 1);
   }
 }
