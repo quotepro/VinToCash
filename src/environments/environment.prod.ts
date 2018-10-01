@@ -10,5 +10,6 @@ export const environment = {
     'en-US',
     'fr-FR'
   ],
-  aq3Url: 'https://aq3.processmyquote.com/DemoAgent'
+  aq3Url: 'https://aq3.processmyquote.com/DemoAgent',
+  biweeklyTransactionFee: 2.95
 };

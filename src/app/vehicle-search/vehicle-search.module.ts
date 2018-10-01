@@ -8,7 +8,6 @@ import { VehicleSearchRoutingModule } from './vehicle-search-routing.module';
 import { VehicleSearchComponent } from './vehicle-search.component';
 import { FormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-import { EllipsisPipe } from '@app/ellipsis.pipe';
 import { VehicleDetailComponent } from '@app/vehicle-detail/vehicle-detail.component';
 
 @NgModule({
@@ -23,8 +22,7 @@ import { VehicleDetailComponent } from '@app/vehicle-detail/vehicle-detail.compo
   ],
   declarations: [
     VehicleSearchComponent,
-    VehicleDetailComponent,
-    EllipsisPipe
+    VehicleDetailComponent
   ],
   providers: [
   ]

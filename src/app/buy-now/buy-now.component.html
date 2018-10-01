@@ -1,0 +1,155 @@
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h1>{{ car.year }} {{car.make}} {{car.model}} {{car.sale_price | currency }}</h1>
+    <div class="d-flex flex-row flex-wrap">
+      <div class="picture col-md-4">
+        <img [src]="selectedImage" />
+      </div>
+      <form #jumboForm="ngForm" *ngIf="!model.actualValue" class="form-horizontal col-md-8">
+        <h3>Applicant Information</h3>
+        <p>Fill out the information below and press continue when ready.</p>
+        <div class="d-flex flex-row align-items-start justify-content-between my-flex-container flex-wrap">
+          <div class="d-flex flex-column align-items-center justify-content-center my-flex-container col-6">
+            <div class="form-group" [class.has-danger]="firstName.touched && firstName.invalid" [class.has-success]="firstName.valid">
+              <input type="text" #firstName="ngModel" name="firstName" placeholder="{{ 'Your First Name' | translate }}"
+                pattern="\w+" [(ngModel)]="model.firstName" class="form-control" required />
+              <span *ngIf="firstName.touched && firstName.invalid" class="text-danger">Enter your first name</span>
+            </div>
+            <div class="form-group" [class.has-danger]="lastName.touched && lastName.invalid" [class.has-success]="lastName.valid">
+              <input type="text" #lastName="ngModel" name="lastName" placeholder="{{ 'Your Last Name' | translate }}"
+                pattern="\w+" [(ngModel)]="model.lastName" class="form-control" required />
+              <span *ngIf="lastName.touched && lastName.invalid" class="text-danger">Enter your last name</span>
+            </div>
+            <div class="form-group" [class.has-danger]="address.touched && address.invalid" [class.has-success]="address.valid">
+              <input type="text" #address="ngModel" name="address" placeholder="{{ 'Your Street Address' | translate }}"
+                pattern="^\w+\s+\w+.*$" [(ngModel)]="model.address" class="form-control" required />
+              <span *ngIf="address.touched && address.invalid" class="text-danger">Enter your street address</span>
+            </div>
+            <div class="form-group" [class.has-danger]="city.touched && city.invalid" [class.has-success]="city.valid">
+              <input type="tel" #city="ngModel" name="city" placeholder="{{ 'City' | translate }}" pattern="^\w+"
+                [(ngModel)]="model.city" class="form-control" required />
+            </div>
+            <div class="form-group" [class.has-danger]="state.touched && state.invalid" [class.has-success]="state.valid">
+              <input type="tel" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" pattern="^[A-Z]{2}$"
+                [(ngModel)]="model.state" class="form-control" required />
+            </div>
+            <div class="form-group" [class.has-danger]="zipcode.touched && zipcode.invalid" [class.has-success]="zipcode.valid">
+              <input type="tel" #zipcode="ngModel" name="zipcode" placeholder="{{ 'Zip Code' | translate }}" pattern="^\d{5}(-\d{4})?$"
+                [(ngModel)]="model.zipcode" class="form-control" required />
+            </div>
+            <div class="form-group" [class.has-danger]="email.touched && email.invalid" [class.has-success]="email.valid">
+              <input type="email" #email="ngModel" name="email" placeholder="{{ 'Email' | translate }}" pattern='^[^ @]+@[^ @]+\.[^ \.@]{2,5}$'
+                [(ngModel)]="model.email" class="form-control" required />
+            </div>
+            <div class="form-group" [class.has-danger]="phone.touched && phone.invalid" [class.has-success]="phone.valid">
+              <input type="phone" #phone="ngModel" name="phone" placeholder="{{ 'Phone Number' | translate }}" pattern="^\(?\d{3}[\)-\s\.]*\d{3}[-\s\.]*\d{4}$"
+                [(ngModel)]="model.phone" class="form-control" required />
+            </div>
+            <div class="form-group" [class.has-danger]="annualIncome.touched && annualIncome.invalid"
+              [class.has-success]="annualIncome.valid">
+              <input type="tel" #annualIncome="ngModel" name="annualIncome" placeholder="{{ 'Annual Income' | translate }}"
+                pattern="^\d+$" [(ngModel)]="model.annualIncome" class="form-control" required />
+            </div>
+          </div>
+          <div class="d-flex flex-column align-items-center justify-content-start my-flex-container col-6">
+            <label class="h5">Don't let this vehicle get away. Buy it now or reserve it for 7 days.</label>
+            <div class="form-group col-12">
+              <button type="button" class="btn btn-success" (click)="model.buyOrReserve = 'buy'">
+                <i *ngIf="model.buyOrReserve == 'buy'" class="fas fa-check-square"></i>
+                <i *ngIf="model.buyOrReserve != 'buy'" class="fas fa-square"></i>
+                Buy Now
+              </button>
+              <button type="button" class="btn btn-primary" (click)="model.buyOrReserve = 'reserve'">
+                <i *ngIf="model.buyOrReserve == 'reserve'" class="fas fa-check-square"></i>
+                <i *ngIf="model.buyOrReserve != 'reserve'" class="fas fa-square"></i>
+                Reserve
+              </button>
+              <button type="button" class="btn btn-danger" (click)="model.buyOrReserve = ''">
+                <i *ngIf="!model.buyOrReserve" class="fas fa-check-square"></i>
+                <i *ngIf="model.buyOrReserve" class="fas fa-square"></i>
+                No Thanks
+              </button>
+              <div *ngIf="model.buyOrReserve == 'buy'" class="form-group col-12">
+                  <label class="col-12">Would you like to add a bumper to bumper 5 year<br />extended warranty for an
+                    additional $25 per month?</label>
+                  <button type="button" class="btn btn-success" (click)="model.addVehicleWarranty = true">
+                    <i *ngIf="model.addVehicleWarranty" class="fas fa-check-square"></i>
+                    <i *ngIf="!model.addVehicleWarranty" class="fas fa-square"></i>
+                    Yes
+                  </button>
+                  <button type="button" class="btn btn-danger" (click)="model.addVehicleWarranty = false">
+                    <i *ngIf="!model.addVehicleWarranty" class="fas fa-check-square"></i>
+                    <i *ngIf="model.addVehicleWarranty" class="fas fa-square"></i>
+                    No thanks
+                  </button>
+                </div>
+                  <div *ngIf="model.buyOrReserve == 'buy'">
+                <h5>Pay {{ calc.downPayment | currency }} down</h5>
+                <p>and {{ paymentAmount | currency }} {{ paymentLabel }}</p>
+              </div>
+              <div *ngIf="model.buyOrReserve == 'reserve'">
+                <h5>Hold vehicle with a {{ 150 | currency }}<br />deposit for up to 7 days</h5>
+                <p>(non-refundable after 7 days)</p>
+              </div>
+            </div>
+            <div *ngIf="model.buyOrReserve" class="form-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary" (click)="model.paytype = 'card'">
+                  <i *ngIf="model.paytype == 'card'" class="fas fa-check-square"></i>
+                  <i *ngIf="model.paytype != 'card'" class="fas fa-square"></i>
+                  Credit/Debit
+                </button>
+                <button type="button" class="btn btn-primary" (click)="model.paytype = 'check'">
+                  <i *ngIf="model.paytype == 'check'" class="fas fa-check-square"></i>
+                  <i *ngIf="model.paytype != 'check'" class="fas fa-square"></i>
+                  Online Check
+                </button>
+              </div>
+            </div>
+            <div *ngIf="model.buyOrReserve">
+              <div *ngIf="model.paytype == 'card'" class="form-group" [class.has-danger]="ccno.touched && ccno.invalid"
+                [class.has-success]="ccno.valid">
+                <input type="text" #ccno="ngModel" name="ccno" placeholder="{{ 'Credit Card Number' | translate }}"
+                  pattern="\w+" [(ngModel)]="model.ccno" class="form-control" required />
+                <span *ngIf="ccno.touched && ccno.invalid" class="text-danger">Enter your card number</span>
+              </div>
+              <div *ngIf="model.paytype == 'card'" class="form-group" [class.has-danger]="ccexp.touched && ccexp.invalid"
+                [class.has-success]="ccexp.valid">
+                <input type="text" #ccexp="ngModel" name="ccexp" mask="99/99" placeholder="{{ 'Expiration Date' | translate }}"
+                  pattern="\d{2}/\d{2}" [(ngModel)]="model.ccexp" class="form-control" required />
+                <span *ngIf="ccexp.touched && ccexp.invalid" class="text-danger">Enter your expiration date</span>
+              </div>
+              <div *ngIf="model.paytype == 'card'" class="form-group" [class.has-danger]="cccvc.touched && cccvc.invalid"
+                [class.has-success]="cccvc.valid">
+                <input type="text" #cccvc="ngModel" name="cccvc" placeholder="{{ 'Security Code' | translate }}"
+                  pattern="^\d{3,4}$" [(ngModel)]="model.cccvc" class="form-control" required />
+                <span *ngIf="cccvc.touched && cccvc.invalid" class="text-danger">Enter your expiration date</span>
+              </div>
+              <div *ngIf="model.paytype == 'check'" class="form-group" [class.has-danger]="aba.touched && aba.invalid"
+                [class.has-success]="aba.valid">
+                <input type="text" #aba="ngModel" name="aba" placeholder="{{ 'Routing Number' | translate }}" pattern="\d{9}"
+                  [(ngModel)]="model.aba" class="form-control" required />
+                <span *ngIf="aba.touched && aba.invalid" class="text-danger">Enter your routing number</span>
+              </div>
+              <div *ngIf="model.paytype == 'check'" class="form-group" [class.has-danger]="account.touched && account.invalid"
+                [class.has-success]="account.valid">
+                <input type="text" #account="ngModel" name="account" mask="99/99" placeholder="{{ 'Account Number' | translate }}"
+                  pattern="\d+" [(ngModel)]="model.account" class="form-control" required />
+                <span *ngIf="account.touched && account.invalid" class="text-danger">Enter your account number</span>
+              </div>
+            </div>
+          </div>
+          <p class="d-flex justify-content-end align-items-center col-12">
+            <button (click)="back()" class="btn btn btn-default m-2">
+              <i class="fas fa-chevron-left"></i>
+              Back
+            </button>
+            <button class="btn btn-success btn-2x" angulartics2On="click" angularticsAction="Click button below quote"
+              [angularticsCategory]="quote" translate (click)="lookup()">
+              {{ loading ? "Loading" : "Continue" }} <i class="fas {{ loading ? 'fas fa-circle-o-notch fa-spin' : 'fa-chevron-right' }}"></i>
+            </button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>

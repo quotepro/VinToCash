@@ -74,4 +74,9 @@ export class VehicleSearchComponent implements OnInit {
   calculatePayment(car: ChromaCar) {
     return this.data.calculatePaymentAmount(car.sale_price);
   }
+
+  buyNow(car: ChromaCar) {
+    this.data.selectVehicle(car);
+    this.router.navigate(['buy-now']);
+  }
 }

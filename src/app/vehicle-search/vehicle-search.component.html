@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-6 d-flex flex-column text-left text-md-right">
           <p>{{ installmentLabel }} Payment: <span class="payment">{{ calculatePayment(car) | currency }}</span></p>
-          <p><button class="btn btn-primary">Buy Now <i class="fas fa-chevron-right"></i></button></p>
+          <p><button class="btn btn-primary" (click)="buyNow(car)">Buy Now <i class="fas fa-chevron-right"></i></button></p>
         </div>
         <p class="text-right">
           <button class="btn btn-danger" (click)="showVehicleDetail(car, i)">Details <i class="fas fa-chevron-down"></i></button>

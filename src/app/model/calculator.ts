@@ -1,3 +1,5 @@
+import { environment } from '@env/environment.prod';
+
 export class Calculator {
     downPayment: number;
     loanAmount: number;
@@ -12,19 +14,16 @@ export class Calculator {
     monthlyPurchasePower: number;
     downChanged: boolean;
     advanced: boolean;
+    biweeklyTransactionFee: number;
+    paymentsSaved: number;
+    interestSaved: number;
+    effectiveTerm: number;
 
     constructor(copy?: Partial<Calculator>) {
         Object.assign(this, copy);
+        this.biweeklyTransactionFee = environment.biweeklyTransactionFee;
     }
 
-    get selectedPayment(): number {
-        switch (this.selectedPeriod) {
-            case 1:
-                return this.weeklyPayment;
-            case 2:
-                return this.biWeeklyPayment;
-            case 3:
-                return this.monthlyPayment;
-        }
-    }
+
+
 }

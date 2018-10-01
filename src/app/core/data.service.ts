@@ -64,26 +64,6 @@ export class DataService {
       return of(result);
     }));
   }
-  getInterestRate(): any {
-    const calc = this.session.calc;
-    if (calc.creditScore > 780) {
-      return .0360;
-    }
-    if (calc.creditScore > 690) {
-      return .0495;
-    }
-    if (calc.creditScore > 660) {
-      return .0700;
-    }
-    if (calc.creditScore > 620) {
-      return .0972;
-    }
-    if (calc.creditScore > 590) {
-      return .1406;
-    }
-    return .1525;
-  }
-
 
   postData(controller: string, action: string, data: any) {
     this.updateSession(data);
@@ -264,17 +244,54 @@ export class DataService {
     });
   }
 
+  degrees2Radians(degrees: number): number {
+    return degrees * Math.PI / 180;
+  }
+
+  selectedPayment(): number {
+    const calc = this.session.calc;
+    switch (calc.selectedPeriod) {
+        case 1:
+            return calc.weeklyPayment;
+        case 2:
+            return calc.biWeeklyPayment;
+        case 3:
+            return calc.monthlyPayment;
+    }
+  }
+
+  getInterestRate() {
+    const calc = this.session.calc;
+
+    if (calc.creditScore > 780) {
+      return .0360;
+    }
+    if (calc.creditScore > 690) {
+      return .0495;
+    }
+    if (calc.creditScore > 660) {
+      return .0700;
+    }
+    if (calc.creditScore > 620) {
+      return .0972;
+    }
+    if (calc.creditScore > 590) {
+      return .1406;
+    }
+    return .1525;
+  }
+
   calculatePaymentAmount(vehiclePrice: number) {
     const calc = this.session.calc;
     let freq;
     switch (calc.selectedPeriod) {
-      case 1:
+        case 1:
         freq = 52;
         break;
-      case 2:
+        case 2:
         freq = 26;
         break;
-      case 3:
+        case 3:
         freq = 12;
         break;
     }
@@ -308,6 +325,7 @@ export class DataService {
     let periodicLoanAmount = Math.round(((monthlyFunds / 2 *
       ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.biWeeklyPurchasePower = periodicLoanAmount + calc.downPayment;
+    calc.biWeeklyPayment += calc.biweeklyTransactionFee;
 
     periods = 52;
     interest = this.getInterestRate() / periods;
@@ -317,15 +335,48 @@ export class DataService {
     periodicLoanAmount = Math.round(((monthlyFunds / 4 *
       ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.weeklyPurchasePower = periodicLoanAmount + calc.downPayment;
+
+    this.calculateSavings();
   }
 
-  degrees2Radians(degrees: number): number {
-    return degrees * Math.PI / 180;
+  calculateSavings() {
+    const calc = this.session.calc;
+
+    let interestPaid = 0;
+    let periodicInterest = this.getInterestRate() / 12;
+    let balance = calc.monthlyPurchasePower;
+    while (balance > 0) {
+        const interest = balance * periodicInterest;
+        interestPaid += interest;
+        balance = balance + interest - calc.monthlyPayment;
+    }
+
+    let bwInterestPaid = 0;
+    const periodicPayment = calc.monthlyPayment / 2;
+    const periods = 26;
+    periodicInterest = this.getInterestRate() / periods;
+    balance = calc.monthlyPurchasePower;
+    let payments = 0;
+    while (balance > 0) {
+        const interest = balance * periodicInterest;
+        bwInterestPaid += interest;
+        balance = balance + interest - periodicPayment;
+        payments++;
+    }
+
+    calc.interestSaved = interestPaid - bwInterestPaid;
+    calc.effectiveTerm = payments / 26 * 12;
+    calc.paymentsSaved = calc.loanLength * 12 - calc.effectiveTerm;
   }
 
   periodicPayment(pv: number, freq: number, apr: number, periods: number): number {
       const rate = apr / freq;
       const x = Math.pow(1 + rate, periods);
       return (pv * x * rate) / (x - 1);
+  }
+
+  selectVehicle(car: ChromaCar) {
+    this.session.selectedVehicle = car;
+    this.updateSession();
   }
 }

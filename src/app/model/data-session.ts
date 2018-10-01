@@ -1,4 +1,5 @@
 import { Calculator } from '@app/model/calculator';
+import { ChromaCar } from '@app/model/chroma-car';
 
 export class DataSession {
     actualValue: number;
@@ -22,6 +23,7 @@ export class DataSession {
     vinNumber: string;
     year: string;
     zipcode: string;
+    selectedVehicle: ChromaCar;
 
     constructor() {
         this.exterior = '';

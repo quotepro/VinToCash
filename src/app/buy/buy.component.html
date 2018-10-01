@@ -5,23 +5,26 @@
     <h6 translate>The first step to buying a quality card is knowing what you can afford. The calculator below will help determine the vehicles<br/>that you can afford. This gives you a highly accurate price range to use as the basis for a vehicle search.</h6>
     <p translate>Use the sliders below to dial in the price range for your vehicle search. When finished, hit the search button to see all of the vehices we have which qualify.</p>
     <form #buyForm="ngForm">
-      <div class="container-fluid d-flex flex-column align-items-center grow">
-        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-          <label class="col-md-3" translate>Monthly Payment</label>
-          <ng5-slider class="col-md-9" [(value)]="model.monthlyPayment" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
+      <div class="container-fluid d-flex flex-row align-items-center grow">
+        <div class="dealer-logo col-md-6 col-lg-3">
+          <img src="/assets/ewald-logo.png" width="50%" height="auto"/>
         </div>
-        <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-            <label class="col-md-3" translate>Down Payment</label>
-            <ng5-slider class="col-md-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
-        </div>
-        <div *ngIf="model.advanced" class="container-fluid d-flex flex-column align-items-center grow">
-          <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-              <label class="col-md-3" translate>Loan Length</label>
-              <ng5-slider class="col-md-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
+        <div class="sliders col-lg-9">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+            <label class="col-lg-3" translate>Monthly Payment</label>
+            <ng5-slider class="col-lg-9" [(value)]="model.monthlyPayment" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
           </div>
-          <div class="d-flex flex-sm-row flex-column flex-wrap col-md-6">
-              <label class="col-md-3" translate>Credit Score</label>
-              <ng5-slider class="col-md-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+              <label class="col-lg-3" translate>Down Payment</label>
+              <ng5-slider class="col-lg-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
+          </div>
+          <div *ngIf="model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+              <label class="col-lg-3" translate>Loan Length</label>
+              <ng5-slider class="col-lg-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
+          </div>
+          <div *ngIf="model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+              <label class="col-lg-3" translate>Credit Score</label>
+              <ng5-slider class="col-lg-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
           </div>
         </div>
       </div>
@@ -29,22 +32,42 @@
     <hr>
     <div  class="d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
       <div *ngIf="false" class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-5 col-lg-5 col-xl-4">
-        <p class="col-md-12"><button (click)="continue(1)" class="btn btn-2x btn-primary">Pay Weekly <i class="fas fa-chevron-right"></i></button></p>
+        <p class="col-md-12">
+          <button (click)="continue(1)" class="btn btn-2x btn-primary">
+            <img src="/assets/smart-payment-plan.png" width="50%" height="auto"/>
+            Pay Weekly <i class="fas fa-chevron-right"></i>
+          </button>
+        </p>
         <div class="h5 col-sm-6 right">Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
         <div class="h5 col-sm-6 right">Maximum Price:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPurchasePower | currency }}</div>
       </div>
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
-          <p class="col-md-12"><button (click)="continue(2)" class="btn btn-2x btn-success">Pay Bi-Weekly <i class="fas fa-chevron-right"></i></button></p>
-          <div class="h5 col-sm-6 right">Bi-Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPayment | currency }}</div>
-        <div class="h5 col-sm-6 right">Maximum Price:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
-        <div class="h5 col-sm-6 right bold">Additional Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right bold">{{ model.biWeeklyPurchasePower - model.monthlyPurchasePower | currency }}</div>
+        <p class="col-md-12"><button (click)="continue(2)" class="btn btn-2x btn-success d-flex flex-row flex-wrap align-items-center">
+            <img src="/assets/smart-payment-plan.png" width="50%" height="auto"/>
+            <div class="auto-pay">Automatic Biweekly Payday Payments</div>&nbsp;<i class="fas fa-chevron-right"></i>
+        </button></p>
+        <div class="h5 col-sm-6 right">Bi-Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
+        <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Biweekly Advantage"></i> Effective Term: {{ model.effectiveTerm | number:'1.0-0' }} months</div>
+        <div class="h6 col-12 left"># of Monthly Payments Saved: {{ model.paymentsSaved | number:'1.0-0'}}</div>
+        <div class="h6 col-12 left">Value of Saved Payments: {{ model.paymentsSaved * model.monthlyPayment | currency }}</div>
+        <div class="h6 col-12 left">Monthly Interest Saved: {{ model.interestSaved | currency }}</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Biweekly Advantage"></i> Added Vehicle Protection Purchase Power: {{ model.biWeeklyPurchasePower - model.monthlyPurchasePower | currency }}</div>
       </div>
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
-        <p class="col-md-12"><button (click)="continue(3)" class="btn btn-danger btn-2x">Pay Monthly <i class="fas fa-chevron-right"></i></button></p>
+        <p class="col-md-12 mt-sm-4"><button (click)="continue(3)" class="btn btn-danger mt-sm-5">Pay Monthly <i class="fas fa-chevron-right"></i></button></p>
         <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPayment | currency }}</div>
-        <div class="h5 col-sm-6 right">Maximum Price<sup>*</sup>:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPurchasePower | currency }}</div>
-        <div class="h5 col-sm-6 right bold">Additional Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right bold">{{ 0 | currency }}</div>
+        <div class="h5 col-sm-6 right">Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPurchasePower | currency }}</div>
+        <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Biweekly Advantage"></i> Effective Term: {{ model.loanLength * 12 }} months</div>
+        <div class="h6 col-12 left"># of Monthly Payments Saved: N/A</div>
+        <div class="h6 col-12 left">Value of Saved Payments: N/A</div>
+        <div class="h6 col-12 left">Monthly Interest Saved: N/A</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Biweekly Advantage"></i> Added Vehicle Protection Purchase Power: N/A</div>
       </div>
+      <ng-template #ppBiWeeklyContent>Paying bi-weekly can shorten the length of your loan or help you buy a better vehicle.</ng-template>
+      <ng-template #ppBiWeeklyVPContent>Paying bi-weekly increases your purchasing power</ng-template>
       <hr class="col-12">
     </div>
     <p>
@@ -55,12 +78,17 @@
       </button>
     </p>
     <div class="d-flex align-items-center justify-content-center">
-        <p class="col-6"><sup>*</sup>Purchasing power is roughly equal to the cost of vehicles within your price range, based upon the monthly 
-          payment that you can afford to pay. Additional dealer discounts, sales & promotions may actually increase your purchasing power even higher. 
-          We'll help you search for vehicles priced below {{ model.selectedPayment | currency }}.<br/>
-          Click the button above to get pre-qualified for the perfect vehicle in this price range.<br>
-          Prices shown are based upon a {{ model.loanLength*12 }} month loan at {{ model.interestRate | percent }} interest. <button class="btn btn-default btn-sm" (click)="model.advanced = !model.advanced">{{ model.advanced ? 'Hide' : 'Adjust' }}</button>
+        <p class="col-6"><sup>*</sup>
+          <b>Summary:</b> For a small $2.95 per transaction convenience fee, 
+          Smart Payment Plan is adding a 13th payment to your annual number of payments, 
+          and splitting your monthly payment into {{ model.selectedPeriod == 3 ? 52 : 26 }} 
+          (easier to budget) {{ model.selectedPeriod == 3 ? 'weekly' : 'bi-weekly' }} payments annually. 
+          You’ll eliminate late fees & be paying an extra {{ extraPayment | currency }} every two weeks 
+          to pay off your loan in {{ model.loanLength * 12 - model.paymentsSaved | number:'1.0-0'}} months instead of the typical 
+          {{ model.loanLength * 12 }} months.  This also saves approximately {{ model.interestSaved | currency }} in loan interest in the process!
+          <button class="btn btn-default btn-sm" (click)="model.advanced = !model.advanced">{{ model.advanced ? 'Hide' : 'Adjust' }}</button>
         </p>   
     </div>
   </div>
 </div>
+ 

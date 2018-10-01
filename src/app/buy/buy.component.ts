@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from 'ng5-slider';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Payment } from '@app/model/payment';
 import { Calculator } from '@app/model/calculator';
 import { DataService } from '@app/core/data.service';
@@ -27,6 +27,9 @@ export class BuyComponent implements OnInit {
     return this.data.session.calc;
   }
 
+  get extraPayment(): number {
+    return this.model.monthlyPayment / 2 - (this.model.monthlyPayment / 4.33 * 2);
+  }
 
   // source: https://www.valuepenguin.com/auto-loans/average-auto-loan-interest-rates as of 9/19/2018
   get interestRate(): number {
