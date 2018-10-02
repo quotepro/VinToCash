@@ -14,7 +14,7 @@
         <a id="car_{{i}}"></a>
         <h4 class="col-12">{{ car.year }} {{ car.make }} {{car.model }}</h4>
         <div class="col-md-12">
-          <img *ngIf="car.imageList && car.imageList.length > 0" [src]="car.imageList[0]"/><br/>    
+          <img *ngIf="car.imageList && car.imageList.length > 0" [src]="car.imageList[0]" (click)="showVehicleDetail(car, i)"/><br/>    
         </div>
         <div class="col-md-6 d-flex flex-column text-left">
           <span class="msrp">MSRP: {{ car.msrp | currency }}</span>
@@ -40,5 +40,4 @@
         </button>
     </p>  
   </div>
-  <app-vehicle-detail id="vehicleDetail" *ngIf="showDetail" [car]="selectedVehicle" (closed)="closeDetail()"></app-vehicle-detail>
 </div>

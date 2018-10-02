@@ -57,19 +57,10 @@ export class VehicleSearchComponent implements OnInit {
   }
 
   showVehicleDetail(car: ChromaCar, i: number) {
-    this.selectedVehicle = car;
-    this.showDetail = true;
+    this.data.session.selectedVehicle = car;
+    this.data.updateSession();
     this.selectedIndex = i;
-    setTimeout(function() {
-      document.getElementById('vehicelDetail').scrollIntoView({ behavior: 'smooth' });
-    }, 10);
-  }
-  closeDetail() {
-    this.showDetail = false;
-    const id = 'car_' + this.selectedIndex;
-    setTimeout(function() {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }, 10);
+    this.router.navigate(['/vehicle-detail']);
   }
   calculatePayment(car: ChromaCar) {
     return this.data.calculatePaymentAmount(car.sale_price);

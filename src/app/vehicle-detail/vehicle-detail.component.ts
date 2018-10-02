@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChromaCar } from '@app/model/chroma-car';
+import { DataService } from '@app/core/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -8,12 +10,12 @@ import { ChromaCar } from '@app/model/chroma-car';
 })
 export class VehicleDetailComponent implements OnInit {
 
-  @Input() car: ChromaCar;
-  @Output() closed: EventEmitter<any> = new EventEmitter();
-
   selectedImage: string;
+  get car() {
+    return this.data.session.selectedVehicle;
+  }
 
-  constructor() { }
+  constructor(private data: DataService, private router: Router) { }
 
   ngOnInit() {
     if (this.car.imageList.length > 0) {
@@ -21,7 +23,7 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
-  close() {
-    this.closed.emit(null);
+  back() {
+    this.router.navigate(['vehicle-search']);
   }
 }
