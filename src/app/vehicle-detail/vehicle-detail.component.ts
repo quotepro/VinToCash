@@ -10,6 +10,15 @@ import { Router } from '@angular/router';
 })
 export class VehicleDetailComponent implements OnInit {
 
+  readMore: boolean;
+
+  get readLess(): boolean {
+    return !this.readMore;
+  }
+  set readLess(value: boolean) {
+    this.readMore = !value;
+  }
+
   selectedImage: string;
   get car() {
     return this.data.session.selectedVehicle;
@@ -23,7 +32,21 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
+  get vehicleDescription() {
+    const description = this.car.descriptions.replace(/([A-Z' ]+:)/g, '<br/><br/>$1');
+
+    return description;
+  }
   back() {
     this.router.navigate(['vehicle-search']);
+  }
+
+  readMoreClicked() {
+    this.readMore = true;
+    return false;
+  }
+  readLessClicked() {
+    this.readLess = true;
+    return false;
   }
 }

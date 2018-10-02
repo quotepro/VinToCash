@@ -8,7 +8,6 @@ import { VehicleSearchRoutingModule } from './vehicle-search-routing.module';
 import { VehicleSearchComponent } from './vehicle-search.component';
 import { FormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-import { VehicleDetailComponent } from '@app/vehicle-detail/vehicle-detail.component';
 
 @NgModule({
   imports: [
@@ -21,8 +20,7 @@ import { VehicleDetailComponent } from '@app/vehicle-detail/vehicle-detail.compo
     NgxPaginationModule
   ],
   declarations: [
-    VehicleSearchComponent,
-    VehicleDetailComponent
+    VehicleSearchComponent
   ],
   providers: [
   ]

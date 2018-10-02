@@ -12,6 +12,7 @@ const routes: Routes = [
     { path: 'photos', loadChildren: 'app/photos/photos.module#PhotosModule' },
     { path: 'sell', loadChildren: 'app/sell/sell.module#SellModule' },
     { path: 'vehicle-search', loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule' },
+    { path: 'vehicle-detail', loadChildren: 'app/vehicle-detail/vehicle-detail.module#VehicleDetailModule' },
   ]),
   // Fallback when no prior route is matched
   { path: '**', redirectTo: '', pathMatch: 'full' }

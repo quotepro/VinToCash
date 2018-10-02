@@ -10,9 +10,10 @@
             <img [src]="image" (mouseenter)="selectedImage = image" (click)="selectedImage = image"/>
           </div>
         </div>
-        <div>
-            {{ car.descriptions | ellipsis: 1000 }}
-      </div>
+        <div *ngIf="readLess" [innerHtml]="vehicleDescription | ellipsis: 1000"></div>
+        <a *ngIf="readLess" (click)="readMoreClicked()" href="#">Read more</a>
+        <div *ngIf="readMore"[innerHtml]="vehicleDescription"></div>
+        <a *ngIf="readMore" (click)="readLessClicked()" href="#">Read less</a>
     </div>
   </div>
 </div>
