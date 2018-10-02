@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { DataService } from '@app/core/data.service';
 import { Router } from '@angular/router';
+import { environment } from '@env/environment.prod';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,10 @@ export class HomeComponent implements OnInit {
   get model(): DataSession {
     return this.data.session;
   }
+
+  get dealerLogo() {
+    return environment.dealerLogo;
+  }
   buy() {
     this.router.navigate(['buy']);
   }
@@ -33,4 +38,5 @@ export class HomeComponent implements OnInit {
   trade() {
     this.router.navigate(['trade']);
   }
+
 }

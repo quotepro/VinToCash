@@ -144,9 +144,17 @@
               <i class="fas fa-chevron-left"></i>
               Back
             </button>
-            <button class="btn btn-success btn-2x" angulartics2On="click" angularticsAction="Click button below quote"
-              [angularticsCategory]="quote" translate (click)="lookup()">
-              {{ loading ? "Loading" : "Continue" }} <i class="fas {{ loading ? 'fas fa-circle-o-notch fa-spin' : 'fa-chevron-right' }}"></i>
+            <button *ngIf="model.buyOrReserve == 'buy'" class="btn btn-success btn-2x"
+              translate (click)="continue()">
+              Buy Now <i class="fas fa-chevron-right"></i>
+            </button>
+            <button *ngIf="model.buyOrReserve == 'reserve'" class="btn btn-success btn-2x"
+              translate (click)="continue()">
+              Reserve Now <i class="fas fa-chevron-right"></i>
+            </button>
+            <button *ngIf="model.buyOrReserve == ''"  class="btn btn-success btn-2x"
+              translate (click)="continue()">
+              Prequalify Now <i class="fas fa-chevron-right"></i>
             </button>
           </p>
         </div>

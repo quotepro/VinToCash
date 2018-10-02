@@ -16,7 +16,9 @@ export const environment = {
     'Español'
   ],
   aq3Url: 'https://aq3.processmyquote.com/DemoAgent',
-  biweeklyTransactionFee: 2.95
+  biweeklyTransactionFee: 2.95,
+  dealerCode: 'ewaldkia',
+  dealerLogo: 'ewald-logo.svg'
   // use the line below and ssh -L 44349:localhost:44349 bm3.local to debug server side code.
   // aq3Url: 'https://localhost:44349/DemoAgent'
 };

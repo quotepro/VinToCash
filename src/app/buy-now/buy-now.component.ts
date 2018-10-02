@@ -3,6 +3,7 @@ import { DataService } from '@app/core/data.service';
 import { ChromaCar } from '@app/model/chroma-car';
 import { BuyNowForm } from '@app/model/buy-now-form';
 import { Calculator } from '@app/model/calculator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buy-now',
@@ -28,7 +29,7 @@ export class BuyNowComponent implements OnInit {
   get paymentAmount(): number {
     let payment = this.calc.selectedPeriod === 2 ? this.calc.biWeeklyPayment : this.calc.monthlyPayment;
     if (this.model.addVehicleWarranty) {
-      payment += 25;
+      payment += this.calc.selectedPeriod === 2 ? 12 : 25;
     }
     return payment;
   }
@@ -36,10 +37,16 @@ export class BuyNowComponent implements OnInit {
   get paymentLabel(): string {
     return this.calc.selectedPeriod === 2 ? 'biweekly' : 'monthly';
   }
-  constructor(private data: DataService) { }
+  constructor(private data: DataService, private router: Router) { }
 
   ngOnInit() {
     this.model = new BuyNowForm();
   }
 
+  back() {
+    this.router.navigate(['vehicle-search']);
+  }
+  continue() {
+    // nowhere to go yet.
+  }
 }

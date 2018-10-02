@@ -5,6 +5,7 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Payment } from '@app/model/payment';
 import { Calculator } from '@app/model/calculator';
 import { DataService } from '@app/core/data.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-buy',
@@ -34,6 +35,10 @@ export class BuyComponent implements OnInit {
   // source: https://www.valuepenguin.com/auto-loans/average-auto-loan-interest-rates as of 9/19/2018
   get interestRate(): number {
     return this.data.getInterestRate();
+  }
+
+  get dealerLogo() {
+    return environment.dealerLogo;
   }
 
   installmentOptions: Options = {

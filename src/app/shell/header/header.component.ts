@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { I18nService } from '@app/core';
+import { environment } from '@env/environment.prod';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,15 @@ import { I18nService } from '@app/core';
 export class HeaderComponent implements OnInit {
 
   menuHidden = true;
+  logoExists = true;
+
+  get imageUrl() {
+    const assets = '/assets/';
+    if (environment.dealerLogo || environment.dealerCode) {
+      return assets + environment.dealerLogo || (environment.dealerCode + '-logo.png');
+    }
+    return assets + document.location.hostname.split('.')[0] + '-logo.png';
+  }
 
   constructor(private i18nService: I18nService) { }
 

@@ -6,8 +6,8 @@
     <p translate>Use the sliders below to dial in the price range for your vehicle search. When finished, hit the search button to see all of the vehices we have which qualify.</p>
     <form #buyForm="ngForm">
       <div class="container-fluid d-flex flex-row align-items-center grow">
-        <div class="dealer-logo col-md-6 col-lg-3">
-          <img src="/assets/ewald-logo.png" width="50%" height="auto"/>
+        <div *ngIf="dealerLogo" class="dealer-logo col-md-6 col-lg-3">
+          <img src="/assets/{{ dealerLogo }}" width="50%" height="auto"/>
         </div>
         <div class="sliders col-lg-9">
           <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
