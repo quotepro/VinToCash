@@ -1,25 +1,47 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DataService } from '@app/core/data.service';
 import { ChromaCar } from '@app/model/chroma-car';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-vehicle-search',
   templateUrl: './vehicle-search.component.html',
   styleUrls: ['./vehicle-search.component.scss']
 })
-export class VehicleSearchComponent implements OnInit {
+export class VehicleSearchComponent implements OnInit, AfterViewChecked {
 
-  page: 0;
+  page = 0;
   selectedVehicle: ChromaCar;
   showDetail: boolean;
   selectedIndex: number;
+  loading = false;
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(
+    private data: DataService,
+    private router: Router,
+    private changedetector: ChangeDetectorRef,
+    private scroller: ViewportScroller) { }
 
   ngOnInit() {
-    this.data.getInventory();
+    if (!this.data.purchasingPower()) {
+      this.router.navigate(['/buy']);
+    }
+    if (!this.vehicleList || this.vehicleList.length === 0) {
+      this.getInventory();
+    } else {
+      this.changedetector.detectChanges();
+    }
+  }
+  ngAfterViewChecked() {
+    if (!this.loading && this.data.scrollPosition) {
+      console.log('restoring scroll position', this.data.vehicleSearchPage, this.data.scrollPosition);
+      this.page = this.data.vehicleSearchPage;
+      this.scroller.scrollToPosition(this.data.scrollPosition);
+      this.changedetector.detectChanges();
+      this.data.scrollPosition = null;
+    }
   }
 
   get model() {
@@ -30,14 +52,7 @@ export class VehicleSearchComponent implements OnInit {
     return this.data.vehicles;
   }
   get installmentLabel() {
-    switch (this.model.calc.selectedPeriod) {
-      case 3:
-        return 'Monthly';
-      case 2:
-        return 'Bi-Weekly';
-      case 1:
-        return 'Weekly';
-    }
+    return this.data.getInstallmentLabel();
   }
 
   back() {
@@ -45,13 +60,21 @@ export class VehicleSearchComponent implements OnInit {
   }
   search() {
     this.data.updateSession();
-    this.data.getInventory();
+    this.getInventory();
   }
   clearFilter() {
     this.model.filter = '';
     this.search();
   }
 
+  getInventory() {
+    this.loading = true;
+    this.data.getInventory().subscribe((result: any) => {
+      // our list of vehicles has been updated.
+      this.loading = false;
+      this.changedetector.detectChanges();
+    });
+  }
   show_sale(car: ChromaCar) {
     return car.sale_price < car.adjusted_price - car.manufacturer_rebates_price;
   }
@@ -60,6 +83,8 @@ export class VehicleSearchComponent implements OnInit {
     this.data.session.selectedVehicle = car;
     this.data.updateSession();
     this.selectedIndex = i;
+    this.data.vehicleSearchPage = this.page;
+    this.data.scrollPosition = this.scroller.getScrollPosition();
     this.router.navigate(['/vehicle-detail']);
   }
   calculatePayment(car: ChromaCar) {
@@ -69,5 +94,17 @@ export class VehicleSearchComponent implements OnInit {
   buyNow(car: ChromaCar) {
     this.data.selectVehicle(car);
     this.router.navigate(['buy-now']);
+  }
+  pageChanged(event: any) {
+    this.page = event;
+    this.scroller.scrollToPosition([0, 0]);
+  }
+
+  thumbSelected(car: ChromaCar, selectedThumb: string) {
+    car.selectedImage = selectedThumb;
+    return false;
+  }
+  thumbNavigated(car: ChromaCar, $event: any) {
+    car.thumbPage = $event;
   }
 }

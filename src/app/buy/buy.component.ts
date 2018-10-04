@@ -14,6 +14,9 @@ import { environment } from '@env/environment';
 })
 export class BuyComponent implements OnInit {
 
+  get tagline() {
+    return environment.tagline;
+  }
   get model() {
     if (!this.data.session.calc) {
       this.data.session.calc = new Calculator({
@@ -175,9 +178,9 @@ export class BuyComponent implements OnInit {
 
     this.data.updateSession();
   }
-  continue(selectedPriod: number) {
+  continue(selectedPeriod: number) {
 
-    this.model.selectedPeriod = selectedPriod;
+    this.model.selectedPeriod = selectedPeriod;
 
     this.router.navigate(['vehicle-search']);
 

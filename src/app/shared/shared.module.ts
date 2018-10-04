@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
+import { PaymentPanelComponent } from '@app/payment-panel/payment-panel.component';
 import { EllipsisPipe } from '@app/ellipsis.pipe';
 
 @NgModule({
@@ -8,10 +9,13 @@ import { EllipsisPipe } from '@app/ellipsis.pipe';
     CommonModule
   ],
   declarations: [
-    LoaderComponent, EllipsisPipe
+    LoaderComponent,
+    PaymentPanelComponent,
+    EllipsisPipe
   ],
   exports: [
     LoaderComponent,
+    PaymentPanelComponent,
     EllipsisPipe
   ]
 })

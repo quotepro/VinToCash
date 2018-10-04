@@ -2,7 +2,8 @@
   <div class="jumbotron text-center">
     <h1>Buy A Car</h1>
     <h5>Step 1: Calculate Purchasing Power</h5>
-    <h6 translate>The first step to buying a quality card is knowing what you can afford. The calculator below will help determine the vehicles<br/>that you can afford. This gives you a highly accurate price range to use as the basis for a vehicle search.</h6>
+    <h6 *ngIf="!tagline" translate>The first step to buying a quality card is knowing what you can afford. The calculator below will help determine the vehicles<br/>that you can afford. This gives you a highly accurate price range to use as the basis for a vehicle search.</h6>
+    <h6 *ngIf="tagline" [innerHtml]="tagline | translate"></h6>
     <p translate>Use the sliders below to dial in the price range for your vehicle search. When finished, hit the search button to see all of the vehices we have which qualify.</p>
     <form #buyForm="ngForm">
       <div class="container-fluid d-flex flex-row align-items-center grow">
@@ -18,11 +19,11 @@
               <label class="col-lg-3" translate>Down Payment</label>
               <ng5-slider class="col-lg-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
           </div>
-          <div *ngIf="model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
               <label class="col-lg-3" translate>Loan Length</label>
               <ng5-slider class="col-lg-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
           </div>
-          <div *ngIf="model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+          <div *ngIf="false && model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
               <label class="col-lg-3" translate>Credit Score</label>
               <ng5-slider class="col-lg-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
           </div>
@@ -31,22 +32,12 @@
     </form>
     <hr>
     <div  class="d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
-      <div *ngIf="false" class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-5 col-lg-5 col-xl-4">
-        <p class="col-md-12">
-          <button (click)="continue(1)" class="btn btn-2x btn-primary">
-            <img src="/assets/smart-payment-plan.png" width="50%" height="auto"/>
-            Pay Weekly <i class="fas fa-chevron-right"></i>
-          </button>
-        </p>
-        <div class="h5 col-sm-6 right">Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
-        <div class="h5 col-sm-6 right">Maximum Price:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPurchasePower | currency }}</div>
-      </div>
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
-        <p class="col-md-12"><button (click)="continue(2)" class="btn btn-2x btn-success d-flex flex-row flex-wrap align-items-center">
+        <p class="col-md-12"><button (click)="continue(1)" class="btn btn-2x btn-success d-flex flex-row flex-wrap align-items-center">
             <img src="/assets/smart-payment-plan.png" width="50%" height="auto"/>
-            <div class="auto-pay">Automatic Biweekly Payday Payments</div>&nbsp;<i class="fas fa-chevron-right"></i>
+            <div class="auto-pay h4">Automatic Weekly Payments</div>&nbsp;<i class="fas fa-chevron-right"></i>
         </button></p>
-        <div class="h5 col-sm-6 right">Bi-Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
         <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
         <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
         <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Biweekly Advantage"></i> Effective Term: {{ model.effectiveTerm | number:'1.0-0' }} months</div>
@@ -86,7 +77,6 @@
           You’ll eliminate late fees & be paying an extra {{ extraPayment | currency }} every two weeks 
           to pay off your loan in {{ model.loanLength * 12 - model.paymentsSaved | number:'1.0-0'}} months instead of the typical 
           {{ model.loanLength * 12 }} months.  This also saves approximately {{ model.interestSaved | currency }} in loan interest in the process!
-          <button class="btn btn-default btn-sm" (click)="model.advanced = !model.advanced">{{ model.advanced ? 'Hide' : 'Adjust' }}</button>
         </p>   
     </div>
   </div>

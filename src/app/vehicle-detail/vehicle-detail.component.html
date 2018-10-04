@@ -1,19 +1,66 @@
 <div class="container-fluid">
   <div class="jumbotron">
-    <h1>{{ car.year }} {{car.make}} {{car.model}} <i class="fas fa-times-circle right" (click)="back()"></i></h1>
-    <div class="d-flex flex-row flex-wrap">
-      <div class="picture col-md-9">
-          <img [src]="selectedImage"/>
-      </div>
-      <div class="col-md-3 d-flex flex-row flex-wrap align-items-center justify-content-center">
-          <div class="thumb col-6 col-sm-4 col-md-3" *ngFor="let image of car.imageList; let i = index;">
-            <img [src]="image" (mouseenter)="selectedImage = image" (click)="selectedImage = image"/>
-          </div>
+    <i class="fas fa-times-circle close" (click)="back()"></i>
+    <div class="d-flex flex-row flex-wrap justify-content-center">
+      <div class="picture col-md-9 d-flex flex-row flex-wrap align-items-start">
+        <div class="col-12 col-md-6 h3 pointer">
+          {{ car.year }} {{ car.make }} {{car.model }}<br />
+          <small>MSRP:&nbsp;{{ car.msrp | currency }}</small>
         </div>
-        <div *ngIf="readLess" [innerHtml]="vehicleDescription | ellipsis: 1000"></div>
-        <a *ngIf="readLess" (click)="readMoreClicked()" href="#">Read more</a>
-        <div *ngIf="readMore"[innerHtml]="vehicleDescription"></div>
-        <a *ngIf="readMore" (click)="readLessClicked()" href="#">Read less</a>
+        <div class="col-12 col-md-6 text-md-right h3 pointer">
+          {{ calculatePayment(car) | currency }} {{ installmentLabel }}
+          <br />
+          <small>Sale&nbsp;Price:&nbsp;{{ car.sale_price | currency }}</small>
+        </div>
+        <img [src]="car.selectedImage" class="full" />
+        <pagination-template id="thumbs" #p="paginationApi" (pageChange)="thumbNavigated(car,$event)" class="thumbpager">
+          <img *ngFor="let imgUrl of car.imageList | paginate: { id: 'thumbs', itemsPerPage: 8, currentPage: car.thumbPage }"
+            [src]="imgUrl" (click)="thumbSelected(car,imgUrl)" class="thumb" /><br />
+          <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+            <a *ngIf="!p.isFirstPage()" (click)="p.previous()">
+              <i class="fas fa-chevron-left"></i>
+            </a>
+          </div>
+          <div class="pagination-next" [class.disabled]="p.isLastPage()">
+            <a *ngIf="!p.isLastPage()" (click)="p.next()"> <i class="fas fa-chevron-right"></i> </a>
+          </div>
+        </pagination-template>
+        <div class="buttons d-flex align-items-end justify-content-end col-12">
+          <button class="btn btn-danger m-1" *ngIf="!showDetails" (click)="togglePanel('details')">Details <i class="fas fa-chevron-down"></i></button>
+          <button class="btn btn-warning m-1" *ngIf="showDetails" (click)="togglePanel('less')">Less <i class="fas fa-chevron-up"></i></button>
+          <button class="btn btn-success m-1" (click)="togglePanel('buyNow')">
+            <i *ngIf="buyNow" class="fas fa-check-square"></i>
+            <i *ngIf="!buyNow" class="fas fa-square"></i>
+            Buy Now
+          </button>
+          <button class="btn btn-primary m-1" (click)="togglePanel('reserve')">
+            <i *ngIf="reserve" class="fas fa-check-square"></i>
+            <i *ngIf="!reserve" class="fas fa-square"></i>
+            Reserve
+          </button>
+        </div>
+      </div>
+      <div class="panels col-md-9 d-flex flex-row flex-wrap align-items-start">
+        <app-buy-now-panel *ngIf="buyNow" [car]="car" (back)="back()" (checkout)="checkoutClicked()"></app-buy-now-panel>
+        <app-reserve-panel *ngIf="reserve" [car]="car" (back)="back()" (reserve)="reserveClicked()"></app-reserve-panel>
+        <app-detail-panel *ngIf="showDetails" [car]="car"></app-detail-panel>
+        <div *ngIf="showDetails" class="detail-buttons d-flex align-items-end justify-content-end col-12">
+            <button class="btn btn-danger m-1" *ngIf="!showDetails" (click)="togglePanel('details')">Details <i class="fas fa-chevron-down"></i></button>
+            <button class="btn btn-warning m-1" *ngIf="showDetails" (click)="togglePanel('less')">Less <i class="fas fa-chevron-up"></i></button>
+            <button class="btn btn-success m-1" (click)="togglePanel('buyNow')">
+              <i *ngIf="buyNow" class="fas fa-check-square"></i>
+              <i *ngIf="!buyNow" class="fas fa-square"></i>
+              Buy Now
+            </button>
+            <button class="btn btn-primary m-1" (click)="togglePanel('reserve')">
+              <i *ngIf="reserve" class="fas fa-check-square"></i>
+              <i *ngIf="!reserve" class="fas fa-square"></i>
+              Reserve
+            </button>
+          </div>
+    
+      </div>
+
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { JsonApiService } from '@quotepro/aq3';
-import { flatMap, concatMap, retry, catchError, map, filter } from 'rxjs/operators';
+import { flatMap, concatMap, retry, catchError, map, filter, tap } from 'rxjs/operators';
 import { of, Observable, from } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { NearbyDealer } from '@app/model/nearby-dealer';
@@ -9,24 +9,58 @@ import * as dealerList from 'assets/dealers.json';
 import { Dealer } from '@app/model/dealer';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChromaCar } from '@app/model/chroma-car';
+import { CoveragePlan } from '@app/model/coverage-plan';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
   dealers: Array<Dealer> = [];
   session = new DataSession();
   photos: Array<string> = [];
   aq3Url = '';
   loading = false;
   vehicles: ChromaCar[];
+  scrollPosition: [number, number];
+  vehicleSearchPage: number;
+
+  get planPricing(): any {
+    return {
+      'Platinum': {
+        'Warranty': new CoveragePlan({
+          description: '72 Month/100K Mile Limited Warranty', weekly: 2, biweekly: 4, monthly: 10 }),
+        'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15 }),
+        'Prepaid Maintenance': new CoveragePlan({
+          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 })
+      },
+      'Gold': {
+        'Warranty': null as CoveragePlan,
+        'GAP': null as CoveragePlan,
+        'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15 }),
+        'Prepaid Maintenance': new CoveragePlan({
+          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
+      },
+      'Silver': {
+        'Warranty': null as CoveragePlan,
+        'GAP': null as CoveragePlan,
+        'Road Hazard': null as CoveragePlan,
+        'Ding & Dent': null as CoveragePlan,
+        'Paint Protection': null as CoveragePlan,
+        'Prepaid Maintenance': null as CoveragePlan,
+      }
+    };
+  }
 
   constructor(
     private aq3: JsonApiService,
     private http: HttpClient,
     private route: ActivatedRoute,
-    ) {}
+  ) { }
 
   init(aq3Url: string) {
 
@@ -37,12 +71,12 @@ export class DataService {
       this.session.sid = this.aq3.newGuid();
       this.updateSession(this.session);
     }
-    of(...dealerList['dealers']).subscribe( (d: Dealer) => {
+    of(...dealerList['dealers']).subscribe((d: Dealer) => {
       if (d.Description.indexOf('z-') === -1) {
         this.dealers.push(d);
       }
     });
-    this.route.queryParams.subscribe( (parms: Params) => {
+    this.route.queryParams.subscribe((parms: Params) => {
       const url = parms['url'];
       if (url) {
         this.session.url = url;
@@ -106,7 +140,7 @@ export class DataService {
         break;
     }
     for (const field of Object.keys(requiredFields)) {
-      if (!this.session[field] || !requiredFields[field].test(this.session[field]) ) {
+      if (!this.session[field] || !requiredFields[field].test(this.session[field])) {
         return false;
       }
     }
@@ -117,32 +151,32 @@ export class DataService {
       this.loading = true;
       this.geoCode();
       this.postData('Home', 'Prefill', this.session)
-      .pipe(catchError( (err) => {
-        this.loading = false;
-        return of('an error occurred while posting the zip code');
-      }))
-      .subscribe(response => {
-        if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
-          this.postData('Vehicle', 'VinLookup', this.session).pipe(catchError( (err) => {
-            // this.loading = false;
-            return of('an error occurred while looking up the vin');
-          }))
-          .subscribe(vehicle => {
-            this.session.actualValue = vehicle.actualValue;
-            this.session.year = vehicle.year;
-            this.session.make = vehicle.make;
-            this.session.model = vehicle.model || vehicle.modelDescription;
-            this.updateSession();
-            // this.loading = false;
-          });
-        }
-      });
+        .pipe(catchError((err) => {
+          this.loading = false;
+          return of('an error occurred while posting the zip code');
+        }))
+        .subscribe(response => {
+          if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
+            this.postData('Vehicle', 'VinLookup', this.session).pipe(catchError((err) => {
+              // this.loading = false;
+              return of('an error occurred while looking up the vin');
+            }))
+              .subscribe(vehicle => {
+                this.session.actualValue = vehicle.actualValue;
+                this.session.year = vehicle.year;
+                this.session.make = vehicle.make;
+                this.session.model = vehicle.model || vehicle.modelDescription;
+                this.updateSession();
+                // this.loading = false;
+              });
+          }
+        });
     }
   }
 
   geoCode() {
     this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' +
-    this.session.zipcode + '&key=AIzaSyAEj0ENYCC4B47BtyIcU4kltgA2DnPH7vo')
+      this.session.zipcode + '&key=AIzaSyAEj0ENYCC4B47BtyIcU4kltgA2DnPH7vo')
       .pipe(
         retry(2),
         catchError(err => of('Error geocoding ' + this.session.zipcode + ': ' + err))
@@ -162,12 +196,12 @@ export class DataService {
       of(...this.photos)
         .pipe(
           concatMap((photo: string, i: any) => {
-              const formData = new FormData();
-              formData.append('sid', this.session.sid);
-              formData.append('photo', photo);
-              formData.append('vinNumber', this.session.vinNumber);
-              formData.append('index', i);
-              return this.http.post(url, formData, { headers: new HttpHeaders( { 'enctype': 'multipart/form-data'}) } );
+            const formData = new FormData();
+            formData.append('sid', this.session.sid);
+            formData.append('photo', photo);
+            formData.append('vinNumber', this.session.vinNumber);
+            formData.append('index', i);
+            return this.http.post(url, formData, { headers: new HttpHeaders({ 'enctype': 'multipart/form-data' }) });
           }),
           retry(2),
           catchError(err => {
@@ -175,14 +209,14 @@ export class DataService {
             return of('An error occurred while uploading photos');
           })
         ).subscribe(photoResult => {
-           console.log(photoResult);
+          console.log(photoResult);
         });
     });
   }
 
   getNearbyDealers(limit: number): Array<NearbyDealer> {
     const z = { lat: this.session.latitude, lon: this.session.longitude };
-    return this.dealers.sort((a: any , b: any) => {
+    return this.dealers.sort((a: any, b: any) => {
       const dA = this.calculateDistance(z.lat, z.lon, a.Latitude, a.Longitude);
       const dB = this.calculateDistance(z.lat, z.lon, b.Latitude, b.Longitude);
       return dA - dB;
@@ -203,8 +237,8 @@ export class DataService {
     const Δλ = this.degrees2Radians(lon2 - lon1);
 
     const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     const d = Math.round(R * c * 10) / 10;
@@ -213,18 +247,7 @@ export class DataService {
 
   getInventory() {
     // implement dealer/zipcode searching later.
-    let purchasePrice = 0;
-    switch (this.session.calc.selectedPeriod) {
-      case 1:
-        purchasePrice = this.session.calc.weeklyPurchasePower;
-        break;
-      case 2:
-        purchasePrice = this.session.calc.biWeeklyPurchasePower;
-        break;
-      case 3:
-        purchasePrice = this.session.calc.monthlyPurchasePower;
-        break;
-    }
+    const purchasePrice = this.purchasingPower();
 
     const queryParams = new HttpParams()
       .append('dealer_id', 'ewaldkia')
@@ -235,15 +258,32 @@ export class DataService {
 
     this.vehicles = [];
     return this.http.get('/api/cars/search', { params: queryParams })
-    .subscribe((response: Partial<ChromaCar>[]) => {
-      of(...response)
-      .pipe(filter(car => car['image_urls'].length > 0))
-      .subscribe((car: Partial<ChromaCar>) => {
-        this.vehicles.push(new ChromaCar(car));
-      });
-    });
+      .pipe(
+        tap((response: Partial<ChromaCar>[]) => {
+          of(...response)
+            .pipe(
+              filter(car => car['image_urls'].length > 0)
+            )
+            .subscribe((car: Partial<ChromaCar>) => {
+              const vehicle = new ChromaCar(car);
+              this.vehicles.push(vehicle);
+              return vehicle;
+            });
+        })
+      );
   }
-
+  purchasingPower(): any {
+    switch (this.session.calc.selectedPeriod) {
+      case 1:
+        return this.session.calc.weeklyPurchasePower;
+        break;
+      case 2:
+        return this.session.calc.biWeeklyPurchasePower;
+        break;
+      case 3:
+        return this.session.calc.monthlyPurchasePower;
+        break;
+    }  }
   degrees2Radians(degrees: number): number {
     return degrees * Math.PI / 180;
   }
@@ -251,12 +291,12 @@ export class DataService {
   selectedPayment(): number {
     const calc = this.session.calc;
     switch (calc.selectedPeriod) {
-        case 1:
-            return calc.weeklyPayment;
-        case 2:
-            return calc.biWeeklyPayment;
-        case 3:
-            return calc.monthlyPayment;
+      case 1:
+        return calc.weeklyPayment;
+      case 2:
+        return calc.biWeeklyPayment;
+      case 3:
+        return calc.monthlyPayment;
     }
   }
 
@@ -281,17 +321,31 @@ export class DataService {
     return .1525;
   }
 
-  calculatePaymentAmount(vehiclePrice: number) {
+  calculateTieredPayment(car: ChromaCar, period?: number) {
+    let payment = this.calculatePaymentAmount(car.sale_price, period);
+    const plan = this.planPricing[car.selectedPlan];
+    Object.keys(plan).forEach(key => {
+      if (plan[key]) {
+        payment += plan[key][this.getInstallmentKey()];
+      }
+    });
+    return payment;
+  }
+
+  calculatePaymentAmount(vehiclePrice: number, period?: number) {
     const calc = this.session.calc;
+    if (!period) {
+      period = calc.selectedPeriod;
+    }
     let freq;
-    switch (calc.selectedPeriod) {
-        case 1:
+    switch (period) {
+      case 1:
         freq = 52;
         break;
-        case 2:
+      case 2:
         freq = 26;
         break;
-        case 3:
+      case 3:
         freq = 12;
         break;
     }
@@ -314,7 +368,7 @@ export class DataService {
     const monthlyFunds = Math.max(25, calc.monthlyPayment * .9);
 
     calc.loanAmount = Math.round(((monthlyFunds *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.monthlyPurchasePower = calc.loanAmount + calc.downPayment;
 
     periods = 26;
@@ -323,7 +377,7 @@ export class DataService {
 
     calc.biWeeklyPayment = calc.monthlyPayment / 2;
     let periodicLoanAmount = Math.round(((monthlyFunds / 2 *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.biWeeklyPurchasePower = periodicLoanAmount + calc.downPayment;
     calc.biWeeklyPayment += calc.biweeklyTransactionFee;
 
@@ -333,7 +387,7 @@ export class DataService {
 
     calc.weeklyPayment = calc.monthlyPayment / 4;
     periodicLoanAmount = Math.round(((monthlyFunds / 4 *
-      ((1 - Math.pow( 1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.weeklyPurchasePower = periodicLoanAmount + calc.downPayment;
 
     this.calculateSavings();
@@ -346,37 +400,52 @@ export class DataService {
     let periodicInterest = this.getInterestRate() / 12;
     let balance = calc.monthlyPurchasePower;
     while (balance > 0) {
-        const interest = balance * periodicInterest;
-        interestPaid += interest;
-        balance = balance + interest - calc.monthlyPayment;
+      const interest = balance * periodicInterest;
+      interestPaid += interest;
+      balance = balance + interest - calc.monthlyPayment;
     }
 
-    let bwInterestPaid = 0;
-    const periodicPayment = calc.monthlyPayment / 2;
-    const periods = 26;
+    let wklyInterestPaid = 0;
+    const periodicPayment = calc.monthlyPayment / 4;
+    const periods = 52;
     periodicInterest = this.getInterestRate() / periods;
     balance = calc.monthlyPurchasePower;
     let payments = 0;
     while (balance > 0) {
-        const interest = balance * periodicInterest;
-        bwInterestPaid += interest;
-        balance = balance + interest - periodicPayment;
-        payments++;
+      const interest = balance * periodicInterest;
+      wklyInterestPaid += interest;
+      balance = balance + interest - periodicPayment;
+      payments++;
     }
 
-    calc.interestSaved = interestPaid - bwInterestPaid;
-    calc.effectiveTerm = payments / 26 * 12;
+    calc.interestSaved = interestPaid - wklyInterestPaid;
+    calc.effectiveTerm = payments / 52 * 12;
     calc.paymentsSaved = calc.loanLength * 12 - calc.effectiveTerm;
   }
 
   periodicPayment(pv: number, freq: number, apr: number, periods: number): number {
-      const rate = apr / freq;
-      const x = Math.pow(1 + rate, periods);
-      return (pv * x * rate) / (x - 1);
+    const rate = apr / freq;
+    const x = Math.pow(1 + rate, periods);
+    return (pv * x * rate) / (x - 1);
   }
 
   selectVehicle(car: ChromaCar) {
     this.session.selectedVehicle = car;
     this.updateSession();
   }
+
+  getInstallmentLabel(): any {
+    switch (this.session.calc.selectedPeriod) {
+      case 3:
+        return 'Monthly';
+      case 2:
+        return 'Bi-Weekly';
+      case 1:
+        return 'Weekly';
+    }
+  }
+  getInstallmentKey(): any {
+    return this.getInstallmentLabel().replace('-', '').toLowerCase();
+  }
+
 }

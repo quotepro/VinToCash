@@ -1,0 +1,59 @@
+<form #jumboForm="ngForm" class="form-horizontal d-flex flex-row align-items-center justify-content-start flex-wrap">
+  <h2 class="col-12">Reserve this vehicle today for a deposit of {{ 100 | currency }}</h2>
+  <p class="col-12 col-md-4">Your deposit will ensure that this vehicle is reserved by you for up to 7 days. We won't
+    sell it to someone else during that time-frame.
+    You may stop in at any time during those 7 days to test drive the vehicle. When you come in, we will refund your
+    deposit or apply it toward your down payment.
+    However, if we haven't heard from you in 7 days, this reserve deposit becomes non-refundable.</p>
+  <div class="col-12 col-md-4">
+    <div class="form-group" [class.has-danger]="firstName.touched && firstName.invalid" [class.has-success]="firstName.valid">
+      <input type="text" #firstName="ngModel" name="firstName" placeholder="{{ 'Your First Name' | translate }}"
+        pattern="\w{2,}\s+\w{2,}" [(ngModel)]="model.firstName" class="form-control" required />
+      <span *ngIf="firstName.touched && firstName.invalid" class="text-danger">Enter your first name</span>
+    </div>
+    <div class="form-group" [class.has-danger]="lastName.touched && lastName.invalid" [class.has-success]="lastName.valid">
+      <input type="text" #lastName="ngModel" name="lastName" placeholder="{{ 'Your Last Name' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        [(ngModel)]="model.lastName" class="form-control" required />
+      <span *ngIf="lastName.touched && lastName.invalid" class="text-danger">Enter your last name</span>
+    </div>
+    <div class="form-group" [class.has-danger]="email.touched && email.invalid" [class.has-success]="email.valid">
+      <input type="email" #email="ngModel" name="email" placeholder="{{ 'Email' | translate }}" pattern='^[^ @]+@[^ @]+\.[^ \.@]{2,5}$'
+        [(ngModel)]="model.email" class="form-control" required />
+    </div>
+    <div class="form-group" [class.has-danger]="phone.touched && phone.invalid" [class.has-success]="phone.valid">
+      <input type="phone" #phone="ngModel" name="phone" placeholder="{{ 'Phone Number' | translate }}" pattern="^\(?\d{3}[\)-\s\.]*\d{3}[-\s\.]*\d{4}$"
+        [(ngModel)]="model.phone" class="form-control" required />
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="form-group" [class.has-danger]="address.touched && address.invalid" [class.has-success]="address.valid">
+      <input type="text" #address="ngModel" name="address" placeholder="{{ 'Address' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        [(ngModel)]="model.address" class="form-control" required />
+      <span *ngIf="address.touched && address.invalid" class="text-danger">Enter your street address</span>
+    </div>
+    <div class="form-group" [class.has-danger]="city.touched && city.invalid" [class.has-success]="city.valid">
+      <input type="text" #city="ngModel" name="city" placeholder="{{ 'City' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        [(ngModel)]="model.city" class="form-control" required />
+      <span *ngIf="city.touched && city.invalid" class="text-danger">Enter your city</span>
+    </div>
+    <div class="form-group" [class.has-danger]="state.touched && state.invalid" [class.has-success]="state.valid">
+      <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        [(ngModel)]="model.state" class="form-control" required />
+      <span *ngIf="state.touched && state.invalid" class="text-danger">Enter your state</span>
+    </div>
+    <div class="form-group" [class.has-danger]="zipcode.touched && zipcode.invalid" [class.has-success]="zipcode.valid">
+      <input type="text" #zipcode="ngModel" name="name" placeholder="{{ 'Zip Code' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        [(ngModel)]="model.zipcode" class="form-control" required />
+      <span *ngIf="zipcode.touched && zipcode.invalid" class="text-danger">Enter your zipcode</span>
+    </div>
+  </div>
+  <p class="col-12 text-right m-2">
+    <button (click)="back.emit()" class="btn btn btn-secondary">
+      <i class="fas fa-chevron-left"></i>
+      Back
+    </button>
+    <button class="btn btn-success btn-2x m-2" (click)="reserve.emit()">
+      Checkout <i class="fas fa-chevron-right"></i>
+    </button>
+  </p>
+</form>

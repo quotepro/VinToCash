@@ -29,7 +29,9 @@ import { Ng5SliderModule } from 'ng5-slider';
     AppRoutingModule,
     Ng5SliderModule
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   providers: [
   ],
   bootstrap: [AppComponent]

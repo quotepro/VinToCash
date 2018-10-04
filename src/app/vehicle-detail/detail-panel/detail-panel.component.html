@@ -1,0 +1,22 @@
+<div class="detailPanel">
+  <h3>DETAILS:</h3>
+  <div class="d-flex flex-row flex-wrap">
+    <p class="col-6">VIN: {{ car.vin }}</p>
+    <p class="col-6">Engine: {{ car.engine }}</p>
+    <p class="col-6">Exterior: {{ car.ext_color }}</p>
+    <p class="col-6">Model #: {{ car.model_number }}</p>
+    <p class="col-6">Interior: {{ car.int_color }}</p>
+    <p class="col-6">Stock #: {{ car.stock_number }}</p>
+    <p class="col-6">Mileage: {{ car.mileage }}</p>
+  </div>
+  <h3>OPTIONS:</h3>
+  <div class="d-flex flex-row flex-wrap">
+    <p *ngFor="let option of car.optionList" class="col-6">{{ option }}</p>
+  </div>
+
+  <h3>DEALER NOTES:</h3>
+    <p *ngIf="readLess" [innerHtml]="vehicleDescription | ellipsis: 1000"></p>
+    <a *ngIf="readLess" (click)="readMoreClicked()" href="#">Read more</a>
+    <p *ngIf="readMore" [innerHtml]="vehicleDescription"></p>
+    <a *ngIf="readMore" (click)="readLessClicked()" href="#">Read less</a>
+</div>

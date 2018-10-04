@@ -1,13 +1,16 @@
-.jumbotron h1 {
+.jumbotron {
     position: relative;
-    margin-top: -3rem;
+    padding: 1rem;
+    border-radius: 1rem;
 }
-.jumbotron h1 i {
-     display: inline-block;
-     text-align: right;
-     position: absolute;
-     top: 0;
-     right: 0;
+
+.close {
+    position: absolute;
+    top: .1rem;
+    right: .1rem;
+    font-size: 2rem;
+    color: black;
+    z-index: 5;
 }
 .thumb {
     padding: 2px !important;
@@ -15,6 +18,57 @@
 .thumb img {
     width: 100%;
 }
-.picture img {
+.picture {
+    position: relative;
+}
+.picture img.full {
     width: 100%;
+}
+.picture .buttons {
+    background: white;
+    /*
+    position: absolute;
+    bottom: .1rem;
+    right: 0;
+    */
+}
+img.thumb {
+    width: 12.5%;
+}
+.right {
+    text-align: right;
+}
+.payment {
+    font-weight: bold;
+    font-size: 2rem;
+}
+.thumbpager {
+    position: relative;
+    background: white;
+}
+.pagination-previous,
+.pagination-next,
+{
+    position: absolute;
+    top: 25%;
+    color: white;
+    text-shadow: 
+        -1px -1px 5px black,  
+        1px -1px 5px black,
+        -1px 1px 5px black,
+        1px 1px 5px black;
+
+    font-size: 2em;
+}
+.pagination-previous {
+    left: .2rem;
+}
+
+.pagination-next {
+    right: .2rem;
+}
+
+.detail-buttons {
+    background: white; 
+    border-radius: 0 0 5px 5px;
 }

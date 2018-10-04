@@ -7,8 +7,10 @@ import { SharedModule } from '@app/shared';
 import { VehicleDetailRoutingModule } from './vehicle-detail-routing.module';
 import { VehicleDetailComponent } from './vehicle-detail.component';
 import { FormsModule } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-
+import {NgxPaginationModule} from 'ngx-pagination';
+import { DetailPanelComponent } from './detail-panel/detail-panel.component';
+import { ReservePanelComponent } from './reserve-panel/reserve-panel.component';
+import { BuyNowPanelComponent } from './buy-now-panel/buy-now-panel.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,10 +19,13 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
     Angulartics2Module,
     VehicleDetailRoutingModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   declarations: [
-    VehicleDetailComponent
+    VehicleDetailComponent,
+    DetailPanelComponent,
+    ReservePanelComponent,
+    BuyNowPanelComponent
   ],
   providers: [
   ]
