@@ -8,7 +8,16 @@ import { ChromaCar } from '@app/model/chroma-car';
 })
 export class ReservePanelComponent implements OnInit {
 
-  model = {};
+  model: any = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipcode: '',
+  };
 
   @Input() car: ChromaCar;
   @Output() back: EventEmitter<any> = new EventEmitter<any>();

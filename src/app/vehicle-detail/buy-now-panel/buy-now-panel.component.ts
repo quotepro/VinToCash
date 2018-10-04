@@ -15,8 +15,20 @@ export class BuyNowPanelComponent implements OnInit {
   @Output() back: EventEmitter<any> = new EventEmitter<any>();
   @Output() checkout: EventEmitter<any> = new EventEmitter<any>();
 
-  model: any = {};
-  
+  model: any = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipcode: '',
+  };
+
+  get selectedPeriod() {
+    return this.data.session.calc.selectedPeriod;
+  }
   constructor(private data: DataService) { }
 
   ngOnInit() {
