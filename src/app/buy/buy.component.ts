@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Options } from 'ng5-slider';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
-import { Payment } from '@app/model/payment';
+import { CurrencyPipe } from '@angular/common';
 import { Calculator } from '@app/model/calculator';
 import { DataService } from '@app/core/data.service';
 import { environment } from '@env/environment';
@@ -25,7 +24,7 @@ export class BuyComponent implements OnInit {
         loanLength: 7,
         creditScore: 700,
         monthlyPayment: 500,
-        downChanged: false
+        downChanged: false,
       });
     }
     return this.data.session.calc;
@@ -65,7 +64,7 @@ export class BuyComponent implements OnInit {
   downOptions: Options;
 
   lengthOptions: Options = {
-    floor: 5,
+    floor: 4,
     ceil: 7,
     showTicks: true,
     translate: (value: number): string => {
@@ -136,6 +135,7 @@ export class BuyComponent implements OnInit {
 
   installmentAmountChanged() {
     this.resetDownOptions();
+    this.data.vehicles = null;
     this.calculatePurchasingPower();
   }
 
@@ -156,20 +156,24 @@ export class BuyComponent implements OnInit {
   downPaymentChanged() {
     // do something
     this.model.downChanged = true;
+    this.data.vehicles = null;
     this.calculatePurchasingPower();
   }
 
   loanLengthChanged() {
     // do something
+    this.data.vehicles = null;
     this.calculatePurchasingPower();
   }
 
   periodChanged() {
+    this.data.vehicles = null;
     this.calculatePurchasingPower();
   }
 
   creditScoreChanged() {
     // do something
+    this.data.vehicles = null;
     this.calculatePurchasingPower();
   }
 

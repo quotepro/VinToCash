@@ -57,3 +57,42 @@ body {
 .pointer {
     cursor: pointer;
 }
+
+@media (min-width: 576px) {
+    .show-sm {
+        display: block;
+    }
+    .hide-sm {
+        display: none;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+    .show-md {
+        display: block;
+    }
+    .hide-md {
+        display: none;
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+    .show-lg {
+        display: block;
+    }
+    .hide-lg {
+        display: none;
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .visible-xl {
+        display: block;
+    }
+    .hide-xl {
+        display: none;
+    }
+}

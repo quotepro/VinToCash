@@ -28,30 +28,41 @@ export class DataService {
     return {
       'Platinum': {
         'Warranty': new CoveragePlan({
-          description: '72 Month/100K Mile Limited Warranty', weekly: 2, biweekly: 4, monthly: 10 }),
+          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
+        'Prepaid Maintenance': new CoveragePlan({
+          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
         'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
         'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10 }),
         'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10 }),
         'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15 }),
-        'Prepaid Maintenance': new CoveragePlan({
-          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 })
       },
       'Gold': {
-        'Warranty': null as CoveragePlan,
-        'GAP': null as CoveragePlan,
-        'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15 }),
+        'Warranty': new CoveragePlan({
+          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
         'Prepaid Maintenance': new CoveragePlan({
           description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
+        'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
+        'Road Hazard': null as CoveragePlan,
+        'Ding & Dent': null as CoveragePlan,
+        'Paint Protection': null as CoveragePlan,
       },
       'Silver': {
-        'Warranty': null as CoveragePlan,
+        'Warranty': new CoveragePlan({
+          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
+        'Prepaid Maintenance': new CoveragePlan({
+          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
         'GAP': null as CoveragePlan,
         'Road Hazard': null as CoveragePlan,
         'Ding & Dent': null as CoveragePlan,
         'Paint Protection': null as CoveragePlan,
+      },
+      'Bronze': {
+        'Warranty': null as CoveragePlan,
         'Prepaid Maintenance': null as CoveragePlan,
+        'GAP': null as CoveragePlan,
+        'Road Hazard': null as CoveragePlan,
+        'Ding & Dent': null as CoveragePlan,
+        'Paint Protection': null as CoveragePlan,
       }
     };
   }

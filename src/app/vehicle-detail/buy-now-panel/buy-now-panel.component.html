@@ -14,6 +14,7 @@
     <h5>{{ car.selectedPlan }} Monthly {{ calculatePayment(car, 3) | currency }}</h5>
   </div>
   <div class="col-md-6 col-xl-4 text-right buttons d-flex flex-row text-right justify-content-between align-items-end">
+    <button class="btn btn-default bronze" [class.zoom]="car.selectedPlan == 'Bronze'" (click)="car.selectedPlan = 'Bronze'">Bronze</button>
     <button class="btn btn-default silver" [class.zoom]="car.selectedPlan == 'Silver'" (click)="car.selectedPlan = 'Silver'">Silver</button>
     <button class="btn btn-default gold" [class.zoom]="car.selectedPlan == 'Gold'" (click)="car.selectedPlan = 'Gold'">Gold</button>
     <button class="btn btn-default platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="car.selectedPlan = 'Platinum'">Platinum</button>
@@ -24,6 +25,7 @@
         (+{{ planPricing['Platinum'][key][installmentKey] | currency }} {{ installmentKey }})</span>
     </div>
     <div class="col-md-6 col-xl-4 border d-flex flex-row text-right justify-content-between">
+      <i class="fa-2x" [ngClass]="planPricing['Bronze'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Silver'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Gold'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Platinum'][key] ? 'fas fa-check' : 'fas fa-times'"></i>

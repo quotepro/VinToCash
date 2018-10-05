@@ -6,27 +6,33 @@
     <h6 *ngIf="tagline" [innerHtml]="tagline | translate"></h6>
     <p translate>Use the sliders below to dial in the price range for your vehicle search. When finished, hit the search button to see all of the vehices we have which qualify.</p>
     <form #buyForm="ngForm">
-      <div class="container-fluid d-flex flex-row align-items-center grow">
-        <div *ngIf="dealerLogo" class="dealer-logo col-md-6 col-lg-3">
-          <img src="/assets/{{ dealerLogo }}" width="50%" height="auto"/>
+      <div class="container-fluid d-flex flex-row align-items-center flex-wrap grow">
+        <div *ngIf="dealerLogo" class="dealer-logo col-6 col-md-3">
+          <img src="/assets/PoweredByQuoteproMax.png" width="80%" height="auto"/>
+        </div>    
+        <div *ngIf="dealerLogo" class="dealer-logo col-6 hide-md">
+            <img src="/assets/{{ dealerLogo }}" width="50%" height="auto"/>
         </div>
-        <div class="sliders col-lg-9">
-          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+        <div class="sliders col-md-6">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-12">
             <label class="col-lg-3" translate>Monthly Payment</label>
             <ng5-slider class="col-lg-9" [(value)]="model.monthlyPayment" [options]="installmentOptions" (userChange)="installmentAmountChanged()"></ng5-slider>
           </div>
-          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-12">
               <label class="col-lg-3" translate>Down Payment</label>
               <ng5-slider class="col-lg-9" [(value)]="model.downPayment" [options]="downOptions" (userChange)="downPaymentChanged()"></ng5-slider>
           </div>
-          <div class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-12">
               <label class="col-lg-3" translate>Loan Length</label>
               <ng5-slider class="col-lg-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
           </div>
-          <div *ngIf="false && model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-lg-6">
+          <div *ngIf="false && model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-12">
               <label class="col-lg-3" translate>Credit Score</label>
               <ng5-slider class="col-lg-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
           </div>
+        </div>
+        <div *ngIf="dealerLogo" class="dealer-logo col-3 hidden visible-md">
+          <img src="/assets/{{ dealerLogo }}" width="80%" height="auto"/>
         </div>
       </div>
     </form>
@@ -40,25 +46,25 @@
         <div class="h5 col-sm-6 right">Weekly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
         <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
         <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
-        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Biweekly Advantage"></i> Effective Term: {{ model.effectiveTerm | number:'1.0-0' }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Weekly Advantage"></i> Effective Term: {{ model.effectiveTerm | number:'1.0-0' }} months</div>
         <div class="h6 col-12 left"># of Monthly Payments Saved: {{ model.paymentsSaved | number:'1.0-0'}}</div>
         <div class="h6 col-12 left">Value of Saved Payments: {{ model.paymentsSaved * model.monthlyPayment | currency }}</div>
         <div class="h6 col-12 left">Monthly Interest Saved: {{ model.interestSaved | currency }}</div>
-        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Biweekly Advantage"></i> Added Vehicle Protection Purchase Power: {{ model.biWeeklyPurchasePower - model.monthlyPurchasePower | currency }}</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Weekly Advantage"></i> Added Vehicle Protection Purchase Power: {{ model.paymentsSaved * model.monthlyPayment + model.interestSaved | currency }}</div>
       </div>
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
         <p class="col-md-12 mt-sm-4"><button (click)="continue(3)" class="btn btn-danger mt-sm-5">Pay Monthly <i class="fas fa-chevron-right"></i></button></p>
         <div class="h5 col-sm-6 right">Monthly Payment:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPayment | currency }}</div>
         <div class="h5 col-sm-6 right">Purchasing Power:</div><div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPurchasePower | currency }}</div>
         <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
-        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Biweekly Advantage"></i> Effective Term: {{ model.loanLength * 12 }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Weekly Advantage"></i> Effective Term: {{ model.loanLength * 12 }} months</div>
         <div class="h6 col-12 left"># of Monthly Payments Saved: N/A</div>
         <div class="h6 col-12 left">Value of Saved Payments: N/A</div>
         <div class="h6 col-12 left">Monthly Interest Saved: N/A</div>
-        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Biweekly Advantage"></i> Added Vehicle Protection Purchase Power: N/A</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent" popoverTitle="Weekly Advantage"></i> Added Vehicle Protection Purchase Power: N/A</div>
       </div>
-      <ng-template #ppBiWeeklyContent>Paying bi-weekly can shorten the length of your loan or help you buy a better vehicle.</ng-template>
-      <ng-template #ppBiWeeklyVPContent>Paying bi-weekly increases your purchasing power</ng-template>
+      <ng-template #ppBiWeeklyContent>Paying weekly can shorten the length of your loan or help you buy a better vehicle.</ng-template>
+      <ng-template #ppBiWeeklyVPContent>Paying weekly increases your purchasing power</ng-template>
       <hr class="col-12">
     </div>
     <p>

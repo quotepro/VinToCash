@@ -4,7 +4,12 @@
 .carResult .title {
   margin: 0;
   padding: 15px;
-  border-radius: 5px 5px 0 0;
+}
+.carResult .title:first-child {
+  border-radius: 5px 0 0 0;
+}
+.carResult .title:nth-child(2) {
+  border-radius: 0 5px 0 0;
 }
 .carResult .thumb-wrapper {
   padding: 0 15px 15px 15px;

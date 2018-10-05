@@ -88,7 +88,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
     this.router.navigate(['/vehicle-detail']);
   }
   calculatePayment(car: ChromaCar) {
-    return this.data.calculatePaymentAmount(car.sale_price);
+    return this.data.calculateTieredPayment(car);
   }
 
   buyNow(car: ChromaCar) {
