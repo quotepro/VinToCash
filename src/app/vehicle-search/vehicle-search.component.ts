@@ -49,7 +49,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
   }
 
   get vehicleList(): ChromaCar[] {
-    return this.data.vehicles;
+    return this.data.vehicles || [];
   }
   get installmentLabel() {
     return this.data.getInstallmentLabel();
@@ -91,10 +91,6 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
     return this.data.calculateTieredPayment(car);
   }
 
-  buyNow(car: ChromaCar) {
-    this.data.selectVehicle(car);
-    this.router.navigate(['buy-now']);
-  }
   pageChanged(event: any) {
     this.page = event;
     this.scroller.scrollToPosition([0, 0]);

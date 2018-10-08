@@ -57,6 +57,20 @@ body {
 .pointer {
     cursor: pointer;
 }
+.jumbotron {
+    position: relative;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.close {
+    position: absolute;
+    top: .1rem;
+    right: .1rem;
+    font-size: 2rem;
+    color: black;
+    z-index: 5;
+}
 
 @media (min-width: 576px) {
     .show-sm {

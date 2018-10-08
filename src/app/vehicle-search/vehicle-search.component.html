@@ -1,40 +1,50 @@
 <div class="container-fluid">
-  <div *ngIf="!showDetail" class="jumbotron text-center">
-    <h1>Search Results</h1>
-    <p>Here are the vehicles matching your purchasing power. We've sorted these to show the best vehicles first. Click on a vehicle to continue.</p>
+  <div class="jumbotron text-center">
+    <i class="fas fa-times-circle close" (click)="back()"></i>
     <div class="input-group col-md-4 col-lg-2 offset-8 searchWrapper ">
-      <input type="text" [(ngModel)]="model.filter" placeholder="search" class="form-control">
+      <input type="text" [(ngModel)]="model.filter" placeholder="search" class="form-control" (keyup.enter)="search()" (blur)="search()">
       <div class="input-group-append">
         <i *ngIf="model.filter.length > 0" class="input-group-text fas fa-times-circle" (click)="clearFilter()"></i>
         <i class="input-group-text fas fa-search" (click)="search()"></i>
       </div>
     </div>
-    <div class="d-flex flex-row flex-wrap text-left content-justify-start align-items-start">
-      <div *ngFor="let car of vehicleList | paginate: { id: 'cars', itemsPerPage: 12, currentPage: page }; let i=index"
-        class="col-lg-4 col-md-6 carResult d-flex flex-row flex-wrap mt-5 align-items-start">
-        <div class="col-6 h5 pointer title" (click)="showVehicleDetail(car, i)">
-          {{ car.year }} {{ car.make }} {{car.model }}<br />
-          <small>MSRP:&nbsp;{{ car.msrp | currency }}</small>
-        </div>
-        <div class="col-6 text-right h5 pointer title" (click)="showVehicleDetail(car, i)">
-          {{ calculatePayment(car) | currency }} {{ installmentLabel }}
-          <br />
-          <small>Sale&nbsp;Price:&nbsp;{{ car.sale_price | currency }}</small>
-        </div>
-        <div class="col-md-12 pointer thumb-wrapper align-items-start">
-          <img *ngIf="car.selectedImage" [src]="car.selectedImage" class="full" (click)="showVehicleDetail(car, i)"/><br />
-          <pagination-template id="thumbs_{{i}}"  #p="paginationApi" (pageChange)="thumbNavigated(car,$event)" class="thumbpager">
-            <img *ngFor="let imgUrl of car.imageList | paginate: { id: 'thumbs_'+i, itemsPerPage: 4, currentPage: car.thumbPage }"
-            [src]="imgUrl" (click)="thumbSelected(car,imgUrl)" class="thumb" /><br />
-            <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+    <div *ngIf="vehicleList.length == 0">
+      <h1>Search Results</h1>
+      <p>No vehicles matched your search criteria. {{ model.filter ? 'Please modify
+        your search criteria' : 'Please hit the back button to calculate your purchasing power' }}
+      </p>  
+    </div>
+    <div *ngIf="vehicleList.length > 0">
+      <h1>Search Results</h1>
+      <p>Here are the vehicles matching your purchasing power. We've sorted these to show the best vehicles first.
+        Click on a vehicle to continue.</p>
+      <div class="d-flex flex-row flex-wrap text-left content-justify-start align-items-start">
+        <div *ngFor="let car of vehicleList | paginate: { id: 'cars', itemsPerPage: 12, currentPage: page }; let i=index"
+          class="col-lg-4 col-md-6 carResult d-flex flex-row flex-wrap mt-5 align-items-start">
+          <div class="col-6 h5 pointer title" (click)="showVehicleDetail(car, i)">
+            {{ car.year }} {{ car.make }} {{car.model }}<br />
+            <small>MSRP:&nbsp;{{ car.msrp | currency }}</small>
+          </div>
+          <div class="col-6 text-right h5 pointer title" (click)="showVehicleDetail(car, i)">
+            {{ calculatePayment(car) | currency }} {{ installmentLabel }}
+            <br />
+            <small>Sale&nbsp;Price:&nbsp;{{ car.sale_price | currency }}</small>
+          </div>
+          <div class="col-md-12 pointer thumb-wrapper align-items-start">
+            <img *ngIf="car.selectedImage" [src]="car.selectedImage" class="full" (click)="showVehicleDetail(car, i)" /><br />
+            <pagination-template id="thumbs_{{i}}" #p="paginationApi" (pageChange)="thumbNavigated(car,$event)" class="thumbpager">
+              <img *ngFor="let imgUrl of car.imageList | paginate: { id: 'thumbs_'+i, itemsPerPage: 4, currentPage: car.thumbPage }"
+                [src]="imgUrl" (click)="thumbSelected(car,imgUrl)" class="thumb" /><br />
+              <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
                 <a *ngIf="!p.isFirstPage()" (click)="p.previous()">
                   <i class="fas fa-chevron-left"></i>
-                </a> 
-            </div> 
-            <div class="pagination-next" [class.disabled]="p.isLastPage()">
-              <a *ngIf="!p.isLastPage()" (click)="p.next()"> <i class="fas fa-chevron-right"></i> </a>
-            </div>
-          </pagination-template>
+                </a>
+              </div>
+              <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                <a *ngIf="!p.isLastPage()" (click)="p.next()"> <i class="fas fa-chevron-right"></i> </a>
+              </div>
+            </pagination-template>
+          </div>
         </div>
       </div>
     </div>

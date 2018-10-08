@@ -10,7 +10,7 @@
   </p>
   <h3 class="col-12 mt-3">Step 1: Choose A Protection Package</h3>
   <div class="col-md-6 col-xl-8">
-    <h5>{{ car.selectedPlan }} {{ installmentLabel }} {{ calculatePayment(car, selectedPeriod) | currency }}</h5>
+    <h5 *ngIf="installmentLabel != 'Monthly'">{{ car.selectedPlan }} {{ installmentLabel }} {{ calculatePayment(car, selectedPeriod) | currency }}</h5>
     <h5>{{ car.selectedPlan }} Monthly {{ calculatePayment(car, 3) | currency }}</h5>
   </div>
   <div class="col-md-6 col-xl-4 text-right buttons d-flex flex-row text-right justify-content-between align-items-end">
