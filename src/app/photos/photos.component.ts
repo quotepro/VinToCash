@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '@app/core/data.service';
 import { Router } from '@angular/router';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-photos',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PhotosComponent implements OnInit {
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
   }
@@ -42,11 +43,11 @@ export class PhotosComponent implements OnInit {
 
   back() {
     this.updatePhotos();
-    this.router.navigate(['details']);
+    this.nav.back('details');
   }
   continue() {
     this.updatePhotos();
-    this.router.navigate(['dealers']);
+    this.nav.forward(['dealers']);
   }
 
   updatePhotos() {

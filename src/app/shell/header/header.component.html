@@ -31,4 +31,11 @@
       </div>
     </div>
   </nav>
+  <div class="breadcrumbs col-12">
+    <ng-container *ngFor="let crumb of breadcrumbs; let i=index;" class="visible-md">
+        <ng-container *ngIf="i > 0"> / </ng-container>
+        <a (click)="navigate(crumb, i)" href="#">{{ crumb.title }}</a>
+    </ng-container>
+
+  </div>
 </header>

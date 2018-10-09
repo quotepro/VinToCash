@@ -3,6 +3,7 @@ import { DataService } from '@app/core/data.service';
 import { Dealer } from '@app/model/dealer';
 import { NearbyDealer } from '@app/model/nearby-dealer';
 import { Router } from '@angular/router';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-dealers',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class DealersComponent implements OnInit {
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
   }
@@ -29,6 +30,6 @@ export class DealersComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['photos']);
+    this.nav.back('photos');
   }
 }

@@ -8,6 +8,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { Logger, I18nService } from '@app/core';
 import { DataService } from '@app/core/data.service';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 const log = new Logger('App');
 
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
               private titleService: Title,
               private translateService: TranslateService,
               private i18nService: I18nService,
-              private data: DataService
+              private data: DataService,
+              private nav: NavigationManagerService
             ) {}
 
   ngOnInit() {
@@ -59,6 +61,7 @@ export class AppComponent implements OnInit {
         const title = event['title'];
         if (title) {
           this.titleService.setTitle(this.translateService.instant(title));
+          this.nav.push(this.activatedRoute, title);
         }
       });
   }

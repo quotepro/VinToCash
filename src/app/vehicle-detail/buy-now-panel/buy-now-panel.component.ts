@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChromaCar } from '@app/model/chroma-car';
 import { DataService } from '@app/core/data.service';
+import { Router } from '@angular/router';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-buy-now-panel',
@@ -24,12 +26,13 @@ export class BuyNowPanelComponent implements OnInit {
     city: '',
     state: '',
     zipcode: '',
+    willTradeIn: false
   };
 
   get selectedPeriod() {
     return this.data.session.calc.selectedPeriod;
   }
-  constructor(private data: DataService) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
   }
@@ -45,6 +48,7 @@ export class BuyNowPanelComponent implements OnInit {
   calculatePayment(car: ChromaCar, period?: number) {
     return this.data.calculateTieredPayment(car, period);
   }
-
-
+  tradein() {
+    this.nav.forward(['/trade-in']);
+  }
 }

@@ -5,7 +5,7 @@ import { extract } from '@app/core';
 import { VehicleDetailComponent } from './vehicle-detail.component';
 
 const routes: Routes = [
-  { path: '', component: VehicleDetailComponent, data: { title: extract('Search') } }
+  { path: '', component: VehicleDetailComponent, data: { title: extract('Vehicle Details') } }
 ];
 
 @NgModule({

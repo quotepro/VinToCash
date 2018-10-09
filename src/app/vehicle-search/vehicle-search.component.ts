@@ -3,6 +3,7 @@ import { DataService } from '@app/core/data.service';
 import { ChromaCar } from '@app/model/chroma-car';
 import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,13 +21,13 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private data: DataService,
-    private router: Router,
+    private nav: NavigationManagerService,
     private changedetector: ChangeDetectorRef,
     private scroller: ViewportScroller) { }
 
   ngOnInit() {
     if (!this.data.purchasingPower()) {
-      this.router.navigate(['/buy']);
+      this.nav.back('buy');
     }
     if (!this.vehicleList || this.vehicleList.length === 0) {
       this.getInventory();
@@ -56,7 +57,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
   }
 
   back() {
-    this.router.navigate(['buy']);
+    this.nav.back('buy');
   }
   search() {
     this.data.updateSession();
@@ -85,7 +86,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
     this.selectedIndex = i;
     this.data.vehicleSearchPage = this.page;
     this.data.scrollPosition = this.scroller.getScrollPosition();
-    this.router.navigate(['/vehicle-detail']);
+    this.nav.forward(['/vehicle-detail']);
   }
   calculatePayment(car: ChromaCar) {
     return this.data.calculateTieredPayment(car);

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
+import { Crumb } from '@app/model/crumb';
 
 @Component({
   selector: 'app-shell',

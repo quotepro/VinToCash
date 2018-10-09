@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '@app/core/data.service';
 import { Router } from '@angular/router';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-details',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
   }
@@ -18,11 +19,11 @@ export class DetailsComponent implements OnInit {
     return this.data.session;
   }
   back() {
-    this.router.navigate(['home']);
+    this.nav.back('home');
     this.data.updateSession();
   }
   continue() {
-    this.router.navigate(['photos']);
+    this.nav.forward(['photos']);
     this.data.updateSession();
   }
 

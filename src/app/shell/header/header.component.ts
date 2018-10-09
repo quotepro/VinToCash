@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { I18nService } from '@app/core';
 import { environment } from '@env/environment.prod';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
+import { Crumb } from '@app/model/crumb';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +23,9 @@ export class HeaderComponent implements OnInit {
     return assets + document.location.hostname.split('.')[0] + '-logo.png';
   }
 
-  constructor(private i18nService: I18nService) { }
+  constructor(
+    private i18nService: I18nService,
+    private nav: NavigationManagerService) { }
 
   ngOnInit() { }
 
@@ -39,6 +43,13 @@ export class HeaderComponent implements OnInit {
 
   get languages(): string[] {
     return this.i18nService.supportedLanguages;
+  }
+  get breadcrumbs() {
+    return this.nav.breadcrumbs;
+  }
+
+  navigate(crumb: Crumb, i: number) {
+    return this.nav.goto(crumb, i);
   }
 
 }

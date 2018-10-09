@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChromaCar } from '@app/model/chroma-car';
 import { DataService } from '@app/core/data.service';
-import { Router } from '@angular/router';
-import { EllipsisPipe } from '@app/ellipsis.pipe';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -27,7 +26,7 @@ export class VehicleDetailComponent implements OnInit {
     return this.data.session.selectedVehicle;
   }
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
     if (this.car.imageList.length > 0) {
@@ -42,7 +41,7 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['vehicle-search']);
+    this.nav.back('vehicle-search');
   }
   get installmentLabel() {
     return this.data.getInstallmentLabel();

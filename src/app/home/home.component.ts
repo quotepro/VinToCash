@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { DataService } from '@app/core/data.service';
-import { Router } from '@angular/router';
 import { environment } from '@env/environment.prod';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   isLoading: boolean;
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -30,13 +30,13 @@ export class HomeComponent implements OnInit {
     return environment.dealerLogo;
   }
   buy() {
-    this.router.navigate(['buy']);
+    this.nav.forward(['buy']);
   }
   sell() {
-    this.router.navigate(['sell']);
+    this.nav.forward(['sell']);
   }
   trade() {
-    this.router.navigate(['trade']);
+    this.nav.forward(['trade-in']);
   }
 
 }

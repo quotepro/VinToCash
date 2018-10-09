@@ -14,3 +14,9 @@
     background-color: black;
     border-radius: 50%;
 }
+svg {
+    text-shadow: -1px -1px 5px white,  
+        1px -1px 5px white,
+        -1px 1px 5px white,
+        1px 1px 5px white;
+}

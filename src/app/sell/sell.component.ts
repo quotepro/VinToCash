@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { DataService } from '@app/core/data.service';
-import { Router } from '@angular/router';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,7 @@ export class SellComponent implements OnInit {
 
   isLoading: boolean;
 
-  constructor(private data: DataService, private router: Router) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -32,9 +32,9 @@ export class SellComponent implements OnInit {
     this.data.updateSession();
   }
   back() {
-    this.router.navigate(['home']);
+    this.nav.back('home');
   }
   continue() {
-    this.router.navigate(['details']);
+    this.nav.forward(['details']);
   }
 }

@@ -13,6 +13,7 @@ const routes: Routes = [
     { path: 'sell', loadChildren: 'app/sell/sell.module#SellModule' },
     { path: 'vehicle-search', loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule' },
     { path: 'vehicle-detail', loadChildren: 'app/vehicle-detail/vehicle-detail.module#VehicleDetailModule' },
+    { path: 'trade-in', loadChildren: 'app/trade-in/trade-in.module#TradeInModule' },
   ]),
   // Fallback when no prior route is matched
   { path: '**', redirectTo: '', pathMatch: 'full' }

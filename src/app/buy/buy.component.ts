@@ -5,6 +5,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Calculator } from '@app/model/calculator';
 import { DataService } from '@app/core/data.service';
 import { environment } from '@env/environment';
+import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
   selector: 'app-buy',
@@ -122,7 +123,7 @@ export class BuyComponent implements OnInit {
       return '#2AE02A';
     }  };
 
-  constructor(private router: Router, private cp: CurrencyPipe, private data: DataService) { }
+  constructor(private nav: NavigationManagerService, private cp: CurrencyPipe, private data: DataService) { }
 
   ngOnInit() {
     this.resetDownOptions();
@@ -130,7 +131,7 @@ export class BuyComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['home']);
+    this.nav.back('home');
   }
 
   installmentAmountChanged() {
@@ -186,7 +187,7 @@ export class BuyComponent implements OnInit {
 
     this.model.selectedPeriod = selectedPeriod;
 
-    this.router.navigate(['vehicle-search']);
+    this.nav.forward(['vehicle-search']);
 
     /* this would link back to eWald's inventory page filled in.
     document.location.href = 'https://www.ewaldkia.com/vehicle-inventory.php?' +

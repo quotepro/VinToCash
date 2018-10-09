@@ -6,7 +6,7 @@ import { PhotosComponent } from './photos.component';
 
 const routes: Routes = [
   // Module is lazy loaded, see app-routing.module.ts
-  { path: '', component: PhotosComponent, data: { title: extract('Photos') } }
+  { path: '', component: PhotosComponent, data: { title: extract('Upload Photos') } }
 ];
 
 @NgModule({
