@@ -5,6 +5,19 @@
     .far, .fas {
         margin-left: 20px;
     }
+    .btn i {
+        margin-left: 0;
+    }
+    .btn-small {
+        zoom: .8;
+        background: #eee;
+
+    }
+    .fas.yellow {
+        color: yellow;
+        background: black;
+        border-radius: 50%;
+    }
 }
 .coverage .fa-2x.fa-check {
     color: green;
@@ -29,4 +42,19 @@
 }
 .text-wrap {
     white-space: normal;
+}
+.btn {
+    word-break:  break-word;
+    hyphens: none;
+}
+@media (min-width: 768px) and (max-width: 900px) {
+    .buttons {
+        zoom: .5;
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1440px) {
+    .buttons {
+        zoom: .7;
+    }
 }

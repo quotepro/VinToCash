@@ -4,6 +4,9 @@ import { ChromaCar } from '@app/model/chroma-car';
 import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Calculator } from '@app/model/calculator';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +32,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
     if (!this.data.purchasingPower()) {
       this.nav.back('buy');
     }
-    if (!this.vehicleList || this.vehicleList.length === 0) {
+    if (!this.vehicles || this.vehicles.length === 0) {
       this.getInventory();
     } else {
       this.changedetector.detectChanges();
@@ -37,7 +40,7 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
   }
   ngAfterViewChecked() {
     if (!this.loading && this.data.scrollPosition) {
-      console.log('restoring scroll position', this.data.vehicleSearchPage, this.data.scrollPosition);
+      // console.log('restoring scroll position', this.data.vehicleSearchPage, this.data.scrollPosition);
       this.page = this.data.vehicleSearchPage;
       this.scroller.scrollToPosition(this.data.scrollPosition);
       this.changedetector.detectChanges();
@@ -45,12 +48,42 @@ export class VehicleSearchComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  updateFilter(newFilter: number) {
+    this.filterby = newFilter;
+    this.getInventory();
+  }
   get model() {
     return this.data.session;
   }
 
-  get vehicleList(): ChromaCar[] {
+  get filterby(): number {
+    return this.calc.filterby || 2;
+  }
+  set filterby(newFilter: number) {
+    this.calc.filterby = newFilter;
+    this.data.updateSession();
+  }
+
+  get calc(): Calculator  {
+    return this.data.session.calc;
+  }
+  get vehicles() {
     return this.data.vehicles || [];
+  }
+  get vehicleList(): ChromaCar[] {
+    return this.data.vehicles.filter(car => {
+        if (this.filterby === 1) {
+          return true;
+        }
+        const pmt = this.calculatePayment(car);
+        switch (this.data.session.calc.selectedPeriod) {
+          case 1:
+            return pmt < this.calc.weeklyPayment;
+          case 2:
+            return pmt < this.calc.biWeeklyPayment;
+        }
+        return pmt < this.calc.monthlyPayment;
+      });
   }
   get installmentLabel() {
     return this.data.getInstallmentLabel();

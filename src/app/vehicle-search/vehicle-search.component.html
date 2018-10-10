@@ -1,11 +1,17 @@
 <div class="container-fluid">
   <div class="jumbotron text-center">
     <i class="fas fa-times-circle close" (click)="back()"></i>
-    <div class="input-group col-md-4 col-lg-2 offset-8 searchWrapper ">
-      <input type="text" [(ngModel)]="model.filter" placeholder="search" class="form-control" (keyup.enter)="search()" (blur)="search()">
-      <div class="input-group-append">
-        <i *ngIf="model.filter.length > 0" class="input-group-text fas fa-times-circle" (click)="clearFilter()"></i>
-        <i class="input-group-text fas fa-search" (click)="search()"></i>
+    <div class="col-12 col-md-4 col-lg-2 offset-md-8 searchWrapper ">
+      <div class="input-group col-12">
+        <input type="text" [(ngModel)]="model.filter" placeholder="search" class="form-control" (keyup.enter)="search()" (blur)="search()">
+        <div class="input-group-append">
+          <i *ngIf="model.filter.length > 0" class="input-group-text fas fa-times-circle" (click)="clearFilter()"></i>
+          <i class="input-group-text fas fa-search" (click)="search()"></i>
+        </div>
+      </div>
+      <div class="btn-group">
+        <label class="btn btn-primary" (click)="updateFilter(1)"><i [class]="filterby == 1 ? 'fas fa-check' : 'far fa-square'"></i> Purchase Power</label>
+        <label class="btn btn-primary" (click)="updateFilter(2)"><i [class]="filterby == 2 ? 'fas fa-check' : 'far fa-square'"></i> Payment</label>
       </div>
     </div>
     <div *ngIf="vehicleList.length == 0">

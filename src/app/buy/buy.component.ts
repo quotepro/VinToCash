@@ -28,11 +28,25 @@ export class BuyComponent implements OnInit {
         downChanged: false,
       });
     }
+    this.data.session.calc.selectedPeriod = 1;
     return this.data.session.calc;
   }
 
-  get extraPayment(): number {
-    return this.model.monthlyPayment / 2 - (this.model.monthlyPayment / 4.33 * 2);
+  get monthlyPeriods(): number {
+    return this.model.selectedPeriod === 1 ? 14 : 13;
+
+  }
+  get installmentPeriod(): number {
+    return this.model.selectedPeriod === 1 ? 52 : 26;
+  }
+  get installmentPayment(): number {
+    return this.model.selectedPeriod === 1 ? this.model.weeklyPayment : this.model.biWeeklyPayment;
+  }
+  get purchasePower(): number {
+    return this.model.selectedPeriod === 1 ? this.model.weeklyPurchasePower : this.model.biWeeklyPurchasePower;
+  }
+  get selectedTerm(): number {
+    return this.model.loanLength * 12;
   }
 
   // source: https://www.valuepenguin.com/auto-loans/average-auto-loan-interest-rates as of 9/19/2018
@@ -72,6 +86,13 @@ export class BuyComponent implements OnInit {
       return (value * 12) + ' months';
     }
   };
+
+  get installmentLabel() {
+    return this.model.selectedPeriod === 1 ? 'weekly' : 'bi-weekly';
+  }
+  get properInstallmentLabel() {
+    return this.model.selectedPeriod === 1 ? 'Weekly' : 'Bi-weekly';
+  }
 
   periodOptions: Options = {
     floor: 1,

@@ -20,7 +20,7 @@ export class DetailPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.car);
+    // console.log(this.car);
   }
 
   readMoreClicked() {

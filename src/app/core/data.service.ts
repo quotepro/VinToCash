@@ -24,47 +24,71 @@ export class DataService {
   scrollPosition: [number, number];
   vehicleSearchPage: number;
 
+  private pricingPlans = {
+    'Platinum': {
+      'Warranty': new CoveragePlan({
+        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20,
+        expanded: false, detail: `
+          Covers parts and diagnostics<br/>
+          Towing &amp; rental car coverage<br/>
+          Travel breakdown coverage` }),
+      'Prepaid Maintenance': new CoveragePlan({
+        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25,
+        expanded: false, detail: `
+          Prepaid lube, oil/filter changes<br/>
+          15 point safety inspection<br/>
+          Tire rotation<br/>
+          Documented service records`
+       }),
+      'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10,
+      expanded: false, detail: `
+        Pays the difference between the payoff value and actual cash value
+        of your vehicle, up to 150% of MSRP` }),
+      'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10,
+      expanded: false, detail: `
+        Pays for repair or replacement of wheels &amp; tires damaged by road debris` }),
+      'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10,
+      expanded: false, detail: `
+        Dents & dings<br/>
+        Interior &amp; exterior windshield repair<br/>
+        Key Fob replacement` }),
+      'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15,
+      expanded: false, detail: `
+        Repair or buff cosmetic damage to painted exterior surfaces. Does not cover
+        repairs due to comprehensive or collision damage of the vehicle` }),
+    },
+    'Gold': {
+      'Warranty': new CoveragePlan({
+        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
+      'Prepaid Maintenance': new CoveragePlan({
+        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
+      'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
+      'Road Hazard': null as CoveragePlan,
+      'Ding & Dent': null as CoveragePlan,
+      'Paint Protection': null as CoveragePlan,
+    },
+    'Silver': {
+      'Warranty': new CoveragePlan({
+        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
+      'Prepaid Maintenance': new CoveragePlan({
+        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
+      'GAP': null as CoveragePlan,
+      'Road Hazard': null as CoveragePlan,
+      'Ding & Dent': null as CoveragePlan,
+      'Paint Protection': null as CoveragePlan,
+    },
+    'Bronze': {
+      'Warranty': null as CoveragePlan,
+      'Prepaid Maintenance': null as CoveragePlan,
+      'GAP': null as CoveragePlan,
+      'Road Hazard': null as CoveragePlan,
+      'Ding & Dent': null as CoveragePlan,
+      'Paint Protection': null as CoveragePlan,
+    }
+  };
+
   get planPricing(): any {
-    return {
-      'Platinum': {
-        'Warranty': new CoveragePlan({
-          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
-        'Prepaid Maintenance': new CoveragePlan({
-          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
-        'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15 }),
-      },
-      'Gold': {
-        'Warranty': new CoveragePlan({
-          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
-        'Prepaid Maintenance': new CoveragePlan({
-          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
-        'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
-        'Road Hazard': null as CoveragePlan,
-        'Ding & Dent': null as CoveragePlan,
-        'Paint Protection': null as CoveragePlan,
-      },
-      'Silver': {
-        'Warranty': new CoveragePlan({
-          description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
-        'Prepaid Maintenance': new CoveragePlan({
-          description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
-        'GAP': null as CoveragePlan,
-        'Road Hazard': null as CoveragePlan,
-        'Ding & Dent': null as CoveragePlan,
-        'Paint Protection': null as CoveragePlan,
-      },
-      'Bronze': {
-        'Warranty': null as CoveragePlan,
-        'Prepaid Maintenance': null as CoveragePlan,
-        'GAP': null as CoveragePlan,
-        'Road Hazard': null as CoveragePlan,
-        'Ding & Dent': null as CoveragePlan,
-        'Paint Protection': null as CoveragePlan,
-      }
-    };
+    return this.pricingPlans;
   }
 
   constructor(
@@ -343,28 +367,25 @@ export class DataService {
     return payment;
   }
 
-  calculatePaymentAmount(vehiclePrice: number, period?: number) {
+  calculatePaymentAmount(vehiclePrice: number, period?: number): number {
     const calc = this.session.calc;
     if (!period) {
       period = calc.selectedPeriod;
     }
-    let freq;
+    const loanLength = calc.loanLength * 12;
+    const principal = vehiclePrice * 1.10; // add vehicle warranty
+    let payment = this.periodicPayment(principal, 12, this.getInterestRate(), loanLength);
     switch (period) {
-      case 1:
-        freq = 52;
+      case 1: // weekly
+        payment = payment * 14 / 52;
         break;
-      case 2:
-        freq = 26;
+      case 2: // bi-weekly
+        payment = payment * 13 / 26;
         break;
-      case 3:
-        freq = 12;
+      case 3: // monthly
         break;
     }
-    const loanLength = calc.loanLength * freq;
-    const principal = vehiclePrice * 1.10; // add vehicle warranty
-    // the 1st month of insurance is deducted from the downpayment,
-    // because it's not financeable.
-    return this.periodicPayment(principal, freq, this.getInterestRate(), loanLength);
+    return payment;
   }
 
   calculatePurchasingPower(): any {
@@ -386,20 +407,21 @@ export class DataService {
     interest = this.getInterestRate() / periods;
     payments = calc.loanLength * periods;
 
-    calc.biWeeklyPayment = calc.monthlyPayment / 2;
-    let periodicLoanAmount = Math.round(((monthlyFunds / 2 *
+    calc.biWeeklyPayment = calc.monthlyPayment * 13 / 26;
+    let periodicLoanAmount = Math.round(((calc.biWeeklyPayment *
       ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.biWeeklyPurchasePower = periodicLoanAmount + calc.downPayment;
-    calc.biWeeklyPayment += calc.biweeklyTransactionFee;
+    calc.biWeeklyPayment += calc.transactionFee;
 
     periods = 52;
     interest = this.getInterestRate() / periods;
     payments = calc.loanLength * periods;
 
-    calc.weeklyPayment = calc.monthlyPayment / 4;
-    periodicLoanAmount = Math.round(((monthlyFunds / 4 *
+    calc.weeklyPayment = calc.monthlyPayment * 14 / 52;
+    periodicLoanAmount = Math.round(((calc.weeklyPayment *
       ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
     calc.weeklyPurchasePower = periodicLoanAmount + calc.downPayment;
+    calc.weeklyPayment += calc.transactionFee;
 
     this.calculateSavings();
   }
@@ -417,7 +439,7 @@ export class DataService {
     }
 
     let wklyInterestPaid = 0;
-    const periodicPayment = calc.monthlyPayment / 4;
+    const periodicPayment = calc.monthlyPayment * 14 / 52;
     const periods = 52;
     periodicInterest = this.getInterestRate() / periods;
     balance = calc.monthlyPurchasePower;

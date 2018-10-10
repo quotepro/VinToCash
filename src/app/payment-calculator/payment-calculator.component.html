@@ -1,0 +1,54 @@
+<div class="container-fluid jumbotron col-md-9">
+  <h2>Payment Calculator</h2>
+  <p>
+      This calculator will tabulate the payments for a new vehicle finance purchase, 
+      and/or calculate the loan term and finance interest savings you could realize by making 
+      the equivalent of 13 payments per year (bi-weekly) or the equivalent of 14 payments per 
+      year (weekly). We’ve included a payment method comparison chart and a balance comparison 
+      chart so you can understand year-by-year impact. The Learn tab below includes:
+  </p>
+  <ul>
+    <li>Weekly vehicle payments Vs. monthly payments.</li>
+    <li>A warning about predatory vehicle finance lenders.</li>
+  </ul>
+  <div class="learn card col-12 col-md-6 col-lg-5">
+    <div class="card-body">
+        <h5 class="card-title">Learn</h5>
+        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanAmount"></i> New or original loan amount</label><input [(ngModel)]="model.loanAmount"></p>
+        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestRate"></i> Annual interest rate</label><input [(ngModel)]="model.interestRate"></p>
+        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanTerm"></i> Vehicle loan term (in years)</label><input [(ngModel)]="model.loanTerm"></p>
+        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="prepaid"></i> Number of payments already made</label><input [(ngModel)]="model.prepaid"></p>
+        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="extraAmount"></i> Extra amount you could add to weekly payment</label><input [(ngModel)]="model.extraAmount"></p>    
+    </div>
+  </div>
+  <ng-template #loanAmount>
+      <b>New or original vehicle loan amount:</b>
+      <p>If you want to see what the weekly payment would be on a new vehicle loan,
+         enter the new car  loan amount. If you have an existing vehicle loan and 
+         want to see how much you could save by switching to a bi-weekly or weekly 
+         payment, enter the original vehicle loan amount. Enter as a dollar amount 
+         without the dollar sign and commas.</p>
+  </ng-template>
+  <ng-template #interestRate>
+      <b>Annual interest rate:</b>
+      <p>Enter the annual percentage rate (APR) of the car loan. Enter as a 
+        percentage without the percent sign (for 6%, enter 6).</p>
+  </ng-template>
+  <ng-template #loanTerm>
+      <b>Yehicle loan term (in years):</b>
+      <p>Enter the term of the new or original car loan in number of years.</p>      
+  </ng-template>
+  <ng-template #prepaid>
+      <b>Number of monthly payments already made:</b>
+      <p>If this is an existing vehicle loan, enter the number of monthly payments 
+        you have already made. If this is a new vehicle loan, enter a zero or leave blank.</p>      
+  </ng-template>
+  <ng-template #extraAmount>
+      <b>Extra amount you could add to weekly payment (optional):</b>
+      <p>If you would like to see how adding an extra weekly amount would affect the 
+        payoff time and interest savings, enter the amount here. Note that it may help 
+        to calculate the weekly payment amount and savings without an extra payment 
+        first, and then if it appears you can afford an extra weekly amount, come 
+        back to this field enter the amount you can afford and recalculate.</p>
+  </ng-template>
+</div>

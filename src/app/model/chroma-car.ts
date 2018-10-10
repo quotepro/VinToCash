@@ -20,7 +20,8 @@ export class ChromaCar {
     manufacturer_rebates_price: number;
     selectedImage: string;
     thumbPage: number;
-  selectedPlan: string;
+    selectedPlan: string;
+    selectedPanel: string;
 
     constructor(copy?: Partial<ChromaCar>) {
         if (copy) {

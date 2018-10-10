@@ -16,7 +16,7 @@ export const environment = {
     'Español'
   ],
   aq3Url: 'https://aq3.processmyquote.com/DemoAgent',
-  biweeklyTransactionFee: 0.95,
+  transactionFee: 0.98,
   dealerCode: 'ewaldkia',
   dealerLogo: 'ewald-logo.svg',
   tagline: `The Ewald Kia Car Loan Calculator lets you shop vehicles

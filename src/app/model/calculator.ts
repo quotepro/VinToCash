@@ -14,14 +14,15 @@ export class Calculator {
     monthlyPurchasePower: number;
     downChanged: boolean;
     advanced: boolean;
-    biweeklyTransactionFee: number;
+    transactionFee: number;
     paymentsSaved: number;
     interestSaved: number;
     effectiveTerm: number;
+    filterby: number; // 1 = filter by purchase power, 2 = filter by installment payment
 
     constructor(copy?: Partial<Calculator>) {
         Object.assign(this, copy);
-        this.biweeklyTransactionFee = environment.biweeklyTransactionFee;
+        this.transactionFee = environment.transactionFee;
     }
 
 

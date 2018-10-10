@@ -1,22 +1,39 @@
 .bold {
     font-weight: bold;
 }
-.auto-pay {
-    color: yellow;
+.view-matching {
     // font-size: .5em;
     word-wrap: normal;
     white-space: normal;
     width: 40%;
 }
-
-.fa-info-circle.yellow {
+.yellow {
     color: yellow;
+}
+.fa-info-circle {
     background-color: black;
     border-radius: 50%;
 }
-svg {
-    text-shadow: -1px -1px 5px white,  
-        1px -1px 5px white,
-        -1px 1px 5px white,
-        1px 1px 5px white;
+svg.monthly {
+    fill: #900;
+    -webkit-filter: drop-shadow( 0 2px 2px rgba(0,0,0,.3) ); 
+    filter: drop-shadow( 0 2px 2px rgba(0,0,0,.3) );
+
+    .cls-2 {
+        fill: #05c;
+    }
+    .cls-1,
+    .cls-2 {
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    }
+
+    .cls-1 {
+    stroke-width: 3px;
+    }
+
+    .cls-2 {
+    stroke-width: 3px;
+    }
+
 }

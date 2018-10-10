@@ -45,44 +45,84 @@
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
         <p class="col-md-12"><button (click)="continue(1)" class="btn btn-2x btn-success d-flex flex-row flex-wrap align-items-center">
             <img src="/assets/smart-payment-plan.png" width="50%" height="auto" />
-            <div class="auto-pay h4">View Matching Vehicles</div>&nbsp;<i class="fas fa-chevron-right"></i>
+            <div class="view-matching h4 yellow">View Matching Vehicles</div>&nbsp;<i class="fas fa-chevron-right"></i>
           </button></p>
-        <div class="h5 col-sm-6 right">Weekly Payment:</div>
-        <div class="h5 col-sm-6 col-xl-4 right">{{ model.weeklyPayment | currency }}</div>
-        <div class="h5 col-sm-6 right">Purchasing Power<sup>*</sup>:</div>
-        <div class="h5 col-sm-6 col-xl-4 right">{{ model.biWeeklyPurchasePower | currency }}</div>
-        <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
-        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Weekly Advantage"></i>
+        <div class="h5 col-sm-6 right"><i class="fas fa-info-circle yellow" [ngbPopover]="smartPayment" popoverTitle="{{ properInstallmentLabel }} Smart Payment"></i> 
+          {{ properInstallmentLabel }} Payment<sup>*</sup>:</div>
+        <div class="h5 col-sm-6 col-xl-4 right">{{ installmentPayment | currency }}</div>
+        <div class="h5 col-sm-6 right">Purchasing Power:</div>
+        <div class="h5 col-sm-6 col-xl-4 right">{{ purchasePower | currency }}</div>
+        <div class="h5 col-sm-6 right">Payment Term Reduction:</div>
+        <div class="h5 col-sm-6 left">{{ model.paymentsSaved | number:'1.0-0'}} months</div>
+        <div class="h6 col-12 left mt-2">Contracted Term: {{ selectedTerm }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="smartTerm" popoverTitle="{{ properInstallmentLabel}} Advantage"></i>
           Effective Term: {{ model.effectiveTerm | number:'1.0-0' }} months</div>
-        <div class="h6 col-12 left"># of Monthly Payments Saved: {{ model.paymentsSaved | number:'1.0-0'}}</div>
-        <div class="h6 col-12 left">Value of Saved Payments: {{ model.paymentsSaved * model.monthlyPayment | currency
+        <div class="h6 col-12 left">Payment Acceleration Benefit: {{ model.paymentsSaved * model.monthlyPayment | currency
           }}</div>
-        <div class="h6 col-12 left">Monthly Interest Saved: {{ model.interestSaved | currency }}</div>
-        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent"
+        <div class="h6 col-12 left">Interest Charge Reduction<sup>**</sup>: {{ model.interestSaved | currency }}</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="smartVPContent"
             popoverTitle="Weekly Advantage"></i> Added Vehicle Protection Purchase Power: {{ model.paymentsSaved *
           model.monthlyPayment + model.interestSaved | currency }}</div>
       </div>
       <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center col-md-6 col-lg-5 col-xl-4">
-        <p class="col-md-12 mt-sm-4"><button (click)="continue(3)" class="btn btn-primary mt-sm-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="col-md-6" viewBox="0 0 585.5 228.8"><defs><style>.cls-1,.cls-2{stroke:#fff;stroke-miterlimit:10;}.cls-1{stroke-width:5px;}.cls-2{font-size:103.35px;font-family:Futura-Medium, Futura;letter-spacing:-0.06em;}.cls-3{letter-spacing:-0.06em;}.cls-4{letter-spacing:-0.06em;}.cls-5{letter-spacing:-0.07em;}.cls-6{letter-spacing:-0.06em;}.cls-7{letter-spacing:-0.06em;}.cls-8{letter-spacing:-0.05em;}.cls-9{letter-spacing:-0.06em;}.cls-10{letter-spacing:-0.06em;}.cls-11{letter-spacing:-0.06em;}.cls-12{letter-spacing:-0.05em;}</style></defs><title>monthlyAsset 6</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M35.14,46.55C32.93,60.54,31,73.09,29,85.62A98.44,98.44,0,0,1,26.1,99c-1.79,5.8-7.15,8.4-13.3,7-4.81-1.06-9-6.73-8.16-11.92q6.54-39.75,13.45-79.44C19.28,7.86,24,4.23,30.68,3.83c7.94-.47,13.58,2.68,15.91,9.47C51.67,28.08,56.49,43,61.44,57.79c.62,1.84,1.34,3.64,2.46,6.66,2-6.22,3.7-11.37,5.38-16.51,3.6-11,7-22,10.84-33C82.89,7,88.3,3.4,96,3.84c7.34.42,12.46,4.84,14,13.27,4.55,25.52,8.86,51.08,13.1,76.64A10.45,10.45,0,0,1,114.44,106c-7,1.1-12.42-2.41-13.67-9.34-2.41-13.33-4.6-26.69-6.88-40a29.54,29.54,0,0,0-2.25-8.06c-.57,1.48-1.22,2.93-1.7,4.44-4.57,14.62-9,29.28-13.71,43.86-2.14,6.66-5.91,9.43-12,9.52-5.6.09-9.59-2.8-11.78-9.17C47.25,82.15,42.25,67,37.16,51.85,36.72,50.51,36.16,49.22,35.14,46.55Z"/><path class="cls-1" d="M244.7,46.7c0,1.75,0,3.49,0,5.23-.17,14.41-.31,28.81-.54,43.21-.1,6.28-4.22,10.63-10.11,11-6.6.36-11.15-3.14-12.18-9.47a26.93,26.93,0,0,1-.22-4.41q0-37.8,0-75.62c0-8.71,4.75-13.82,12.41-12.54,3.13.52,6.54,3,8.65,5.52,13,15.61,25.58,31.51,38.32,47.3,1.59,2,3.22,3.9,4.83,5.84l1.21-.44c0-1.72,0-3.44,0-5.16.11-13.59.17-27.17.36-40.76.12-8,4.38-12.66,11.25-12.52s11.16,4.73,11.18,12.67q.09,38.55,0,77.09c0,6.31-2.67,10.86-7.25,12.13-5.51,1.53-9.72-.5-13.25-5-13.35-17-26.87-33.83-40.34-50.72-1-1.25-2.05-2.46-3.08-3.68Z"/><path class="cls-1" d="M119.92,54.88c-.6-28.45,17.76-45.24,35.89-50.35,30.83-8.69,60.13,11.38,62.93,43.23,1.37,15.57-.91,30.11-11.15,42.42-13.78,16.57-32,20.22-51.88,15.4-19.17-4.65-30-18.18-34.22-37.11C120.51,64,120.42,59.41,119.92,54.88Zm24.72-.38-1.21.34c1.87,6.51,3,13.35,5.77,19.46,3.91,8.63,11.45,12.8,21,12.67,9.35-.12,16.39-4.58,20.38-12.94a42.4,42.4,0,0,0,.05-37.9c-3.68-7.76-10.07-12.25-18.89-12.85-9.54-.65-16.85,3.14-22,11.1C145.81,40.49,144.43,47.31,144.64,54.5Z"/><path class="cls-1" d="M404.25,64.09c0,9.1,0,17.42,0,25.74,0,1.8,0,3.61-.15,5.4-.57,7.09-4.6,10.94-11.3,10.89a11.21,11.21,0,0,1-11.45-11c-.26-7,0-14.07,0-21.11q.17-29.21.36-58.43C381.8,8.33,386,3.9,392.64,3.84s11.22,4.26,11.48,11.38q.44,12,.19,24.05c-.06,3.48,1.14,4.5,4.53,4.45,11.29-.17,22.59-.22,33.87,0,3.86.09,4.65-1.37,4.61-4.85-.1-8,.08-16,.35-24,.23-6.62,5-11.09,11.3-11S470,8.13,470,14.58q.24,40.52-.05,81c-.05,6.44-4.89,10.54-11.15,10.52s-11-4.17-11.2-10.51q-.51-13.24-.32-26.51c.05-3.67-.76-5.19-4.86-5.1C430.05,64.27,417.64,64.09,404.25,64.09Z"/><path class="cls-1" d="M541.92,35.91c6.63-9,12.54-17.39,19-25.4a19.82,19.82,0,0,1,8.7-6.45C574.11,2.6,578.17,5,581,8.87s2.47,8.1,0,11.88c-3.29,5.06-7,9.88-10.59,14.72-4.61,6.14-9.58,12-13.9,18.38a18,18,0,0,0-2.94,8.86c-.55,10.93-.48,21.9-.83,32.85-.21,6.75-4.34,10.68-10.8,10.69-6.29,0-10.6-3.71-10.86-10.1-.47-11.43-.45-22.88-1-34.31a14.87,14.87,0,0,0-2.48-7.54C520.41,44,512.7,34,505.56,23.67a18.42,18.42,0,0,1-3.39-9.84c0-4.69,3.28-8.1,7.87-9.61,4.37-1.43,8.19,0,11,3.43,4.21,5.2,8.13,10.65,12.11,16C535.92,27.48,538.63,31.34,541.92,35.91Z"/><path class="cls-1" d="M333.87,25.34c-5.53,0-10.56.15-15.57,0-3.85-.15-7.52-1.79-8.31-5.66a18.15,18.15,0,0,1,1-10.13c.75-1.81,4.09-3.53,6.3-3.57,18.15-.31,36.32-.32,54.48-.2,5.93,0,9.7,4,9.76,9.37a10,10,0,0,1-9.33,10.18,42.08,42.08,0,0,1-9.31.2c-5.3-.68-6.11,1.69-6.11,6.4.05,21.11-.49,42.22-.43,63.34,0,9.87-10,13.27-16.72,9.58-3.68-2-5.07-5.28-5.11-9.36q-.28-31.66-.64-63.34C333.85,30.19,333.87,28.26,333.87,25.34Z"/><path class="cls-1" d="M495.77,84.58c8.74,0,16.88-.07,25,0,4.76.06,8,2.46,9.5,7s.16,8.46-3.6,11.26a9.65,9.65,0,0,1-5.38,1.94c-12.58-.07-25.16-.18-37.73-.73-6.23-.27-10.23-4.21-10.27-10.27q-.32-40.23,0-80.45c0-5.37,4.54-9.23,10-9.56s10.39,2.89,11.55,7.78a32.85,32.85,0,0,1,.82,7.26c.1,19.79.12,39.58.16,59.37Z"/><text class="cls-2" transform="translate(0.5 198.47)">p<tspan class="cls-3" x="55.28" y="0">a</tspan><tspan class="cls-4" x="111.12" y="0">y</tspan><tspan class="cls-5" x="161.17" y="0">m</tspan><tspan class="cls-6" x="236.07" y="0">e</tspan><tspan class="cls-7" x="286.57" y="0">n</tspan><tspan class="cls-8" x="336.99" y="0">t </tspan><tspan class="cls-9" x="386.8" y="0">p</tspan><tspan class="cls-10" x="442.19" y="0">l</tspan><tspan class="cls-11" x="461.38" y="0">a</tspan><tspan class="cls-12" x="516.86" y="0">n</tspan></text></g></g></svg>
-            View Matching Vehicles <i class="fas fa-chevron-right"></i>
+        <p class="col-md-8"><button (click)="continue(3)" class="btn btn-primary mt-sm-5 d-flex flex-row flex-wrap align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="monthly col-md-6" viewBox="0 0 307.5 105.74">
+              <title>monthlyAsset 3</title>
+              <g id="Layer_2" data-name="Layer 2">
+                <g id="Layer_1-2" data-name="Layer 1">
+                  <path class="cls-2" d="M9.22,105.74H1.62V73.44h7.6v2.39a8,8,0,0,1,6.63-3.06,10.37,10.37,0,0,1,4.31.9,10.81,10.81,0,0,1,3.46,2.46,11.08,11.08,0,0,1,2.29,3.65,12.19,12.19,0,0,1,.82,4.5,11.86,11.86,0,0,1-.82,4.45,11.22,11.22,0,0,1-2.27,3.61,10.33,10.33,0,0,1-3.42,2.44,10.47,10.47,0,0,1-4.28.88,9,9,0,0,1-6.72-2.77Zm9.57-21.46a5.27,5.27,0,0,0-.35-1.91,4.55,4.55,0,0,0-1-1.58,5.25,5.25,0,0,0-1.58-1.07,4.69,4.69,0,0,0-1.95-.4A4.8,4.8,0,0,0,12,79.7a4.54,4.54,0,0,0-1.53,1,5.15,5.15,0,0,0-1.05,1.57A4.64,4.64,0,0,0,9,84.23a4.56,4.56,0,0,0,.38,1.89,4.68,4.68,0,0,0,1,1.54,5.4,5.4,0,0,0,1.57,1,4.82,4.82,0,0,0,3.8,0,4.54,4.54,0,0,0,1.53-1,5.22,5.22,0,0,0,1.05-1.56A4.32,4.32,0,0,0,18.79,84.28Z" />
+                  <path class="cls-2" d="M46.43,73.44h7.64V95H46.43v-2.4a8,8,0,0,1-6.59,3.07,10.8,10.8,0,0,1-4.33-.86,10.32,10.32,0,0,1-3.44-2.42,10.82,10.82,0,0,1-2.29-3.65A12.43,12.43,0,0,1,29,84.15a12,12,0,0,1,.8-4.39A11.36,11.36,0,0,1,32,76.13a10.31,10.31,0,0,1,7.77-3.36,8.79,8.79,0,0,1,6.68,2.81ZM36.85,84.15a5.06,5.06,0,0,0,1.41,3.53,4.53,4.53,0,0,0,1.55,1,5.11,5.11,0,0,0,2,.38,4.93,4.93,0,0,0,1.91-.38,4.53,4.53,0,0,0,1.55-1,5.22,5.22,0,0,0,1.05-1.56,4.42,4.42,0,0,0,.4-1.89,4.64,4.64,0,0,0-.4-1.91,5.15,5.15,0,0,0-1.05-1.57,4.53,4.53,0,0,0-1.55-1,4.93,4.93,0,0,0-1.91-.38,5.11,5.11,0,0,0-2,.38,4.53,4.53,0,0,0-1.55,1,5.28,5.28,0,0,0-1,1.53A4.66,4.66,0,0,0,36.85,84.15Z" />
+                  <path class="cls-2" d="M66.21,92.05,55.79,73.44h8.82l5.76,11,5.58-11h8.74l-17.3,32.3H58.86Z" />
+                  <path class="cls-2" d="M86,73.44h7.61v2.65a9.82,9.82,0,0,1,7-3,8.12,8.12,0,0,1,7.31,4,8.13,8.13,0,0,1,7.3-4.08,9.26,9.26,0,0,1,2.86.44,5.89,5.89,0,0,1,2.31,1.39,6.57,6.57,0,0,1,1.53,2.46,10.32,10.32,0,0,1,.57,3.65V95h-7.6V84.36a13.19,13.19,0,0,0-.23-2.69A4.48,4.48,0,0,0,114,80a2.26,2.26,0,0,0-1-.79A3.79,3.79,0,0,0,111.7,79Q108,79,108,84.36V95h-7.6V84.36a14.53,14.53,0,0,0-.21-2.71,4.93,4.93,0,0,0-.61-1.7,2,2,0,0,0-1-.86,4.36,4.36,0,0,0-1.47-.23,4.23,4.23,0,0,0-1.34.21,2.34,2.34,0,0,0-1.11.82,4.23,4.23,0,0,0-.76,1.68,11.71,11.71,0,0,0-.27,2.79V95H86Z" />
+                  <path class="cls-2" d="M133.28,85.49q0,4.92,4.62,4.92a4.11,4.11,0,0,0,3.74-2H149q-2.22,7.39-11.13,7.39a14.81,14.81,0,0,1-5-.81A11.22,11.22,0,0,1,129,92.63a10.31,10.31,0,0,1-2.5-3.61,12,12,0,0,1-.88-4.7,13.3,13.3,0,0,1,.84-4.85,10.33,10.33,0,0,1,2.39-3.68,10.67,10.67,0,0,1,3.76-2.33,14.37,14.37,0,0,1,5-.82,14,14,0,0,1,4.91.82,10.07,10.07,0,0,1,3.7,2.37,10.31,10.31,0,0,1,2.31,3.81,15,15,0,0,1,.8,5.06v.79Zm8.91-4.41a4.57,4.57,0,0,0-1.56-2.56,4.84,4.84,0,0,0-5.73,0,4.24,4.24,0,0,0-1.41,2.6Z" />
+                  <path class="cls-2" d="M152.35,73.44H160v2.73a8.34,8.34,0,0,1,3.15-2.54,10,10,0,0,1,3.74-.65,9.38,9.38,0,0,1,3.89.73,7.93,7.93,0,0,1,2.75,2.08,6.13,6.13,0,0,1,1.26,2.44,12.93,12.93,0,0,1,.33,3.06V95h-7.6V84.11a11.85,11.85,0,0,0-.23-2.58,3.19,3.19,0,0,0-.82-1.58,2.84,2.84,0,0,0-1.13-.71,4.24,4.24,0,0,0-1.35-.21,3.76,3.76,0,0,0-3,1.15,4.83,4.83,0,0,0-1,3.3V95h-7.6Z" />
+                  <path class="cls-2" d="M187.46,79.78V95h-7.6V79.78h-2.52V73.44h2.52V67h7.6v6.47h4.33v6.34Z" />
+                  <path class="cls-2" d="M214,105.74H206.4V73.44H214v2.39a8,8,0,0,1,6.63-3.06,10.37,10.37,0,0,1,4.31.9,10.81,10.81,0,0,1,3.46,2.46,11.08,11.08,0,0,1,2.29,3.65,12.19,12.19,0,0,1,.82,4.5,11.86,11.86,0,0,1-.82,4.45,11.22,11.22,0,0,1-2.27,3.61A10.33,10.33,0,0,1,225,94.78a10.5,10.5,0,0,1-4.28.88A9,9,0,0,1,214,92.89Zm9.57-21.46a5.07,5.07,0,0,0-.36-1.91,4.53,4.53,0,0,0-1-1.58,5.25,5.25,0,0,0-1.58-1.07,4.69,4.69,0,0,0-2-.4,4.8,4.8,0,0,0-1.89.38,4.54,4.54,0,0,0-1.53,1,5.36,5.36,0,0,0-1.06,1.57,4.8,4.8,0,0,0-.39,1.91,4.72,4.72,0,0,0,.37,1.89,5,5,0,0,0,1.05,1.54,5.59,5.59,0,0,0,1.58,1,4.82,4.82,0,0,0,3.8,0,4.54,4.54,0,0,0,1.53-1,5.22,5.22,0,0,0,1.05-1.56A4.32,4.32,0,0,0,223.58,84.28Z" />
+                  <path class="cls-2" d="M242.19,60.13V95h-7.61V60.13Z" />
+                  <path class="cls-2" d="M262.77,73.44h7.64V95h-7.64v-2.4a8,8,0,0,1-6.6,3.07,10.71,10.71,0,0,1-4.32-.86,10.46,10.46,0,0,1-3.45-2.42,11.14,11.14,0,0,1-2.29-3.65,12.64,12.64,0,0,1-.82-4.58,12.21,12.21,0,0,1,.8-4.39,11.39,11.39,0,0,1,2.23-3.63,10.31,10.31,0,0,1,7.77-3.36,8.8,8.8,0,0,1,6.68,2.81Zm-9.58,10.71a5,5,0,0,0,.38,1.95,4.86,4.86,0,0,0,1,1.58,4.53,4.53,0,0,0,1.55,1,5.07,5.07,0,0,0,2,.38,5,5,0,0,0,1.91-.38,4.53,4.53,0,0,0,1.55-1,5.63,5.63,0,0,0,1.05-1.56,4.42,4.42,0,0,0,.4-1.89,4.64,4.64,0,0,0-.4-1.91,5.53,5.53,0,0,0-1.05-1.57,4.53,4.53,0,0,0-1.55-1,5,5,0,0,0-1.91-.38,5.07,5.07,0,0,0-2,.38,4.53,4.53,0,0,0-1.55,1,5.09,5.09,0,0,0-1,1.53A4.66,4.66,0,0,0,253.19,84.15Z" />
+                  <path class="cls-2" d="M274.32,73.44h7.6v2.73a8.19,8.19,0,0,1,3.15-2.54,9.92,9.92,0,0,1,3.74-.65,9.33,9.33,0,0,1,3.88.73,7.75,7.75,0,0,1,2.75,2.08,5.88,5.88,0,0,1,1.26,2.44,12.4,12.4,0,0,1,.34,3.06V95h-7.6V84.11a11.85,11.85,0,0,0-.23-2.58,3.27,3.27,0,0,0-.82-1.58,2.87,2.87,0,0,0-1.14-.71,4.23,4.23,0,0,0-1.34-.21,3.74,3.74,0,0,0-3,1.15,4.78,4.78,0,0,0-1,3.3V95h-7.6Z" />
+                  <path class="cls-1" d="M11.78,45.91c-.46,2.81-.68,3.49-1.52,4.71A5.72,5.72,0,0,1,5.7,52.75,5.66,5.66,0,0,1,0,46.82a14.71,14.71,0,0,1,.3-2.74l6-36.94C7,2.89,9.73.53,14.14.53a7.3,7.3,0,0,1,7.22,4.94l8.51,26.15,7.83-25C38.91,2.81,41.8.53,45.37.53a7.66,7.66,0,0,1,7.68,6.08l6.46,37.32a11.11,11.11,0,0,1,.38,3,5.83,5.83,0,0,1-10.34,3.72c-.91-1.22-1.06-1.83-1.59-4.71L44.08,22,36.94,45.83c-1.07,3.57-1.45,4.41-2.43,5.32a6.08,6.08,0,0,1-4.41,1.6c-3.35,0-5.25-1.6-6.46-5.55L15.5,22Z" />
+                  <path class="cls-1" d="M110,26.6c0,15.81-10.1,26.68-24.85,26.68-15.28,0-25.23-10.72-25.23-27.13,0-8.14,3-15.28,8.28-19.92A25,25,0,0,1,85,0C99.79,0,110,10.79,110,26.6Zm-37.69-.45c0,10.18,4.94,16.72,12.76,16.72,7.61,0,12.55-6.46,12.55-16.27S92.65,10.41,85,10.41,72.28,16.8,72.28,26.15Z" />
+                  <path class="cls-1" d="M124.18,45c0,2.82-.15,3.5-.76,4.87a5.91,5.91,0,0,1-5,2.89,6,6,0,0,1-5.1-2.89c-.68-1.37-.75-2-.75-4.87V6.46c0-3.57,2.28-5.93,5.77-5.93,2,0,3.27.69,4.79,2.59l22.42,28.19v-23c0-2.81.15-3.49.76-4.86A6,6,0,0,1,151.39.53a5.82,5.82,0,0,1,5,2.89c.68,1.37.76,2,.76,4.86V46.06c0,2.51-.38,3.65-1.6,4.94a4.94,4.94,0,0,1-3.95,1.75A5.06,5.06,0,0,1,148,51.3a17.29,17.29,0,0,1-2.35-2.73L124.18,21.28Z" />
+                  <path class="cls-1" d="M182.25,45c0,2.82-.15,3.5-.76,4.87a5.87,5.87,0,0,1-10.11,0c-.68-1.37-.76-2-.76-4.87V11.7h-5.78c-2.5,0-3.11-.07-4.33-.68a5.2,5.2,0,0,1-2.58-4.56A5.17,5.17,0,0,1,160.51,2c1.22-.61,1.75-.69,4.33-.69h23c2.51,0,3.11.08,4.33.69a5.17,5.17,0,0,1,2.58,4.48A5.2,5.2,0,0,1,192.13,11c-1.22.61-1.75.68-4.33.68h-5.55Z" />
+                  <path class="cls-1" d="M207.1,31.24V45c0,2.82-.15,3.5-.76,4.87a5.87,5.87,0,0,1-10.11,0c-.68-1.37-.76-2-.76-4.87V8.28c0-2.81.15-3.49.76-4.86a5.87,5.87,0,0,1,10.11,0c.68,1.37.76,2,.76,4.86V20.83h21.59V8.28c0-2.81.15-3.49.76-4.86a5.86,5.86,0,0,1,10.1,0c.69,1.37.76,2,.76,4.86V45c0,2.82-.15,3.5-.76,4.87a5.86,5.86,0,0,1-10.1,0c-.69-1.37-.76-2-.76-4.87V31.24Z" />
+                  <path class="cls-1" d="M268,41.57c2.51,0,3.11.08,4.33.69a5.25,5.25,0,0,1,0,9c-1.22.61-1.75.69-4.33.69H254.22c-6.31.3-9-2.43-8.74-8.82V8.28c0-2.81.15-3.49.76-4.86A5.94,5.94,0,0,1,251.33.53a5.83,5.83,0,0,1,5,2.89c.68,1.37.76,2,.76,4.86V41.57Z" />
+                  <path class="cls-1" d="M292.52,45c0,2.82-.15,3.5-.76,4.87a5.86,5.86,0,0,1-10.1,0c-.69-1.37-.76-2-.76-4.87V28.05L268.66,11.32c-1.67-2.28-2.2-3.57-2.2-5.09a5.83,5.83,0,0,1,5.85-5.7c2.35,0,3.57.84,5.77,4.11L286.75,17l9-12.39c2.28-3.19,3.57-4,5.85-4a6,6,0,0,1,5.93,5.63c0,1.67-.54,2.81-2.36,5.24L292.52,28.05Z" />
+                </g>
+              </g>
+            </svg>
+            <div class="view-matching h6">View Matching Vehicles</div>&nbsp;
+            <i class="fas fa-chevron-right"></i>
           </button></p>
-        <div class="h5 col-sm-6 right">Monthly Payment:</div>
+        <div class="h5 col-sm-6 right">
+          Monthly Payment:</div>
         <div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPayment | currency }}</div>
         <div class="h5 col-sm-6 right">Purchasing Power:</div>
         <div class="h5 col-sm-6 col-xl-4 right">{{ model.monthlyPurchasePower | currency }}</div>
-        <div class="h6 col-12 left mt-10">Contracted Term: {{ model.loanLength * 12 }} months</div>
-        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyContent" popoverTitle="Weekly Advantage"></i>
-          Effective Term: {{ model.loanLength * 12 }} months</div>
-        <div class="h6 col-12 left"># of Monthly Payments Saved: N/A</div>
-        <div class="h6 col-12 left">Value of Saved Payments: N/A</div>
-        <div class="h6 col-12 left">Monthly Interest Saved: N/A</div>
-        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="ppBiWeeklyVPContent"
-            popoverTitle="Weekly Advantage"></i> Added Vehicle Protection Purchase Power: N/A</div>
+        <div class="h5 col-sm-6 right">Payment Term Reduction:</div>
+        <div class="h5 col-sm-6 left">0 months</div>
+        <div class="h6 col-12 left mt-4">Contracted Term: {{ selectedTerm }} months</div>
+        <div class="h6 col-12 left"><i class="fas fa-info-circle yellow" [ngbPopover]="smartTerm" popoverTitle="{{ properInstallmentLabel }} Advantage"></i>
+          Effective Term: {{ selectedTerm }} months</div>
+        <div class="h6 col-12 left">Payment Acceleration Benefit: N/A</div>
+        <div class="h6 col-12 left">Interest Charge Reduction: N/A</div>
+        <div class="h6 col-12 left text-danger"><i class="fas fa-info-circle yellow" [ngbPopover]="smartVPContent"
+            popoverTitle="{{ properInstallmentLabel }} Advantage"></i> Added Vehicle Protection Purchase Power: N/A</div>
       </div>
-      <ng-template #ppBiWeeklyContent>Paying weekly can shorten the length of your loan or help you buy a better
-        vehicle.</ng-template>
-      <ng-template #ppBiWeeklyVPContent>Paying weekly increases your purchasing power</ng-template>
+      <ng-template #smartPayment>
+          <p>Your {{ installmentLabel }} payment amount is calculated as
+              {{ model.monthlyPayment | currency }} * {{ monthlyPeriods }} / 
+              {{ installmentPeriod }} + {{ model.transactionFee | currency }} = 
+              {{ (model.selectedPeriod == 1 ? model.weeklyPayment : model.biWeeklyPayment) | currency }}</p>    
+      </ng-template>
+      <ng-template #smartTerm>
+        <p>Paying {{ installmentLabel }} can shorten the length of your loan or help you buy a better
+          vehicle. This is due to making the equivalent of {{ monthlyPeriods }} monthly payments per year instead of 12. This pays down
+          your loan quicker, reducing the amount of interest that you'll pay over the life of the loan.</p>
+      </ng-template>
+      <ng-template #smartVPContent>Weekly payments can be used to fund a better vehicle by adding the value
+        of your savings to the purchase price of your vehicle. It could also be used to add additional protections
+        like an extended warranty, gap coverage or vehicle maintenance plans.</ng-template>
       <hr class="col-12">
     </div>
     <p>
@@ -90,19 +130,26 @@
         <i class="fas fa-chevron-left"></i>
         Back
       </button>
-    </p>
-    <div class="d-flex align-items-center justify-content-center">
-      <p class="col-6"><sup>*</sup>
-        <b>Summary:</b> For a small $2.95 per transaction convenience fee,
-        Smart Payment Plan is adding a 13th payment to your annual number of payments,
-        and splitting your monthly payment into {{ model.selectedPeriod == 3 ? 52 : 26 }}
-        (easier to budget) {{ model.selectedPeriod == 3 ? 'weekly' : 'bi-weekly' }} payments annually.
-        You’ll eliminate late fees & be paying an extra {{ extraPayment | currency }} every two weeks
-        to pay off your loan in {{ model.loanLength * 12 - model.paymentsSaved | number:'1.0-0'}} months instead of the
-        typical
-        {{ model.loanLength * 12 }} months. This also saves approximately {{ model.interestSaved | currency }} in loan
-        interest in the process!
+      <button [routerLink]="['/payment-calculator']" class="btn btn btn-warning">
+          Learn More
+          <i class="fas fa-graduation-cap"></i>
+        </button>
       </p>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <p class="col-6"><sup>*</sup>
+        <b>Summary:</b> For a small {{ model.transactionFee | currency }} per transaction convenience fee, Smart Payment Plan is adding 
+        {{ model.selectedPeriod == 1 ? 'two extra payments' : 'one extra payment'}} to your annual number of payments, and 
+        splitting your loan into {{ installmentPeriod }} (easier to budget) {{ model.selectedPeriod == 1 ? 'weekly' : 'bi-weekly' }} 
+        payments annually. You’ll eliminate late fees & be paying an extra 
+        {{ 
+          (model.selectedPeriod == 1 ? 
+            model.weeklyPayment - (model.monthlyPayment / 4.33) : 
+            model.biWeeklyPayment - (model.monthlyPayment / 2)) | currency
+        }} every {{ model.selectedPeriod == 1 ? 'week' : 'two weeks'}} to pay off your loan in {{ model.effectiveTerm | number: '1.0-0' }} months 
+        instead of the typical {{ selectedTerm }} months. 
+        This also saves approximately {{ model.interestSaved | currency }} in loan interest in the process!
+      </p>
+      <p class="col-6"><sup>**</sup> Average interest rate based upon selected term and subject to both credit score verification and rate approval.</p>
     </div>
   </div>
 </div>

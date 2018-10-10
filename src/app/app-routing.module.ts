@@ -14,6 +14,9 @@ const routes: Routes = [
     { path: 'vehicle-search', loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule' },
     { path: 'vehicle-detail', loadChildren: 'app/vehicle-detail/vehicle-detail.module#VehicleDetailModule' },
     { path: 'trade-in', loadChildren: 'app/trade-in/trade-in.module#TradeInModule' },
+    { path: 'payment-calculator',
+      loadChildren: 'app/payment-calculator/payment-calculator.module#PaymentCalculatorModule'
+    },
   ]),
   // Fallback when no prior route is matched
   { path: '**', redirectTo: '', pathMatch: 'full' }

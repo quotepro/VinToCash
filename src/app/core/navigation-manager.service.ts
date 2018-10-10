@@ -42,10 +42,10 @@ export class NavigationManagerService {
     }
 
     // remove the current page
-    console.log('Popped', this.breadcrumbs.pop().url);
+    // console.log('Popped', this.breadcrumbs.pop().url);
     if (this.breadcrumbs.length > 0) {
       const previousRoute = this.breadcrumbs.pop();
-      console.log('Popped', previousRoute);
+      // console.log('Popped', previousRoute);
       this.router.navigate([previousRoute.url] );
     }
   }
@@ -53,7 +53,7 @@ export class NavigationManagerService {
   // this is called from app level route event listener.
   push(route: ActivatedRoute, title: string) {
     const url = route.snapshot['_routerState'].url;
-    console.log('Pushed', url);
+    // console.log('Pushed', url);
     this.breadcrumbs.push(new Crumb({
       url: url,
       title: title

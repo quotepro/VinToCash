@@ -21,15 +21,20 @@
     <button class="btn btn-default platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="car.selectedPlan = 'Platinum'">Platinum</button>
   </div>
   <div class="coverage col-12 border d-flex flex-row flex-wrap" *ngFor="let key of coverages">
-    <div class="col-md-6 col-xl-8">
+    <div class="col-md-6 col-xl-8 pointer" (click)="toggleDetail(key)">
       <span [class.strike]="!planPricing[car.selectedPlan][key]">{{ planPricing['Platinum'][key].description }}
-        (+{{ planPricing['Platinum'][key][installmentKey] | currency }} {{ installmentKey }})</span>
+        (+{{ planPricing['Platinum'][key][installmentKey] | currency }} {{ installmentKey }})
+        <i *ngIf="planPricing['Platinum'][key].expanded" class="fas fa-chevron-circle-up yellow"></i>
+        <i *ngIf="!planPricing['Platinum'][key].expanded" class="fas fa-chevron-circle-down yellow"></i>
+      </span>
     </div>
     <div class="col-md-6 col-xl-4 border d-flex flex-row text-right justify-content-between">
       <i class="fa-2x" [ngClass]="planPricing['Bronze'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Silver'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Gold'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Platinum'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
+    </div>
+    <div *ngIf="planPricing['Platinum'][key].expanded" class="col-md-6 col-xl-8 pl-5 pb-4" [innerHtml]="planPricing['Platinum'][key].detail">
     </div>
   </div>
   <form #jumboForm="ngForm" class="form-horizontal d-flex flex-row align-items-center justify-content-start flex-wrap">
@@ -92,7 +97,13 @@
             No</label>
         </div>
       </div>
-      <div *ngIf="model.willTradeIn" class="btn btn-warning d-flex flex-row flex-wrap btn-2x text-wrap align-items-center" (click)="tradein()">
+    </div>
+
+  </form>
+  <div class="col-12 d-flex flex-row align-items-end justify-content-end">
+    <button class="btn btn-secondary text-center m-2" (click)="back.emit()"><i class="fas fa-chevron-left"></i> Back</button>
+    <button *ngIf="!model.willTradeIn" class="btn btn-2x btn-success text-center m-2" (click)="checkout.emit()">Checkout <i class="fas fa-chevron-right"></i></button>
+    <div *ngIf="model.willTradeIn" class="btn btn-warning col-md-6 m-2 col-xl-4 d-flex flex-row flex-wrap text-wrap align-items-end justify-content-end" (click)="tradein()">
         <svg id="Layer_1" class="col-md-6" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 557 187">
           <defs>
             <style>
@@ -122,13 +133,7 @@
           <path d="M412,187V155c0-9-1-20-17-20s-18,11-18,20h15v-5q0-6,3-6c2,0,3,2,3,5s0,5-1,6-9,4-14,6-7,4-7,13,1,13,11,13,10-5,10-5v5Zm-18-8c-2,0-3-1-3-6s0-7,5-11v11C397,178,396,179,394,179Z"
             transform="translate(-1)" />
         </svg>
-        <div class="col-md-6">Maximize My Trade-in <i class="fas fa-chevron-right"></i></div>
+        <h5 class="col-md-6">Maximize My<br/>Trade-in <i class="fas fa-chevron-right"></i></h5>
       </div>
     </div>
-
-  </form>
-  <p class="col-12 text-right">
-    <button class="btn btn-secondary text-center my-3" (click)="back.emit()"><i class="fas fa-chevron-left"></i> Back</button>
-    <button class="btn btn-2x btn-success text-center my-3" (click)="checkout.emit()">Checkout <i class="fas fa-chevron-right"></i></button>
-  </p>
 </div>

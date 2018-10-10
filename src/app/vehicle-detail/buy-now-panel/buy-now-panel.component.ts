@@ -3,6 +3,7 @@ import { ChromaCar } from '@app/model/chroma-car';
 import { DataService } from '@app/core/data.service';
 import { Router } from '@angular/router';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
+import { Checkout } from '@app/model/checkout';
 
 @Component({
   selector: 'app-buy-now-panel',
@@ -17,7 +18,7 @@ export class BuyNowPanelComponent implements OnInit {
   @Output() back: EventEmitter<any> = new EventEmitter<any>();
   @Output() checkout: EventEmitter<any> = new EventEmitter<any>();
 
-  model: any = {
+  model: Checkout = {
     firstName: '',
     lastName: '',
     email: '',
@@ -41,6 +42,9 @@ export class BuyNowPanelComponent implements OnInit {
     return this.data.planPricing;
   }
 
+  toggleDetail(key: string) {
+    this.planPricing['Platinum'][key].expanded = !this.planPricing['Platinum'][key].expanded;
+  }
   get coverages() {
     return Object.keys(this.planPricing['Platinum']);
   }
