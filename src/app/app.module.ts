@@ -13,7 +13,10 @@ import { ShellModule } from './shell/shell.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Ng5SliderModule } from 'ng5-slider';
-
+import { TextMaskModule } from 'angular2-text-mask';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -27,10 +30,14 @@ import { Ng5SliderModule } from 'ng5-slider';
     HomeModule,
     Angulartics2Module.forRoot([]),
     AppRoutingModule,
-    Ng5SliderModule
+    Ng5SliderModule,
+    TextMaskModule
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    CheckoutComponent,
+    NotFoundComponent,
+    ExternalRedirectComponent
   ],
   providers: [
   ],

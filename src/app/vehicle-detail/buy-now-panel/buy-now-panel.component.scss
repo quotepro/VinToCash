@@ -13,40 +13,11 @@
         background: #eee;
 
     }
-    .fas.yellow {
-        color: yellow;
-        background: black;
-        border-radius: 50%;
-    }
 }
 .coverage .fa-2x.fa-check {
     color: green;
 }
-.btn.platinum {
-    background-color: #e5e4e2;
-}
-.btn.gold {
-    background-color: goldenrod;
-}
-.btn.silver {
-    background-color: silver;
-}
-.btn.bronze {
-    background-color: #cd7f32;
-}
-.zoom {
-    zoom: 1.4;
-}
-.strike {
-    text-decoration: line-through;
-}
-.text-wrap {
-    white-space: normal;
-}
-.btn {
-    word-break:  break-word;
-    hyphens: none;
-}
+
 @media (min-width: 768px) and (max-width: 900px) {
     .buttons {
         zoom: .5;

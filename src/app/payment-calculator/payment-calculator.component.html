@@ -1,54 +1,284 @@
-<div class="container-fluid jumbotron col-md-9">
-  <h2>Payment Calculator</h2>
-  <p>
-      This calculator will tabulate the payments for a new vehicle finance purchase, 
-      and/or calculate the loan term and finance interest savings you could realize by making 
-      the equivalent of 13 payments per year (bi-weekly) or the equivalent of 14 payments per 
-      year (weekly). We’ve included a payment method comparison chart and a balance comparison 
-      chart so you can understand year-by-year impact. The Learn tab below includes:
-  </p>
-  <ul>
-    <li>Weekly vehicle payments Vs. monthly payments.</li>
-    <li>A warning about predatory vehicle finance lenders.</li>
-  </ul>
-  <div class="learn card col-12 col-md-6 col-lg-5">
-    <div class="card-body">
-        <h5 class="card-title">Learn</h5>
-        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanAmount"></i> New or original loan amount</label><input [(ngModel)]="model.loanAmount"></p>
-        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestRate"></i> Annual interest rate</label><input [(ngModel)]="model.interestRate"></p>
-        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanTerm"></i> Vehicle loan term (in years)</label><input [(ngModel)]="model.loanTerm"></p>
-        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="prepaid"></i> Number of payments already made</label><input [(ngModel)]="model.prepaid"></p>
-        <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="extraAmount"></i> Extra amount you could add to weekly payment</label><input [(ngModel)]="model.extraAmount"></p>    
+<div class="container-fluid">
+  <div class="jumbotron">
+    <i class="fas fa-times-circle close" (click)="back()"></i>
+    <h2>Payment Calculator</h2>
+    <p>
+      This calculator will tabulate the payments for a new vehicle finance purchase,
+      and/or calculate the loan term and finance interest savings you could realize by making
+      the equivalent of 13 payments per year (bi-weekly) or the equivalent of 14 payments per
+      year (weekly). We’ve included a payment method comparison chart and a balance comparison
+      chart so you can understand year-by-year impact. The Learn button below includes:
+    </p>
+    <ul>
+      <li>Weekly vehicle payments Vs. monthly payments.</li>
+      <li>A warning about predatory vehicle finance lenders.</li>
+    </ul>
+
+    <div class="d-flex col-12 flex-row flex-wrap">
+      <div class="col-12 col-md-6">
+        <div class="learn card col-12">
+          <div class="card-header d-flex justify-content-between align-items-start">
+            <select class="form-control col-md-3" [(ngModel)]="model.period">
+              <option value="1">Weekly</option>
+              <option value="2">Bi-weekly</option>
+              <option value="3">Monthly</option>
+            </select>
+            <h5>Payment Calculator</h5>
+            <button (click)="learning = !learning" class="btn btn-primary">Learn
+              <i class="fas fa-chevron-circle-{{learning ? 'up' : 'down'}} yellow"></i>
+            </button>
+          </div>
+          <div class="card-body" (keyup)="fireChanges($event)">
+            <div *ngIf="learning">
+              <b>Weekly vehicle loan Payments Vs. Monthly</b>
+              <p>If you simply enter the terms for a new car loan into the weekly vehicle loan payment calculator, you
+                will
+                note that you may only save a couple of hundred dollars by choosing to repay the car loan using weekly
+                vehicle loan payments vs. monthly vehicle loan payments. This is because the annual total of your
+                weekly
+                vehicle loan payments will be close to the same as the annual total of your monthly payments.
+                In order to save a large chunk of time and interest, you need to increase the annual total of your
+                payments.
+                One way to do that -- while hardly noticing the increase -- is to simply make 1/2 of your monthly car
+                payment
+                every two weeks. This will result in making 26 bi-weekly payments per year, which is the equivalent of
+                making
+                13 monthly payments per year instead of 12.
+                Now you would think that we could double the savings if we use the same process to switch from monthly
+                payments to making weekly vehicle loan payments. However, if you divide your monthly payment by 4 and
+                pay
+                that result on a weekly basis, you will see that the annual total of your 52 weekly payments would be
+                identical to making 26 bi-weekly payments.
+                Therefore, in order to significantly increase your bi-weekly vehicle loan interest savings when
+                switching
+                to
+                a weekly repayment method, you would need to look at making the equivalent of 14 monthly payments per
+                year
+                instead of the 13 you would make using the bi-weekly payment method. In other words, your weekly
+                vehicle
+                loan
+                payments would be calculated as follows:</p>
+              <code>Weekly payment = Monthly payment x 14 ÷ 52</code>
+              <p class="mt-2">The above formula is the one used by the weekly vehicle loan payment calculator on this
+                page,
+                which results in making the equivalent of 14 monthly payments per year.</p>
+              <b>Beware of Gluttonous Vehicle Finance Companies</b>
+              <p>Since switching to weekly payments results in the prepayment of principal ahead of the original car
+                loan
+                terms, there are numerous, predatory vehicle loan companies ready to deny your attempts to save money
+                on
+                interest while cutting your loan term. While some of these companies will simply escrow your prepayment
+                and
+                apply payments as they were scheduled (giving you "the finger" for your early payoff attempt), the more
+                dastardly among them will go so far as to charge you a penalty for prepaying the principal.
+                In any case, before you start making weekly vehicle loan payments, be sure to check with your car loan
+                finance company to make sure your principal prepayments will be applied to the balance as you make them
+                --
+                free of any prepayment penalties.
+                <button class="btn btn-primary" (click)="learning = !learning">Less <i class="fas fa-chevron-circle-up yellow"></i></button>
+              </p>
+            </div>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanOrMonthly" placement="right" ></i> Monthly Payment</label><input
+              name="monthlyPayment" [(ngModel)]="model.monthlyPayment"></p>
+          <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanOrMonthly" placement="right"></i> New or original loan amount</label><input
+                [(ngModel)]="model.loanAmount"></p>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestRate" placement="right"></i> Annual interest rate</label><input
+                [(ngModel)]="model.interestRate"></p>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanTerm" placement="right"></i> Vehicle loan term (in years)</label><input
+                [(ngModel)]="model.loanTerm"></p>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="prepaid" placement="right"></i> Number of payments already made</label><input
+                [(ngModel)]="model.prepaid"></p>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="extraAmount" placement="right"></i> Extra amount you could add
+                to
+                {{ installmentLabel | lowercase }} payment</label><input [(ngModel)]="model.extraAmount"></p>
+
+            <div class="card-header d-flex justify-content-between">
+              <span>{{ installmentLabel }} Payment Results</span>
+            </div>
+
+            <p class="mt-2"><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanPayment" placement="right"></i> {{
+                installmentLabel }} vehicle loan payment
+              </label><input [ngModel]="installmentPayment" readonly></p>
+            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestPaid" placement="right"></i> Cost of vehicle interest
+                payments
+              </label><input [ngModel]="installmentInterest" readonly></p>
+          </div>
+        </div>
+        <div class="compare card col-12">
+          <div class="card-header d-flex justify-content-between align-items-start">
+            <h5>Compare Payment Frequencies</h5>
+          </div>
+          <div class="card-body">
+            <div class="row head">
+              <div></div>
+              <div>Monthly</div>
+              <div [class.show-xl]="installmentPeriod == 1">Bi-weekly</div>
+              <div [class.show-xl]="installmentPeriod == 2">Weekly</div>
+              <div *ngIf="model.period < '3'">{{ installmentLabel }} Savings</div>
+            </div>
+            <div class="row odd">
+              <div>Payment</div>
+              <div>{{ monthlyPayment + getExtraPayment(3) | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyPayment + getExtraPayment(2) | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyPayment + getExtraPayment(1) | currency }}</div>
+            </div>
+            <div class="row even">
+              <div>Months</div>
+              <div>{{ monthlyTerm }}</div>
+              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyTerm | number: '1.0-0' }}</div>
+              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyTerm | number: '1.0-0' }}</div>
+              <div *ngIf="model.period < '3'">{{ (model.loanTerm * 12 - (installmentPeriod == 1 ? weeklyTerm :
+                biWeeklyTerm)) | number: '1.0-0' }}</div>
+            </div>
+            <div class="row odd">
+              <div>Interest Cost</div>
+              <div>{{ monthlyInterest | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyInterest | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyInterest | currency }}</div>
+              <div *ngIf="model.period < '3'">{{ (monthlyInterest - (installmentPeriod == 1 ? weeklyInterest :
+                biWeeklyInterest)) | currency }}</div>
+            </div>
+            <div class="row even">
+              <div>Estimated payoff</div>
+              <div>{{ monthlyPayoff | date: 'MMM yyyy' }}</div>
+              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyPayoff | date: 'MMM yyyy' }}</div>
+              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyPayoff | date: 'MMM yyyy' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div *ngIf="model.period != '3'" class="col-12">
+          <p>
+            According to our calculations, if you begin making 1/2 of your monthly car payment
+            every two weeks ({{ monthlyPayment | currency }} ÷ 2 = {{ monthlyPayment / 2 | currency}}
+            <span *ngIf="model.period == '2' && model.extraAmount">
+              with an extra amount of {{ model.extraAmount | currency }}
+            </span>
+            you will pay off your car loan {{ monthlyTerm - biWeeklyTerm | number: '1.0-1' }} months
+            sooner than if you just continued to make your normal monthly vehicle loan payments,
+            and you will save {{ monthlyInterest - biWeeklyInterest | currency }} in interest in the process.
+          </p>
+          <p>
+            On the other hand, if you begin making the equivalent of 14 monthly payments per year
+            on a weekly basis ({{ monthlyPayment | currency }} x 14 ÷ 52 = {{ monthlyPayment * 14 / 52 | currency }})
+            <span *ngIf="model.period == '1' && model.extraAmount">
+              with an extra amount of {{ model.extraAmount | currency }}
+            </span>
+            you will pay off your car loan {{ monthlyTerm - weeklyTerm | number: '1.0-1' }} months
+            sooner than if you just continued to make your normal monthly loan payments, and you will
+            save {{ monthlyInterest - weeklyInterest | currency }} in interest in the process.
+          </p>
+          <p>
+            The following chart compares the year-to-year vehicle loan balances for all three vehicle payment options.
+          </p>
+        </div>
+        <div class="balances card col-12">
+          <div class="card-header d-flex justify-content-between align-items-start">
+            <h5>Annual Balance Comparison</h5>
+          </div>
+          <div class="card-body">
+            <div class="row head">
+              <div>Year End#</div>
+              <div>Monthly</div>
+              <div [class.show-xl]="installmentPeriod == 1">Bi-weekly</div>
+              <div [class.show-xl]="installmentPeriod == 2">Weekly</div>
+            </div>
+            <div class="row" [class.even]="i % 0" *ngFor="let pmt of amortizeMonths; let i = index;">
+              <div>{{ i == 0 ? 'Begin' : i }}</div>
+              <div>{{ pmt.balance | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 1">{{ (amortizeBiWeekly.length > i ?
+                amortizeBiWeekly[i].balance
+                : 0) | currency }}</div>
+              <div [class.show-xl]="installmentPeriod == 2">{{ (amortizeWeekly.length > i ? amortizeWeekly[i].balance :
+                0) | currency }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 d-flex flex-row m-4 align-items-start">
+          <button (click)="back()" class="btn btn btn-secondary">
+            <i class="fas fa-chevron-left"></i>
+            Back
+          </button>
+          <p *ngIf="installmentPeriod < 3" class="col-md-8"><button (click)="continue(installmentPeriod)" class="btn btn-2x btn-success d-flex flex-row flex-wrap align-items-center">
+              <img src="/assets/smart-payment-plan.png" width="50%" height="auto" />
+              <div class="view-matching h4 yellow">View Matching Vehicles</div>&nbsp;<i class="fas fa-chevron-right"></i>
+            </button></p>
+          <p *ngIf="installmentPeriod == 3" class="col-md-8"><button (click)="continue(3)" class="btn btn-primary mt-sm-5 d-flex flex-row flex-wrap align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="monthly col-md-6" viewBox="0 0 307.5 105.74">
+                <title>monthlyAsset 3</title>
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <path class="cls-2" d="M9.22,105.74H1.62V73.44h7.6v2.39a8,8,0,0,1,6.63-3.06,10.37,10.37,0,0,1,4.31.9,10.81,10.81,0,0,1,3.46,2.46,11.08,11.08,0,0,1,2.29,3.65,12.19,12.19,0,0,1,.82,4.5,11.86,11.86,0,0,1-.82,4.45,11.22,11.22,0,0,1-2.27,3.61,10.33,10.33,0,0,1-3.42,2.44,10.47,10.47,0,0,1-4.28.88,9,9,0,0,1-6.72-2.77Zm9.57-21.46a5.27,5.27,0,0,0-.35-1.91,4.55,4.55,0,0,0-1-1.58,5.25,5.25,0,0,0-1.58-1.07,4.69,4.69,0,0,0-1.95-.4A4.8,4.8,0,0,0,12,79.7a4.54,4.54,0,0,0-1.53,1,5.15,5.15,0,0,0-1.05,1.57A4.64,4.64,0,0,0,9,84.23a4.56,4.56,0,0,0,.38,1.89,4.68,4.68,0,0,0,1,1.54,5.4,5.4,0,0,0,1.57,1,4.82,4.82,0,0,0,3.8,0,4.54,4.54,0,0,0,1.53-1,5.22,5.22,0,0,0,1.05-1.56A4.32,4.32,0,0,0,18.79,84.28Z" />
+                    <path class="cls-2" d="M46.43,73.44h7.64V95H46.43v-2.4a8,8,0,0,1-6.59,3.07,10.8,10.8,0,0,1-4.33-.86,10.32,10.32,0,0,1-3.44-2.42,10.82,10.82,0,0,1-2.29-3.65A12.43,12.43,0,0,1,29,84.15a12,12,0,0,1,.8-4.39A11.36,11.36,0,0,1,32,76.13a10.31,10.31,0,0,1,7.77-3.36,8.79,8.79,0,0,1,6.68,2.81ZM36.85,84.15a5.06,5.06,0,0,0,1.41,3.53,4.53,4.53,0,0,0,1.55,1,5.11,5.11,0,0,0,2,.38,4.93,4.93,0,0,0,1.91-.38,4.53,4.53,0,0,0,1.55-1,5.22,5.22,0,0,0,1.05-1.56,4.42,4.42,0,0,0,.4-1.89,4.64,4.64,0,0,0-.4-1.91,5.15,5.15,0,0,0-1.05-1.57,4.53,4.53,0,0,0-1.55-1,4.93,4.93,0,0,0-1.91-.38,5.11,5.11,0,0,0-2,.38,4.53,4.53,0,0,0-1.55,1,5.28,5.28,0,0,0-1,1.53A4.66,4.66,0,0,0,36.85,84.15Z" />
+                    <path class="cls-2" d="M66.21,92.05,55.79,73.44h8.82l5.76,11,5.58-11h8.74l-17.3,32.3H58.86Z" />
+                    <path class="cls-2" d="M86,73.44h7.61v2.65a9.82,9.82,0,0,1,7-3,8.12,8.12,0,0,1,7.31,4,8.13,8.13,0,0,1,7.3-4.08,9.26,9.26,0,0,1,2.86.44,5.89,5.89,0,0,1,2.31,1.39,6.57,6.57,0,0,1,1.53,2.46,10.32,10.32,0,0,1,.57,3.65V95h-7.6V84.36a13.19,13.19,0,0,0-.23-2.69A4.48,4.48,0,0,0,114,80a2.26,2.26,0,0,0-1-.79A3.79,3.79,0,0,0,111.7,79Q108,79,108,84.36V95h-7.6V84.36a14.53,14.53,0,0,0-.21-2.71,4.93,4.93,0,0,0-.61-1.7,2,2,0,0,0-1-.86,4.36,4.36,0,0,0-1.47-.23,4.23,4.23,0,0,0-1.34.21,2.34,2.34,0,0,0-1.11.82,4.23,4.23,0,0,0-.76,1.68,11.71,11.71,0,0,0-.27,2.79V95H86Z" />
+                    <path class="cls-2" d="M133.28,85.49q0,4.92,4.62,4.92a4.11,4.11,0,0,0,3.74-2H149q-2.22,7.39-11.13,7.39a14.81,14.81,0,0,1-5-.81A11.22,11.22,0,0,1,129,92.63a10.31,10.31,0,0,1-2.5-3.61,12,12,0,0,1-.88-4.7,13.3,13.3,0,0,1,.84-4.85,10.33,10.33,0,0,1,2.39-3.68,10.67,10.67,0,0,1,3.76-2.33,14.37,14.37,0,0,1,5-.82,14,14,0,0,1,4.91.82,10.07,10.07,0,0,1,3.7,2.37,10.31,10.31,0,0,1,2.31,3.81,15,15,0,0,1,.8,5.06v.79Zm8.91-4.41a4.57,4.57,0,0,0-1.56-2.56,4.84,4.84,0,0,0-5.73,0,4.24,4.24,0,0,0-1.41,2.6Z" />
+                    <path class="cls-2" d="M152.35,73.44H160v2.73a8.34,8.34,0,0,1,3.15-2.54,10,10,0,0,1,3.74-.65,9.38,9.38,0,0,1,3.89.73,7.93,7.93,0,0,1,2.75,2.08,6.13,6.13,0,0,1,1.26,2.44,12.93,12.93,0,0,1,.33,3.06V95h-7.6V84.11a11.85,11.85,0,0,0-.23-2.58,3.19,3.19,0,0,0-.82-1.58,2.84,2.84,0,0,0-1.13-.71,4.24,4.24,0,0,0-1.35-.21,3.76,3.76,0,0,0-3,1.15,4.83,4.83,0,0,0-1,3.3V95h-7.6Z" />
+                    <path class="cls-2" d="M187.46,79.78V95h-7.6V79.78h-2.52V73.44h2.52V67h7.6v6.47h4.33v6.34Z" />
+                    <path class="cls-2" d="M214,105.74H206.4V73.44H214v2.39a8,8,0,0,1,6.63-3.06,10.37,10.37,0,0,1,4.31.9,10.81,10.81,0,0,1,3.46,2.46,11.08,11.08,0,0,1,2.29,3.65,12.19,12.19,0,0,1,.82,4.5,11.86,11.86,0,0,1-.82,4.45,11.22,11.22,0,0,1-2.27,3.61A10.33,10.33,0,0,1,225,94.78a10.5,10.5,0,0,1-4.28.88A9,9,0,0,1,214,92.89Zm9.57-21.46a5.07,5.07,0,0,0-.36-1.91,4.53,4.53,0,0,0-1-1.58,5.25,5.25,0,0,0-1.58-1.07,4.69,4.69,0,0,0-2-.4,4.8,4.8,0,0,0-1.89.38,4.54,4.54,0,0,0-1.53,1,5.36,5.36,0,0,0-1.06,1.57,4.8,4.8,0,0,0-.39,1.91,4.72,4.72,0,0,0,.37,1.89,5,5,0,0,0,1.05,1.54,5.59,5.59,0,0,0,1.58,1,4.82,4.82,0,0,0,3.8,0,4.54,4.54,0,0,0,1.53-1,5.22,5.22,0,0,0,1.05-1.56A4.32,4.32,0,0,0,223.58,84.28Z" />
+                    <path class="cls-2" d="M242.19,60.13V95h-7.61V60.13Z" />
+                    <path class="cls-2" d="M262.77,73.44h7.64V95h-7.64v-2.4a8,8,0,0,1-6.6,3.07,10.71,10.71,0,0,1-4.32-.86,10.46,10.46,0,0,1-3.45-2.42,11.14,11.14,0,0,1-2.29-3.65,12.64,12.64,0,0,1-.82-4.58,12.21,12.21,0,0,1,.8-4.39,11.39,11.39,0,0,1,2.23-3.63,10.31,10.31,0,0,1,7.77-3.36,8.8,8.8,0,0,1,6.68,2.81Zm-9.58,10.71a5,5,0,0,0,.38,1.95,4.86,4.86,0,0,0,1,1.58,4.53,4.53,0,0,0,1.55,1,5.07,5.07,0,0,0,2,.38,5,5,0,0,0,1.91-.38,4.53,4.53,0,0,0,1.55-1,5.63,5.63,0,0,0,1.05-1.56,4.42,4.42,0,0,0,.4-1.89,4.64,4.64,0,0,0-.4-1.91,5.53,5.53,0,0,0-1.05-1.57,4.53,4.53,0,0,0-1.55-1,5,5,0,0,0-1.91-.38,5.07,5.07,0,0,0-2,.38,4.53,4.53,0,0,0-1.55,1,5.09,5.09,0,0,0-1,1.53A4.66,4.66,0,0,0,253.19,84.15Z" />
+                    <path class="cls-2" d="M274.32,73.44h7.6v2.73a8.19,8.19,0,0,1,3.15-2.54,9.92,9.92,0,0,1,3.74-.65,9.33,9.33,0,0,1,3.88.73,7.75,7.75,0,0,1,2.75,2.08,5.88,5.88,0,0,1,1.26,2.44,12.4,12.4,0,0,1,.34,3.06V95h-7.6V84.11a11.85,11.85,0,0,0-.23-2.58,3.27,3.27,0,0,0-.82-1.58,2.87,2.87,0,0,0-1.14-.71,4.23,4.23,0,0,0-1.34-.21,3.74,3.74,0,0,0-3,1.15,4.78,4.78,0,0,0-1,3.3V95h-7.6Z" />
+                    <path class="cls-1" d="M11.78,45.91c-.46,2.81-.68,3.49-1.52,4.71A5.72,5.72,0,0,1,5.7,52.75,5.66,5.66,0,0,1,0,46.82a14.71,14.71,0,0,1,.3-2.74l6-36.94C7,2.89,9.73.53,14.14.53a7.3,7.3,0,0,1,7.22,4.94l8.51,26.15,7.83-25C38.91,2.81,41.8.53,45.37.53a7.66,7.66,0,0,1,7.68,6.08l6.46,37.32a11.11,11.11,0,0,1,.38,3,5.83,5.83,0,0,1-10.34,3.72c-.91-1.22-1.06-1.83-1.59-4.71L44.08,22,36.94,45.83c-1.07,3.57-1.45,4.41-2.43,5.32a6.08,6.08,0,0,1-4.41,1.6c-3.35,0-5.25-1.6-6.46-5.55L15.5,22Z" />
+                    <path class="cls-1" d="M110,26.6c0,15.81-10.1,26.68-24.85,26.68-15.28,0-25.23-10.72-25.23-27.13,0-8.14,3-15.28,8.28-19.92A25,25,0,0,1,85,0C99.79,0,110,10.79,110,26.6Zm-37.69-.45c0,10.18,4.94,16.72,12.76,16.72,7.61,0,12.55-6.46,12.55-16.27S92.65,10.41,85,10.41,72.28,16.8,72.28,26.15Z" />
+                    <path class="cls-1" d="M124.18,45c0,2.82-.15,3.5-.76,4.87a5.91,5.91,0,0,1-5,2.89,6,6,0,0,1-5.1-2.89c-.68-1.37-.75-2-.75-4.87V6.46c0-3.57,2.28-5.93,5.77-5.93,2,0,3.27.69,4.79,2.59l22.42,28.19v-23c0-2.81.15-3.49.76-4.86A6,6,0,0,1,151.39.53a5.82,5.82,0,0,1,5,2.89c.68,1.37.76,2,.76,4.86V46.06c0,2.51-.38,3.65-1.6,4.94a4.94,4.94,0,0,1-3.95,1.75A5.06,5.06,0,0,1,148,51.3a17.29,17.29,0,0,1-2.35-2.73L124.18,21.28Z" />
+                    <path class="cls-1" d="M182.25,45c0,2.82-.15,3.5-.76,4.87a5.87,5.87,0,0,1-10.11,0c-.68-1.37-.76-2-.76-4.87V11.7h-5.78c-2.5,0-3.11-.07-4.33-.68a5.2,5.2,0,0,1-2.58-4.56A5.17,5.17,0,0,1,160.51,2c1.22-.61,1.75-.69,4.33-.69h23c2.51,0,3.11.08,4.33.69a5.17,5.17,0,0,1,2.58,4.48A5.2,5.2,0,0,1,192.13,11c-1.22.61-1.75.68-4.33.68h-5.55Z" />
+                    <path class="cls-1" d="M207.1,31.24V45c0,2.82-.15,3.5-.76,4.87a5.87,5.87,0,0,1-10.11,0c-.68-1.37-.76-2-.76-4.87V8.28c0-2.81.15-3.49.76-4.86a5.87,5.87,0,0,1,10.11,0c.68,1.37.76,2,.76,4.86V20.83h21.59V8.28c0-2.81.15-3.49.76-4.86a5.86,5.86,0,0,1,10.1,0c.69,1.37.76,2,.76,4.86V45c0,2.82-.15,3.5-.76,4.87a5.86,5.86,0,0,1-10.1,0c-.69-1.37-.76-2-.76-4.87V31.24Z" />
+                    <path class="cls-1" d="M268,41.57c2.51,0,3.11.08,4.33.69a5.25,5.25,0,0,1,0,9c-1.22.61-1.75.69-4.33.69H254.22c-6.31.3-9-2.43-8.74-8.82V8.28c0-2.81.15-3.49.76-4.86A5.94,5.94,0,0,1,251.33.53a5.83,5.83,0,0,1,5,2.89c.68,1.37.76,2,.76,4.86V41.57Z" />
+                    <path class="cls-1" d="M292.52,45c0,2.82-.15,3.5-.76,4.87a5.86,5.86,0,0,1-10.1,0c-.69-1.37-.76-2-.76-4.87V28.05L268.66,11.32c-1.67-2.28-2.2-3.57-2.2-5.09a5.83,5.83,0,0,1,5.85-5.7c2.35,0,3.57.84,5.77,4.11L286.75,17l9-12.39c2.28-3.19,3.57-4,5.85-4a6,6,0,0,1,5.93,5.63c0,1.67-.54,2.81-2.36,5.24L292.52,28.05Z" />
+                  </g>
+                </g>
+              </svg>
+              <div class="view-matching h6">View Matching Vehicles</div>&nbsp;
+              <i class="fas fa-chevron-right"></i>
+            </button></p>
+        </div>
+      </div>
+      <ng-template #loanOrMonthly>
+        <b>Monthly payment or loan amount:</b>
+        <p>If you want to calculate your loan amount, enter your monthly payment. 
+          If you want to see what your payments would be for a specific loan amount
+          enter the loan amount. Or if you have an existing vehicle loan and
+          want to see how much you could save by switching to a bi-weekly or weekly
+          payment, enter the original vehicle loan amount. Enter as a dollar amount
+          without the dollar sign and commas.</p>
+      </ng-template>
+      <ng-template #interestRate>
+        <b>Annual interest rate:</b>
+        <p>Enter the annual percentage rate (APR) of the car loan. Enter as a
+          percentage without the percent sign (for 6%, enter 6).</p>
+      </ng-template>
+      <ng-template #loanTerm>
+        <b>Yehicle loan term (in years):</b>
+        <p>Enter the term of the new or original car loan in number of years.</p>
+      </ng-template>
+      <ng-template #prepaid>
+        <b>Number of monthly payments already made:</b>
+        <p>If this is an existing vehicle loan, enter the number of monthly payments
+          you have already made. If this is a new vehicle loan, enter a zero or leave blank.</p>
+      </ng-template>
+      <ng-template #extraAmount>
+        <b>Extra amount you could add to weekly payment (optional):</b>
+        <p>If you would like to see how adding an extra weekly amount would affect the
+          payoff time and interest savings, enter the amount here. Note that it may help
+          to calculate the weekly payment amount and savings without an extra payment
+          first, and then if it appears you can afford an extra weekly amount, come
+          back to this field enter the amount you can afford and recalculate.</p>
+      </ng-template>
+      <ng-template #loanPayment>
+        <b>Weekly vehicle loan payment:</b>
+        <p>Based on your entries, this would be the weekly payment for a new vehicle
+          loan with the entered terms. Note that is for new vehicle loans and therefore
+          does not account for any payments made on an existing car loan.</p>
+      </ng-template>
+      <ng-template #interestPaid>
+        <b>Cost of weekly vehicle interest payments:</b>
+        <p>Based on your entries, this would be the total interest cost of a new
+          car loan based on making weekly vehicle loan payments. Note that is for
+          new vehicle loans and therefore does not account for any payments made
+          on an existing car loan.</p>
+      </ng-template>
     </div>
   </div>
-  <ng-template #loanAmount>
-      <b>New or original vehicle loan amount:</b>
-      <p>If you want to see what the weekly payment would be on a new vehicle loan,
-         enter the new car  loan amount. If you have an existing vehicle loan and 
-         want to see how much you could save by switching to a bi-weekly or weekly 
-         payment, enter the original vehicle loan amount. Enter as a dollar amount 
-         without the dollar sign and commas.</p>
-  </ng-template>
-  <ng-template #interestRate>
-      <b>Annual interest rate:</b>
-      <p>Enter the annual percentage rate (APR) of the car loan. Enter as a 
-        percentage without the percent sign (for 6%, enter 6).</p>
-  </ng-template>
-  <ng-template #loanTerm>
-      <b>Yehicle loan term (in years):</b>
-      <p>Enter the term of the new or original car loan in number of years.</p>      
-  </ng-template>
-  <ng-template #prepaid>
-      <b>Number of monthly payments already made:</b>
-      <p>If this is an existing vehicle loan, enter the number of monthly payments 
-        you have already made. If this is a new vehicle loan, enter a zero or leave blank.</p>      
-  </ng-template>
-  <ng-template #extraAmount>
-      <b>Extra amount you could add to weekly payment (optional):</b>
-      <p>If you would like to see how adding an extra weekly amount would affect the 
-        payoff time and interest savings, enter the amount here. Note that it may help 
-        to calculate the weekly payment amount and savings without an extra payment 
-        first, and then if it appears you can afford an extra weekly amount, come 
-        back to this field enter the amount you can afford and recalculate.</p>
-  </ng-template>
 </div>

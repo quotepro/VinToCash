@@ -10,15 +10,15 @@
   </p>
   <h3 class="col-12 mt-3">Step 1: Choose A Protection Package</h3>
   <div class="col-md-6 col-xl-8">
-    <h5 *ngIf="installmentLabel != 'Monthly'">{{ car.selectedPlan }} {{ installmentLabel }} {{ calculatePayment(car,
+    <h5 *ngIf="installmentLabel != 'Monthly'">{{ car.selectedPlan == "None" ? "" : car.selectedPlan }} {{ installmentLabel }} {{ calculatePayment(car,
       selectedPeriod) | currency }}</h5>
-    <h5>{{ car.selectedPlan }} Monthly {{ calculatePayment(car, 3) | currency }}</h5>
+    <h5>{{ car.selectedPlan == "None" ? "" : car.selectedPlan }} Monthly {{ calculatePayment(car, 3) | currency }}</h5>
   </div>
   <div class="col-md-6 col-xl-4 text-right buttons d-flex flex-row text-right justify-content-between align-items-end">
-    <button class="btn btn-default bronze" [class.zoom]="car.selectedPlan == 'Bronze'" (click)="car.selectedPlan = 'Bronze'">Bronze</button>
-    <button class="btn btn-default silver" [class.zoom]="car.selectedPlan == 'Silver'" (click)="car.selectedPlan = 'Silver'">Silver</button>
-    <button class="btn btn-default gold" [class.zoom]="car.selectedPlan == 'Gold'" (click)="car.selectedPlan = 'Gold'">Gold</button>
-    <button class="btn btn-default platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="car.selectedPlan = 'Platinum'">Platinum</button>
+    <button class="btn btn-none" [class.zoom]="car.selectedPlan == 'None'" (click)="car.selectedPlan = 'None'">None</button>
+    <button class="btn btn-silver" [class.zoom]="car.selectedPlan == 'Silver'" (click)="car.selectedPlan = 'Silver'">Silver</button>
+    <button class="btn btn-gold" [class.zoom]="car.selectedPlan == 'Gold'" (click)="car.selectedPlan = 'Gold'">Gold</button>
+    <button class="btn btn-platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="car.selectedPlan = 'Platinum'">Platinum</button>
   </div>
   <div class="coverage col-12 border d-flex flex-row flex-wrap" *ngFor="let key of coverages">
     <div class="col-md-6 col-xl-8 pointer" (click)="toggleDetail(key)">
@@ -29,7 +29,7 @@
       </span>
     </div>
     <div class="col-md-6 col-xl-4 border d-flex flex-row text-right justify-content-between">
-      <i class="fa-2x" [ngClass]="planPricing['Bronze'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
+      <i class="fa-2x" [ngClass]="planPricing['None'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Silver'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Gold'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Platinum'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
@@ -38,15 +38,15 @@
     </div>
   </div>
   <form #jumboForm="ngForm" class="form-horizontal d-flex flex-row align-items-center justify-content-start flex-wrap">
-    <h3 class="col-12 mt-3">Step 2: Enter Your Contact Information</h3>
+    <h3 class="col-12 mt-3">Step 2: Get Prequalified</h3>
     <div class="col-12 col-md-4">
       <div class="form-group" [class.has-danger]="firstName.touched && firstName.invalid" [class.has-success]="firstName.valid">
         <input type="text" #firstName="ngModel" name="firstName" placeholder="{{ 'Your First Name' | translate }}"
-          pattern="\w{2,}\s+\w{2,}" [(ngModel)]="model.firstName" class="form-control" required />
+          pattern="\w{2,}" [(ngModel)]="model.firstName" class="form-control" required />
         <span *ngIf="firstName.touched && firstName.invalid" class="text-danger">Enter your first name</span>
       </div>
       <div class="form-group" [class.has-danger]="lastName.touched && lastName.invalid" [class.has-success]="lastName.valid">
-        <input type="text" #lastName="ngModel" name="lastName" placeholder="{{ 'Your Last Name' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        <input type="text" #lastName="ngModel" name="lastName" placeholder="{{ 'Your Last Name' | translate }}" pattern="\w{2,}"
           [(ngModel)]="model.lastName" class="form-control" required />
         <span *ngIf="lastName.touched && lastName.invalid" class="text-danger">Enter your last name</span>
       </div>
@@ -56,29 +56,53 @@
       </div>
       <div class="form-group" [class.has-danger]="phone.touched && phone.invalid" [class.has-success]="phone.valid">
         <input type="phone" #phone="ngModel" name="phone" placeholder="{{ 'Phone Number' | translate }}" pattern="^\(?\d{3}[\)-\s\.]*\d{3}[-\s\.]*\d{4}$"
+        [textMask]="{ mask: toMask('(000) 000-0000'), guide: false}"
           [(ngModel)]="model.phone" class="form-control" required />
       </div>
-    </div>
+      <div class="form-group" [class.has-danger]="income.touched && income.invalid" [class.has-success]="income.valid">
+        <input type="number" #income="ngModel" name="income" placeholder="{{ 'Annual Income' | translate }}" pattern="^\d{1,10}\W{0,1}\d{0,2}$"
+          [(ngModel)]="model.income" class="form-control" required />
+        <span *ngIf="income.touched && income.invalid" class="text-danger">Enter your annual income</span>
+      </div>
+      <div class="form-group" [class.has-danger]="creditscore.touched && creditscore.invalid" [class.has-success]="creditscore.valid">
+          <select #creditscore="ngModel" name="creditscore" 
+            [ngModel]="model.creditscore" class="form-control" required (change)="updateCreditScore($event)">
+            <option disabled [value]="null">Credit Score</option>
+            <option *ngFor="let score of creditScores" [value]="score.value" [innerHtml]="score.text"></option>
+          </select>
+        </div>
+      </div>
     <div class="col-12 col-md-4">
       <div class="form-group" [class.has-danger]="address.touched && address.invalid" [class.has-success]="address.valid">
-        <input type="text" #address="ngModel" name="address" placeholder="{{ 'Address' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        <input type="text" #address="ngModel" name="address" placeholder="{{ 'Address' | translate }}" pattern="^[\w\d,\.'-]{2,}\s+[\w\d\s,\.'-]{2,}$"
           [(ngModel)]="model.address" class="form-control" required />
         <span *ngIf="address.touched && address.invalid" class="text-danger">Enter your street address</span>
       </div>
       <div class="form-group" [class.has-danger]="city.touched && city.invalid" [class.has-success]="city.valid">
-        <input type="text" #city="ngModel" name="city" placeholder="{{ 'City' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        <input type="text" #city="ngModel" name="city" placeholder="{{ 'City' | translate }}" pattern="\w{2,}"
           [(ngModel)]="model.city" class="form-control" required />
         <span *ngIf="city.touched && city.invalid" class="text-danger">Enter your city</span>
       </div>
       <div class="form-group" [class.has-danger]="state.touched && state.invalid" [class.has-success]="state.valid">
-        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" [textMask]="{ mask: toMask('AA'), guide: false, pipe: upper}" pattern="^[A-Za-z]{2}$"
           [(ngModel)]="model.state" class="form-control" required />
-        <span *ngIf="state.touched && state.invalid" class="text-danger">Enter your state</span>
+        <span *ngIf="state.touched && state.invalid" class="text-danger">Enter your 2 character state</span>
       </div>
       <div class="form-group" [class.has-danger]="zipcode.touched && zipcode.invalid" [class.has-success]="zipcode.valid">
-        <input type="text" #zipcode="ngModel" name="name" placeholder="{{ 'Zip Code' | translate }}" pattern="\w{2,}\s+\w{2,}"
+        <input type="text" #zipcode="ngModel" name="name" placeholder="{{ 'Zip Code' | translate }}" pattern="^\d{5}$"
+        [textMask]="{ mask: toMask('00000'), guide: false}"
           [(ngModel)]="model.zipcode" class="form-control" required />
-        <span *ngIf="zipcode.touched && zipcode.invalid" class="text-danger">Enter your zipcode</span>
+        <span *ngIf="zipcode.touched && zipcode.invalid" class="text-danger">Enter your 5 digit zipcode</span>
+      </div>
+      <div class="form-group" [class.has-danger]="yearsemployed.touched && yearsemployed.invalid" [class.has-success]="yearsemployed.valid">
+        <input type="text" #yearsemployed="ngModel" name="yearsemployed" placeholder="{{ 'Years Employed' | translate }}" pattern="^\d{2}\.{0,2}\d{0,2}$"
+          [(ngModel)]="model.yearsemployed" class="form-control" required />
+        <span *ngIf="yearsemployed.touched && yearsemployed.invalid" class="text-danger">How many years have you been employed.</span>
+      </div>
+      <div class="form-group" [class.has-danger]="ssn.touched && ssn.invalid" [class.has-success]="ssn.valid">
+          <input type="text" #ssn="ngModel" name="ssn" [textMask]="{ mask: toMask('000-00-0000'), guide: false}" placeholder="{{ 'Social Security Number' | translate }}" pattern="^\d{3}[ \.\-]{0,1}\d{2}[ \.\-]{0,1}\d{4}$"
+            [(ngModel)]="model.ssn" class="form-control" required />
+          <span *ngIf="ssn.touched && ssn.invalid" class="text-danger">Enter your social security number.</span>
       </div>
     </div>
     <div class="col-12 col-md-4">

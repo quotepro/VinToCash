@@ -8,4 +8,8 @@ export class Checkout {
     state: string;
     zipcode: string;
     willTradeIn: boolean;
+    income: number;
+    yearsemployed: number;
+    ssn: string;
+    creditscore: string;
 }

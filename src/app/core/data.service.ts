@@ -10,6 +10,7 @@ import { Dealer } from '@app/model/dealer';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChromaCar } from '@app/model/chroma-car';
 import { CoveragePlan } from '@app/model/coverage-plan';
+import { Calculator } from '@app/model/calculator';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +78,7 @@ export class DataService {
       'Ding & Dent': null as CoveragePlan,
       'Paint Protection': null as CoveragePlan,
     },
-    'Bronze': {
+    'None': {
       'Warranty': null as CoveragePlan,
       'Prepaid Maintenance': null as CoveragePlan,
       'GAP': null as CoveragePlan,
@@ -86,6 +87,7 @@ export class DataService {
       'Paint Protection': null as CoveragePlan,
     }
   };
+
 
   get planPricing(): any {
     return this.pricingPlans;
@@ -121,6 +123,20 @@ export class DataService {
     this.aq3.sid = this.session.sid;
     this.aq3.baseUrl = aq3Url;
     this.aq3Url = aq3Url;
+  }
+
+  getCalc(): any {
+    if (!this.session.calc) {
+      this.session.calc = new Calculator({
+        downPayment: 1000,
+        loanAmount: 9000,
+        loanLength: 7,
+        creditScore: 700,
+        monthlyPayment: 500,
+        downChanged: false,
+      });
+    }
+    return this.session.calc;
   }
 
   getData(controller: string, action: string, data: any) {
@@ -335,9 +351,13 @@ export class DataService {
     }
   }
 
-  getInterestRate() {
-    const calc = this.session.calc;
-
+  getInterestRate(calc?: Calculator) {
+    if (!calc) {
+      calc = this.getCalc();
+    }
+    if (calc.interestRate) {
+      return calc.interestRate;
+    }
     if (calc.creditScore > 780) {
       return .0360;
     }
@@ -367,14 +387,16 @@ export class DataService {
     return payment;
   }
 
-  calculatePaymentAmount(vehiclePrice: number, period?: number): number {
+  calculatePaymentAmount(vehiclePrice: number, period?: number, loanLength?: number, interestRate?: number): number {
     const calc = this.session.calc;
     if (!period) {
       period = calc.selectedPeriod;
     }
-    const loanLength = calc.loanLength * 12;
-    const principal = vehiclePrice * 1.10; // add vehicle warranty
-    let payment = this.periodicPayment(principal, 12, this.getInterestRate(), loanLength);
+    if (!loanLength) {
+     loanLength = calc.loanLength;
+    }
+    const principal = vehiclePrice;
+    let payment = this.periodicPayment(principal, 12, interestRate || this.getInterestRate(), loanLength * 12);
     switch (period) {
       case 1: // weekly
         payment = payment * 14 / 52;
@@ -388,49 +410,52 @@ export class DataService {
     return payment;
   }
 
-  calculatePurchasingPower(): any {
-    const calc = this.session.calc;
+  calculatePurchasingPower(calc?: Calculator): any {
+    if (!calc) {
+      calc = this.getCalc();
+    }
 
     let periods = 12;
     // deduct 1st month insurance from purchasing power.
-    const insurancePrice = 65;
-    let interest = this.getInterestRate() / periods;
+    let interest = this.getInterestRate(calc) / periods;
     let payments = calc.loanLength * periods;
     // the warranty is 10% of the purchase price.
-    const monthlyFunds = Math.max(25, calc.monthlyPayment * .9);
+    const monthlyFunds = Math.max(25, calc.monthlyPayment);
 
     calc.loanAmount = Math.round(((monthlyFunds *
-      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+      ((1 - Math.pow(1 + interest, - payments)) / interest))) / 10) * 10;
     calc.monthlyPurchasePower = calc.loanAmount + calc.downPayment;
 
     periods = 26;
-    interest = this.getInterestRate() / periods;
+    interest = this.getInterestRate(calc) / periods;
     payments = calc.loanLength * periods;
 
     calc.biWeeklyPayment = calc.monthlyPayment * 13 / 26;
-    let periodicLoanAmount = Math.round(((calc.biWeeklyPayment *
-      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+    let periodicLoanAmount = Math.round((calc.biWeeklyPayment *
+      ((1 - Math.pow(1 + interest, - payments)) / interest)) / 10) * 10;
     calc.biWeeklyPurchasePower = periodicLoanAmount + calc.downPayment;
     calc.biWeeklyPayment += calc.transactionFee;
 
     periods = 52;
-    interest = this.getInterestRate() / periods;
+    interest = this.getInterestRate(calc) / periods;
     payments = calc.loanLength * periods;
 
     calc.weeklyPayment = calc.monthlyPayment * 14 / 52;
     periodicLoanAmount = Math.round(((calc.weeklyPayment *
-      ((1 - Math.pow(1 + interest, - payments)) / interest)) - insurancePrice) / 100) * 100;
+      ((1 - Math.pow(1 + interest, - payments)) / interest))) / 10) * 10;
     calc.weeklyPurchasePower = periodicLoanAmount + calc.downPayment;
     calc.weeklyPayment += calc.transactionFee;
 
     this.calculateSavings();
   }
 
-  calculateSavings() {
-    const calc = this.session.calc;
+  calculateSavings(calc?: Calculator) {
+    if (!calc) {
+      calc = this.getCalc();
+    }
 
     let interestPaid = 0;
-    let periodicInterest = this.getInterestRate() / 12;
+    let periodicInterest = this.getInterestRate(calc) / 12;
     let balance = calc.monthlyPurchasePower;
     while (balance > 0) {
       const interest = balance * periodicInterest;
@@ -441,13 +466,13 @@ export class DataService {
     let wklyInterestPaid = 0;
     const periodicPayment = calc.monthlyPayment * 14 / 52;
     const periods = 52;
-    periodicInterest = this.getInterestRate() / periods;
+    periodicInterest = this.getInterestRate(calc) / periods;
     balance = calc.monthlyPurchasePower;
     let payments = 0;
     while (balance > 0) {
       const interest = balance * periodicInterest;
       wklyInterestPaid += interest;
-      balance = balance + interest - periodicPayment;
+      balance += interest - periodicPayment;
       payments++;
     }
 
@@ -479,6 +504,33 @@ export class DataService {
   }
   getInstallmentKey(): any {
     return this.getInstallmentLabel().replace('-', '').toLowerCase();
+  }
+  toMask(input: string): Array<any> {
+    const mask = [];
+    for (let i = 0; i < input.length; i++) {
+      const ch = input.charAt(i);
+      switch (ch) {
+        case '0':
+        case '9':
+          mask.push(/\d/);
+          break;
+        case 'a':
+        case 'A':
+          mask.push(/[A-Za-z]/);
+          break;
+        case '!':
+          mask.push(/[A-Z]/);
+          break;
+        case 'w':
+        case 'W':
+          mask.push(/\w/);
+          break;
+        default:
+          mask.push(ch);
+          break;
+      }
+    }
+    return mask;
   }
 
 }

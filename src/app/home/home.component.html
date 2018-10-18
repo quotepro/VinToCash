@@ -10,13 +10,14 @@
         <i class="fas fa-car"></i>
         Buy
       </button>
+      <span class="x2"> OR </span>
       <button (click)="sell()"
         class="btn btn-2x btn-success">
         <i class="fas fa-dollar-sign"></i>
         Sell
       </button>
-      <span class="x2"> OR </span>
-      <button (click)="trade()"
+      <span *ngIf="false" class="x2"> OR </span>
+      <button *ngIf="false" (click)="trade()"
         class="btn btn-2x btn-warning">
         <i class="fas fa-handshake"></i>
         Trade

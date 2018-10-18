@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
 import { PaymentPanelComponent } from '@app/payment-panel/payment-panel.component';
 import { EllipsisPipe } from '@app/ellipsis.pipe';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    TextMaskModule
   ],
   declarations: [
     LoaderComponent,
@@ -16,7 +18,8 @@ import { EllipsisPipe } from '@app/ellipsis.pipe';
   exports: [
     LoaderComponent,
     PaymentPanelComponent,
-    EllipsisPipe
+    EllipsisPipe,
+    TextMaskModule
   ]
 })
 export class SharedModule { }

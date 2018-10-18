@@ -30,7 +30,7 @@
             <label class="col-lg-3" translate>Loan Length</label>
             <ng5-slider class="col-lg-9" [(value)]="model.loanLength" [options]="lengthOptions" (userChange)="loanLengthChanged()"></ng5-slider>
           </div>
-          <div *ngIf="false && model.advanced" class="d-flex flex-lg-row flex-column flex-wrap col-12">
+          <div class="d-flex flex-lg-row flex-column flex-wrap col-12">
             <label class="col-lg-3" translate>Credit Score</label>
             <ng5-slider class="col-lg-9" [(value)]="model.creditScore" [options]="scoreOptions" (userChange)="creditScoreChanged()"></ng5-slider>
           </div>

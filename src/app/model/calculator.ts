@@ -5,6 +5,7 @@ export class Calculator {
     loanAmount: number;
     loanLength: number;
     creditScore: number;
+    interestRate: number;
     selectedPeriod: number;
     monthlyPayment: number;
     biWeeklyPayment: number;

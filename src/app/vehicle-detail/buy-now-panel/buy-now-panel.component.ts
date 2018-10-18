@@ -4,6 +4,7 @@ import { DataService } from '@app/core/data.service';
 import { Router } from '@angular/router';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
 import { Checkout } from '@app/model/checkout';
+import { Option } from '@app/model/option';
 
 @Component({
   selector: 'app-buy-now-panel',
@@ -27,13 +28,42 @@ export class BuyNowPanelComponent implements OnInit {
     city: '',
     state: '',
     zipcode: '',
-    willTradeIn: false
+    willTradeIn: false,
+    income: null,
+    ssn: null,
+    yearsemployed: null,
+    creditscore: null
   };
+
+  creditScores: Array<Option> = [
+    { value: '500', text: 'Poor Credit (&lt; 580)' },
+    { value: '580', text: 'Fair Credit (580-670)'},
+    { value: '670', text: 'Good Credit (670-740)'},
+    { value: '740', text: 'Very Good (740-780)'},
+    { value: '780', text: 'Excellent (780+)'}
+  ];
 
   get selectedPeriod() {
     return this.data.session.calc.selectedPeriod;
   }
-  constructor(private data: DataService, private nav: NavigationManagerService) { }
+  constructor(private data: DataService, private nav: NavigationManagerService) {
+    const score = this.data.session.calc.creditScore;
+    console.log('setting credit score: ' + score);
+    if (score < 580) {
+      this.model.creditscore = '500';
+    } else if ( score < 670) {
+      this.model.creditscore = '580';
+    } else if ( score < 740) {
+      this.model.creditscore = '670';
+    } else if ( score < 780) {
+      this.model.creditscore = '740';
+    } else if (score >= 780 ) {
+      this.model.creditscore = '780';
+    } else {
+      console.log('unmatched credit score ' + score);
+    }
+
+   }
 
   ngOnInit() {
   }
@@ -49,10 +79,18 @@ export class BuyNowPanelComponent implements OnInit {
     return Object.keys(this.planPricing['Platinum']);
   }
 
+  updateCreditScore(event: Event) {
+    this.data.session.calc.creditScore = parseInt(this.model.creditscore, 10);
+    console.log(this.data.session.calc.creditScore);
+  }
+
   calculatePayment(car: ChromaCar, period?: number) {
     return this.data.calculateTieredPayment(car, period);
   }
   tradein() {
     this.nav.forward(['/trade-in']);
+  }
+  toMask(input: string): Array<any> {
+    return this.data.toMask(input);
   }
 }

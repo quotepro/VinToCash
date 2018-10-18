@@ -18,17 +18,8 @@ export class BuyComponent implements OnInit {
     return environment.tagline;
   }
   get model() {
-    if (!this.data.session.calc) {
-      this.data.session.calc = new Calculator({
-        downPayment: 1000,
-        loanAmount: 9000,
-        loanLength: 7,
-        creditScore: 700,
-        monthlyPayment: 500,
-        downChanged: false,
-      });
-    }
-    this.data.session.calc.selectedPeriod = 1;
+
+    this.data.getCalc().selectedPeriod = 1;
     return this.data.session.calc;
   }
 
@@ -114,7 +105,7 @@ export class BuyComponent implements OnInit {
     floor: 300,
     ceil: 850,
     showTicks: true,
-    step: 10,
+    step: 50,
     translate: (value: number): string => {
       if (value < 580) {
         return 'Poor: ' + value;
@@ -131,6 +122,7 @@ export class BuyComponent implements OnInit {
       return 'Exceptional: ' + value;
     },
     // showSelectionBar: true,
+    /*
     getTickColor: (value: number): string => {
       if (value < 580) {
         return 'red';
@@ -142,7 +134,8 @@ export class BuyComponent implements OnInit {
         return 'yellow';
       }
       return '#2AE02A';
-    }  };
+    } */
+  };
 
   constructor(private nav: NavigationManagerService, private cp: CurrencyPipe, private data: DataService) { }
 

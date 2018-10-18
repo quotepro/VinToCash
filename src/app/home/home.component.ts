@@ -33,7 +33,15 @@ export class HomeComponent implements OnInit {
     this.nav.forward(['buy']);
   }
   sell() {
-    this.nav.forward(['sell']);
+    if ( environment.sellingUrl) {
+      this.nav.forward(['externalRedirect', {
+        title: environment.sellingTitle,
+        externalUrl: environment.sellingUrl,
+        description: environment.sellingDesc
+        }]);
+        return;
+    }
+    this.nav.forward(['/sell']);
   }
   trade() {
     this.nav.forward(['trade-in']);

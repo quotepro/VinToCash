@@ -71,6 +71,79 @@ body {
     color: black;
     z-index: 5;
 }
+.fas.yellow {
+    color: yellow;
+    background: black;
+    border-radius: 50%;
+}
+.show-sm,
+.show-md,
+.show-lg,
+.show-xl {
+    display: none;
+}
+
+.btn {
+    text-shadow:
+        -1px -1px 0 rgba(0, 0, 0, .1),
+        0 -1px 0 rgba(0, 0, 0, .1),
+        1px -1px 0 rgba(0, 0, 0, .1),
+        -1px 1px 0 rgba(0, 0, 0, .1),
+        0 1px 0 rgba(0, 0, 0, .1),
+        1px 1px 0 rgba(0, 0, 0, .1);
+}
+.btn-silver,
+.btn-platinum,
+.btn-warning {
+    text-shadow:
+        -1px -1px 0 rgba(255, 255, 255, .2),
+        0 -1px 0 rgba(255, 255, 255, .2),
+        1px -1px 0 rgba(255, 255, 255, .2),
+        -1px 1px 0 rgba(255, 255, 255, .2),
+        0 1px 0 rgba(255, 255, 255, .2),
+        1px 1px 0 rgba(255, 255, 255, .2);
+} 
+.btn-platinum {
+    background-color: #e5e4e2;
+    color: black;
+}
+.btn-gold {
+    background-color: goldenrod;
+    color: white;
+
+}
+.btn-silver {
+    background-color: silver;
+    color: black;
+}
+.btn-bronze {
+    background-color: #cd7f32;
+}
+.btn-none {
+    background-color: #dc3545;
+    border-color: #ad2936;
+    color: white;
+    text-shadow: 
+    -1px -1px 0 #ad2936,
+    0 -1px 0 #ad2936,
+    1px -1px 0 #ad2936,
+    -1px 1px 0 #ad2936,
+    0 1px 0 #ad2936,
+    1px 1px 0 #ad2936;
+}
+.zoom {
+    zoom: 1.4;
+}
+.strike {
+    text-decoration: line-through;
+}
+.text-wrap {
+    white-space: normal;
+}
+.btn {
+    word-break:  break-word;
+    hyphens: none;
+}
 
 @media (min-width: 576px) {
     .show-sm {
@@ -103,7 +176,7 @@ body {
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { 
-    .visible-xl {
+    .show-xl {
         display: block;
     }
     .hide-xl {
