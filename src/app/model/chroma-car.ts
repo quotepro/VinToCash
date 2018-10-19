@@ -28,7 +28,7 @@ export class ChromaCar {
             this.selectedPlan = 'None';
             Object.assign(this, copy);
             if (copy['image_urls']) {
-                this.imageList = copy['image_urls'].split(',');
+                this.imageList = copy['image_urls'].replace(/http:/g, 'https:').split(',');
             }
             if (copy['options']) {
                 this.optionList = copy['options'].split(',').sort((a: string, b: string): number => {

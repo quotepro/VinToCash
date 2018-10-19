@@ -84,7 +84,7 @@
         <span *ngIf="city.touched && city.invalid" class="text-danger">Enter your city</span>
       </div>
       <div class="form-group" [class.has-danger]="state.touched && state.invalid" [class.has-success]="state.valid">
-        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" [textMask]="{ mask: toMask('AA'), guide: false, pipe: upper}" pattern="^[A-Za-z]{2}$"
+        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" [textMask]="{ mask: toMask('AA'), guide: false }" pattern="^[A-Za-z]{2}$"
           [(ngModel)]="model.state" class="form-control" required />
         <span *ngIf="state.touched && state.invalid" class="text-danger">Enter your 2 character state</span>
       </div>

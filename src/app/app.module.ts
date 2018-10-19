@@ -15,7 +15,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { Ng5SliderModule } from 'ng5-slider';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { NotFoundComponent } from './not-found/not-found.component';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
 @NgModule({
   imports: [
@@ -36,7 +35,6 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
   declarations: [
     AppComponent,
     CheckoutComponent,
-    NotFoundComponent,
     ExternalRedirectComponent
   ],
   providers: [

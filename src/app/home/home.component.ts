@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
         title: environment.sellingTitle,
         externalUrl: environment.sellingUrl,
         description: environment.sellingDesc
-        }]);
+        }], { skipLocationChange: true });
         return;
     }
     this.nav.forward(['/sell']);

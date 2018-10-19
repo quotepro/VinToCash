@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
 import { Checkout } from '@app/model/checkout';
 import { Option } from '@app/model/option';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-buy-now-panel',
@@ -88,6 +89,14 @@ export class BuyNowPanelComponent implements OnInit {
     return this.data.calculateTieredPayment(car, period);
   }
   tradein() {
+    if ( environment.sellingUrl) {
+      this.nav.forward(['externalRedirect', {
+        title: 'Trade-In',
+        externalUrl: environment.sellingUrl,
+        description: environment.sellingDesc
+        }], { skipLocationChange: true });
+        return;
+    }
     this.nav.forward(['/trade-in']);
   }
   toMask(input: string): Array<any> {

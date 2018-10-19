@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Crumb } from '@app/model/crumb';
 
 @Injectable({
@@ -15,8 +15,8 @@ export class NavigationManagerService {
     this.breadcrumbs = [];
   }
 
-  forward(commands: any[]) {
-    this.router.navigate(commands);
+  forward(commands: any[], extras?: NavigationExtras) {
+    this.router.navigate(commands, extras);
   }
 
   goto(crumb: Crumb, i: number): any {
