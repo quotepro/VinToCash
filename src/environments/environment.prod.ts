@@ -12,15 +12,15 @@ export const environment = {
   ],
   aq3Url: 'https://aq3.processmyquote.com/DemoAgent',
   transactionFee: 0.98,
-  dealerCode: 'ewaldkia',
-  dealerLogo: 'ewald-logo.svg',
+  dealerCode: 'coast2coast',
+  dealerLogo: 'coast-to-coast-logo_d.png',
   sellingTitle: 'Sell',
-  sellingUrl: 'https://maxallowance.com/trade1',
+  sellingUrl: '', // 'https://maxallowance.com/trade1',
   sellingDesc: `
             <p>We've partnered with MaxAllowance.com to help you sell your vehicle online.<p>
             <p>They provide a comprehensive service to help you get the maximum
             price possible for your vehicle, whether you are trading it
             in for a new vehicle or just selling it outright.</p>`,
-  tagline: `The Ewald Kia Car Loan Calculator lets you shop vehicles
-  and a protection package that matches your ideal weekly budget.`,
+  tagline: `Our Loan Calculator lets you shop for vehicles
+  and a protection package that match your ideal monthly budget.`,
 };

@@ -130,7 +130,7 @@ export class DataService {
       this.session.calc = new Calculator({
         downPayment: 1000,
         loanAmount: 9000,
-        loanLength: 7,
+        loanLength: 5,
         creditScore: 700,
         monthlyPayment: 500,
         downChanged: false,
