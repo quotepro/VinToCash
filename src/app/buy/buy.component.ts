@@ -70,7 +70,7 @@ export class BuyComponent implements OnInit {
   downOptions: Options;
 
   lengthOptions: Options = {
-    floor: 4,
+    floor: 5,
     ceil: 7,
     showTicks: true,
     translate: (value: number): string => {

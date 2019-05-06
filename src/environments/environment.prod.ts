@@ -14,6 +14,7 @@ export const environment = {
   transactionFee: 0.98,
   dealerCode: 'coast2coast',
   dealerLogo: 'coast-to-coast-logo_d.png',
+  lenderLogo: 'Ally.png',
   sellingTitle: 'Sell',
   sellingUrl: '', // 'https://maxallowance.com/trade1',
   sellingDesc: `

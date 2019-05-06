@@ -26,6 +26,10 @@ export class HomeComponent implements OnInit {
     return this.data.session;
   }
 
+  get lenderLogo() {
+    return environment.lenderLogo;
+  }
+
   get dealerLogo() {
     return environment.dealerLogo;
   }

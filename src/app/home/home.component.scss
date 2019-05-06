@@ -7,3 +7,9 @@ q {
   font-size: 1.2rem;
   quotes: "« " " »";
 }
+
+.jumbotron {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -31,7 +31,9 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
   get monthlyTerm() {
     return this.amortizeMonths.map(pmt => pmt.payments).reduce( (a: number, b: number) => a + b);
   }
-
+  get extraTerm() {
+    return this.amortizeExtra.map(pmt => pmt.payments).reduce( (a: number, b: number) => a + b);
+  }
   get biWeeklyTerm() {
     return this.amortizeBiWeekly.map(pmt => pmt.payments).reduce( (a: number, b: number) => a + b) / 26 * 12;
   }
@@ -92,6 +94,22 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
   get monthlyInterest() {
     return this.amortizeMonths.map(pmt => pmt.interest).reduce((a: number, b: number ) => a + b );
   }
+  get extraInterest() {
+    return this.amortizeExtra.map(pmt => pmt.interest)
+        .reduce((a: number, b: number ) => a + b );
+  }
+
+  get extraInterestAmt() {
+    return this.currencyPipe
+      .transform(this.amortizeExtra.map(pmt => pmt.interest)
+        .reduce((a: number, b: number ) => a + b ));
+  }
+
+  get savingsAmt() {
+    return this.currencyPipe
+      .transform(this.monthlyInterest - this.extraInterest);
+  }
+
   get biWeeklyInterest() {
     return this.amortizeBiWeekly.map(pmt => pmt.interest).reduce((a: number, b: number ) => a + b );
   }
@@ -101,6 +119,13 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
 
   get monthlyPayoff() {
     const monthsLeft = this.monthlyTerm - parseInt((this.model.prepaid || 0).toString(), 10);
+    const date = new Date();
+    date.setMonth(date.getMonth() + monthsLeft);
+    return date;
+  }
+
+  get extraPayoff() {
+    const monthsLeft = this.extraTerm - parseInt((this.model.prepaid || 0).toString(), 10);
     const date = new Date();
     date.setMonth(date.getMonth() + monthsLeft);
     return date;
@@ -127,11 +152,12 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
     extraAmount: 0,
     loanPayment: 0,
     interestPaid: 0,
-    period: '1',
+    period: '3',
     monthlyPayment: 0,
   };
 
   amortizeMonths: Array<Payment>;
+  amortizeExtra: Array<Payment>;
   amortizeBiWeekly: Array<Payment>;
   amortizeWeekly: Array<Payment>;
 
@@ -158,7 +184,7 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
     this.model.monthlyPayment = this.monthlyPayment;
     this.model.interestRate = Math.round(this.data.getInterestRate() * 10000) / 100;
     this.model.loanTerm = this.calc.loanLength;
-    this.model.period = '1';
+    this.model.period = '3';
     this.ngOnChanges(null);
   }
 
@@ -171,9 +197,10 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
         }
       });
     }
-    this.amortizeMonths = this.amortize(12);
-    this.amortizeBiWeekly = this.amortize(26);
-    this.amortizeWeekly = this.amortize(52);
+    this.amortizeMonths = this.amortize(12, false);
+    this.amortizeExtra = this.amortize(12, true);
+    this.amortizeBiWeekly = this.amortize(26, true);
+    this.amortizeWeekly = this.amortize(52, true);
   }
 
   monthlyChanged() {
@@ -202,7 +229,7 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
     }
   }
 
-  amortize(periods: number, prepaid?: number): Array<Payment> {
+  amortize(periods: number, extra?: boolean, prepaid?: number): Array<Payment> {
     console.log('amortize: ', periods, prepaid);
     let payment = 0;
     switch (periods) {
@@ -216,17 +243,18 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
         payment = this.weeklyPayment;
         break;
     }
+    const extraAmount = extra ? this.model.extraAmount : 0;
 
     // payment = Math.round(payment * 100) / 100;
     if (!prepaid) {
       if (this.installmentPeriod === 1 && periods === 52) {
-        payment += parseFloat((this.model.extraAmount || 0).toString());
+        payment += parseFloat((extraAmount || 0).toString());
       }
       if (this.installmentPeriod === 2 && periods === 26) {
-        payment += parseFloat((this.model.extraAmount || 0).toString());
+        payment += parseFloat((extraAmount || 0).toString());
       }
       if (this.installmentPeriod === 3 && periods === 12) {
-        payment += parseFloat((this.model.extraAmount || 0).toString());
+        payment += parseFloat((extraAmount || 0).toString());
       }
     }
     let balance = parseFloat(this.model.loanAmount.toString());
@@ -235,7 +263,7 @@ export class PaymentCalculatorComponent implements OnInit, OnChanges {
     let annual: Payment;
     let amortization = new Array<Payment>();
     if (!prepaid && this.model.prepaid) {
-      amortization = this.amortize(12, this.model.prepaid);
+      amortization = this.amortize(12, extra, this.model.prepaid);
       if (amortization && amortization.length > 0) {
         annual = amortization[amortization.length - 1];
         balance = annual.balance - annual.principle;

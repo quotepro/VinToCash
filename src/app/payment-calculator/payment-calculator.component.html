@@ -4,21 +4,16 @@
     <h2>Payment Calculator</h2>
     <p>
       This calculator will tabulate the payments for a new vehicle finance purchase,
-      and/or calculate the loan term and finance interest savings you could realize by making
-      the equivalent of 13 payments per year (bi-weekly) or the equivalent of 14 payments per
-      year (weekly). We’ve included a payment method comparison chart and a balance comparison
-      chart so you can understand year-by-year impact. The Learn button below includes:
+      and/or calculate the loan term and finance interest savings you could realize by making extra
+      payments on your load. We’ve included a payment comparison chart and a balance comparison
+      chart so you can understand year-by-year impact.
     </p>
-    <ul>
-      <li>Weekly vehicle payments Vs. monthly payments.</li>
-      <li>A warning about predatory vehicle finance lenders.</li>
-    </ul>
 
     <div class="d-flex col-12 flex-row flex-wrap">
       <div class="col-12 col-md-6">
         <div class="learn card col-12">
           <div class="card-header d-flex justify-content-between align-items-start">
-            <select class="form-control col-md-3" [(ngModel)]="model.period">
+            <select *ngIf="false" class="form-control col-md-3" [(ngModel)]="model.period">
               <option value="1">Weekly</option>
               <option value="2">Bi-weekly</option>
               <option value="3">Monthly</option>
@@ -30,51 +25,15 @@
           </div>
           <div class="card-body" (keyup)="fireChanges($event)">
             <div *ngIf="learning">
-              <b>Weekly vehicle loan Payments Vs. Monthly</b>
-              <p>If you simply enter the terms for a new car loan into the weekly vehicle loan payment calculator, you
-                will
-                note that you may only save a couple of hundred dollars by choosing to repay the car loan using weekly
-                vehicle loan payments vs. monthly vehicle loan payments. This is because the annual total of your
-                weekly
-                vehicle loan payments will be close to the same as the annual total of your monthly payments.
-                In order to save a large chunk of time and interest, you need to increase the annual total of your
-                payments.
-                One way to do that -- while hardly noticing the increase -- is to simply make 1/2 of your monthly car
-                payment
-                every two weeks. This will result in making 26 bi-weekly payments per year, which is the equivalent of
-                making
-                13 monthly payments per year instead of 12.
-                Now you would think that we could double the savings if we use the same process to switch from monthly
-                payments to making weekly vehicle loan payments. However, if you divide your monthly payment by 4 and
-                pay
-                that result on a weekly basis, you will see that the annual total of your 52 weekly payments would be
-                identical to making 26 bi-weekly payments.
-                Therefore, in order to significantly increase your bi-weekly vehicle loan interest savings when
-                switching
-                to
-                a weekly repayment method, you would need to look at making the equivalent of 14 monthly payments per
-                year
-                instead of the 13 you would make using the bi-weekly payment method. In other words, your weekly
-                vehicle
-                loan
-                payments would be calculated as follows:</p>
-              <code>Weekly payment = Monthly payment x 14 ÷ 52</code>
-              <p class="mt-2">The above formula is the one used by the weekly vehicle loan payment calculator on this
-                page,
-                which results in making the equivalent of 14 monthly payments per year.</p>
+              <b>Extra Payments</b>
+              <p>Paying a little bit extra each month can save you a lot of money over the life of your loan.</p>
+              <p class="mt-2">This works by reducing the balance of your loan quicker, so that each month's interest is 
+                calculated against that lower balance.
+              </p>
               <b>Beware of Gluttonous Vehicle Finance Companies</b>
-              <p>Since switching to weekly payments results in the prepayment of principal ahead of the original car
-                loan
-                terms, there are numerous, predatory vehicle loan companies ready to deny your attempts to save money
-                on
-                interest while cutting your loan term. While some of these companies will simply escrow your prepayment
-                and
-                apply payments as they were scheduled (giving you "the finger" for your early payoff attempt), the more
-                dastardly among them will go so far as to charge you a penalty for prepaying the principal.
-                In any case, before you start making weekly vehicle loan payments, be sure to check with your car loan
-                finance company to make sure your principal prepayments will be applied to the balance as you make them
-                --
-                free of any prepayment penalties.
+              <p>Be sure to check the terms of your loan to ensure that your lender does not charge
+                you a prepayment penalty. In that case, the penalty would likely eliminate any savings
+                you might realize by making extra payments on your loan.
                 <button class="btn btn-primary" (click)="learning = !learning">Less <i class="fas fa-chevron-circle-up yellow"></i></button>
               </p>
             </div>
@@ -99,99 +58,73 @@
             <p class="mt-2"><label><i class="fas fa-info-circle yellow" [ngbPopover]="loanPayment" placement="right"></i> {{
                 installmentLabel }} vehicle loan payment
               </label><input [ngModel]="installmentPayment" readonly></p>
-            <p><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestPaid" placement="right"></i> Cost of vehicle interest
+            <p *ngIf="!model.extraAmount"><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestPaid" placement="right"></i> 
+              Cost of vehicle interest
                 payments
               </label><input [ngModel]="installmentInterest" readonly></p>
+            <p *ngIf="model.extraAmount"><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestPaid" placement="right"></i> 
+              Cost of vehicle interest
+              payments
+              </label><input [ngModel]="extraInterestAmt" readonly></p>
+            <p *ngIf="model.extraAmount"><label><i class="fas fa-info-circle yellow" [ngbPopover]="interestPaid" placement="right"></i> 
+                How Much You Save
+              </label><input [ngModel]="savingsAmt" readonly></p>
           </div>
         </div>
+        <br/>
         <div class="compare card col-12">
           <div class="card-header d-flex justify-content-between align-items-start">
-            <h5>Compare Payment Frequencies</h5>
+            <h5>Payment {{ model.extraAmount ? "Comparison" : "Summary" }}</h5>
           </div>
           <div class="card-body">
             <div class="row head">
               <div></div>
               <div>Monthly</div>
-              <div [class.show-xl]="installmentPeriod == 1">Bi-weekly</div>
-              <div [class.show-xl]="installmentPeriod == 2">Weekly</div>
-              <div *ngIf="model.period < '3'">{{ installmentLabel }} Savings</div>
+              <div *ngIf="model.extraAmount">Extra</div>
+              <div *ngIf="model.extraAmount">Savings</div>
             </div>
             <div class="row odd">
               <div>Payment</div>
-              <div>{{ monthlyPayment + getExtraPayment(3) | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyPayment + getExtraPayment(2) | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyPayment + getExtraPayment(1) | currency }}</div>
+              <div>{{ monthlyPayment | currency }}</div>
+              <div *ngIf="model.extraAmount">{{ monthlyPayment + getExtraPayment(3) | currency }}</div>
             </div>
             <div class="row even">
               <div>Months</div>
               <div>{{ monthlyTerm }}</div>
-              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyTerm | number: '1.0-0' }}</div>
-              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyTerm | number: '1.0-0' }}</div>
-              <div *ngIf="model.period < '3'">{{ (model.loanTerm * 12 - (installmentPeriod == 1 ? weeklyTerm :
-                biWeeklyTerm)) | number: '1.0-0' }}</div>
+              <div *ngIf="model.extraAmount">{{ extraTerm | number: '1.0-0' }}</div>
+              <div *ngIf="model.extraAmount">{{ (monthlyTerm - extraTerm) | number: '1.0-0' }}</div>
             </div>
             <div class="row odd">
               <div>Interest Cost</div>
               <div>{{ monthlyInterest | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyInterest | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyInterest | currency }}</div>
-              <div *ngIf="model.period < '3'">{{ (monthlyInterest - (installmentPeriod == 1 ? weeklyInterest :
-                biWeeklyInterest)) | currency }}</div>
+              <div *ngIf="model.extraAmount">{{ extraInterest | currency }}</div>
+              <div *ngIf="model.extraAmount">{{ (monthlyInterest - extraInterest) | currency }}</div>
             </div>
             <div class="row even">
               <div>Estimated payoff</div>
               <div>{{ monthlyPayoff | date: 'MMM yyyy' }}</div>
-              <div [class.show-xl]="installmentPeriod == 1">{{ biWeeklyPayoff | date: 'MMM yyyy' }}</div>
-              <div [class.show-xl]="installmentPeriod == 2">{{ weeklyPayoff | date: 'MMM yyyy' }}</div>
+              <div *ngIf="model.extraAmount">{{ extraPayoff | date: 'MMM yyyy' }}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <div *ngIf="model.period != '3'" class="col-12">
-          <p>
-            According to our calculations, if you begin making 1/2 of your monthly car payment
-            every two weeks ({{ monthlyPayment | currency }} ÷ 2 = {{ monthlyPayment / 2 | currency}}
-            <span *ngIf="model.period == '2' && model.extraAmount">
-              with an extra amount of {{ model.extraAmount | currency }}
-            </span>
-            you will pay off your car loan {{ monthlyTerm - biWeeklyTerm | number: '1.0-1' }} months
-            sooner than if you just continued to make your normal monthly vehicle loan payments,
-            and you will save {{ monthlyInterest - biWeeklyInterest | currency }} in interest in the process.
-          </p>
-          <p>
-            On the other hand, if you begin making the equivalent of 14 monthly payments per year
-            on a weekly basis ({{ monthlyPayment | currency }} x 14 ÷ 52 = {{ monthlyPayment * 14 / 52 | currency }})
-            <span *ngIf="model.period == '1' && model.extraAmount">
-              with an extra amount of {{ model.extraAmount | currency }}
-            </span>
-            you will pay off your car loan {{ monthlyTerm - weeklyTerm | number: '1.0-1' }} months
-            sooner than if you just continued to make your normal monthly loan payments, and you will
-            save {{ monthlyInterest - weeklyInterest | currency }} in interest in the process.
-          </p>
-          <p>
-            The following chart compares the year-to-year vehicle loan balances for all three vehicle payment options.
-          </p>
-        </div>
         <div class="balances card col-12">
           <div class="card-header d-flex justify-content-between align-items-start">
-            <h5>Annual Balance Comparison</h5>
+            <h5>Annual Balances</h5>
           </div>
           <div class="card-body">
             <div class="row head">
               <div>Year End#</div>
               <div>Monthly</div>
-              <div [class.show-xl]="installmentPeriod == 1">Bi-weekly</div>
-              <div [class.show-xl]="installmentPeriod == 2">Weekly</div>
+              <div *ngIf="model.extraAmount">Extra</div>
             </div>
             <div class="row" [class.even]="i % 0" *ngFor="let pmt of amortizeMonths; let i = index;">
               <div>{{ i == 0 ? 'Begin' : i }}</div>
               <div>{{ pmt.balance | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 1">{{ (amortizeBiWeekly.length > i ?
-                amortizeBiWeekly[i].balance
+              <div *ngIf="model.extraAmount">{{ (amortizeExtra.length > i ?
+                  amortizeExtra[i].balance
                 : 0) | currency }}</div>
-              <div [class.show-xl]="installmentPeriod == 2">{{ (amortizeWeekly.length > i ? amortizeWeekly[i].balance :
-                0) | currency }}</div>
             </div>
           </div>
         </div>
@@ -240,8 +173,8 @@
         <p>If you want to calculate your loan amount, enter your monthly payment. 
           If you want to see what your payments would be for a specific loan amount
           enter the loan amount. Or if you have an existing vehicle loan and
-          want to see how much you could save by switching to a bi-weekly or weekly
-          payment, enter the original vehicle loan amount. Enter as a dollar amount
+          want to see how much you could save by refinancing, enter the original 
+          vehicle loan amount. Enter as a dollar amount
           without the dollar sign and commas.</p>
       </ng-template>
       <ng-template #interestRate>
@@ -259,22 +192,22 @@
           you have already made. If this is a new vehicle loan, enter a zero or leave blank.</p>
       </ng-template>
       <ng-template #extraAmount>
-        <b>Extra amount you could add to weekly payment (optional):</b>
-        <p>If you would like to see how adding an extra weekly amount would affect the
+        <b>Extra amount you could add to your payment (optional):</b>
+        <p>If you would like to see how adding an extra amount would affect the
           payoff time and interest savings, enter the amount here. Note that it may help
-          to calculate the weekly payment amount and savings without an extra payment
-          first, and then if it appears you can afford an extra weekly amount, come
-          back to this field enter the amount you can afford and recalculate.</p>
+          to calculate the payment amount and savings without an extra payment
+          first, and then if it appears you can afford an extra amount, come
+          back to this field and enter the amount you can afford.</p>
       </ng-template>
       <ng-template #loanPayment>
-        <b>Weekly vehicle loan payment:</b>
-        <p>Based on your entries, this would be the weekly payment for a new vehicle
+        <b>Approximate vehicle loan payment:</b>
+        <p>Based on your entries, this would be the approximate payment for a new vehicle
           loan with the entered terms. Note that is for new vehicle loans and therefore
           does not account for any payments made on an existing car loan.</p>
       </ng-template>
       <ng-template #interestPaid>
-        <b>Cost of weekly vehicle interest payments:</b>
-        <p>Based on your entries, this would be the total interest cost of a new
+        <b>Cost of your vehicle interest payments:</b>
+        <p>Based on your entries, this would be the approximate interest cost of a new
           car loan based on making weekly vehicle loan payments. Note that is for
           new vehicle loans and therefore does not account for any payments made
           on an existing car loan.</p>

@@ -201,6 +201,7 @@ export class DataService {
     if (this.isValid('vinLookup')) {
       this.loading = true;
       this.geoCode();
+
       this.postData('Home', 'Prefill', this.session)
         .pipe(catchError((err) => {
           this.loading = false;
@@ -208,17 +209,17 @@ export class DataService {
         }))
         .subscribe(response => {
           if (response.nextUrl && response.nextUrl.indexOf('Location') > -1) {
-            this.postData('Vehicle', 'VinLookup', this.session).pipe(catchError((err) => {
+            this.postData('Vehicle', 'LookupVinDetails', this.session).pipe(catchError((err) => {
               // this.loading = false;
               return of('an error occurred while looking up the vin');
             }))
               .subscribe(vehicle => {
-                this.session.actualValue = vehicle.actualValue;
-                this.session.year = vehicle.year;
-                this.session.make = vehicle.make;
-                this.session.model = vehicle.model || vehicle.modelDescription;
+                this.session.actualValue = vehicle.ActualValue;
+                this.session.year = vehicle.Year;
+                this.session.make = vehicle.Make;
+                this.session.model = vehicle.Model || vehicle.ModelDescription;
                 this.updateSession();
-                // this.loading = false;
+                this.loading = false;
               });
           }
         });

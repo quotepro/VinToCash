@@ -183,3 +183,13 @@ body {
         display: none;
     }
 }
+
+.title {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.learn select {
+    display: none;
+}
+    

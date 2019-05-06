@@ -1,9 +1,15 @@
 <div class="container-fluid">
   <div class="jumbotron text-center">
-    <div *ngIf="dealerLogo" class="dealer-logo col-md-6 col-lg-3">
+    <div *ngIf="dealerLogo" class="dealer-logo col-sm-6 col-lg-3">
       <img src="/assets/{{dealerLogo}}" width="75%" height="auto"/>
     </div>
-    <img src="assets/Featured.png" class="col-md-6"/>
+    <div *ngIf="lenderLogo" class="dealer-logo col-sm-6 d-lg-none col-lg-3">
+      <img src="/assets/{{lenderLogo}}" width="75%" height="auto"/>
+    </div>
+    <img src="assets/Featured.png" class="col-lg-6"/>
+    <div *ngIf="lenderLogo" class="dealer-logo d-none d-lg-block col-lg-3">
+        <img src="/assets/{{lenderLogo}}" width="75%" height="auto"/>
+    </div>
     <p>
       <button (click)="buy()"
         class="btn btn-2x btn-primary">

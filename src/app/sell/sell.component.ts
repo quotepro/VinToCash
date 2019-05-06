@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataSession } from '@app/model/data-session';
 import { DataService } from '@app/core/data.service';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-home',
@@ -37,4 +38,8 @@ export class SellComponent implements OnInit {
   continue() {
     this.nav.forward(['details']);
   }
+  get dealerLogo() {
+    return environment.dealerLogo;
+  }
+
 }
