@@ -7,18 +7,22 @@ const externalUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: 'about', loadChildren: 'app/about/about.module#AboutModule' },
-    { path: 'buy', loadChildren: 'app/buy/buy.module#BuyModule' },
-    { path: 'buy-now', loadChildren: 'app/buy-now/buy-now.module#BuyNowModule' },
-    { path: 'dealers', loadChildren: 'app/dealers/dealers.module#DealersModule' },
-    { path: 'details', loadChildren: 'app/details/details.module#DetailsModule' },
-    { path: 'photos', loadChildren: 'app/photos/photos.module#PhotosModule' },
-    { path: 'sell', loadChildren: 'app/sell/sell.module#SellModule' },
-    { path: 'vehicle-search', loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule' },
-    { path: 'vehicle-detail', loadChildren: 'app/vehicle-detail/vehicle-detail.module#VehicleDetailModule' },
-    { path: 'trade-in', loadChildren: 'app/trade-in/trade-in.module#TradeInModule' },
+    { path: 'about', loadChildren: 'app/about/about.module#AboutModule', data: { page: 'about' } },
+    { path: 'buy', loadChildren: 'app/buy/buy.module#BuyModule', data: { page: 'buy' } },
+    { path: 'buy-now', loadChildren: 'app/buy-now/buy-now.module#BuyNowModule', data: { page: 'buy-now' } },
+    { path: 'checkout', loadChildren: 'app/checkout/checkout.module#CheckoutModule', data: { page: 'checkout' } },
+    { path: 'dealers', loadChildren: 'app/dealers/dealers.module#DealersModule', data: { page: 'dealers' } },
+    { path: 'details', loadChildren: 'app/details/details.module#DetailsModule', data: { page: 'details' } },
+    { path: 'photos', loadChildren: 'app/photos/photos.module#PhotosModule', data: { page: 'photos' } },
+    { path: 'sell', loadChildren: 'app/sell/sell.module#SellModule', data: { page: 'sell' } },
+    { path: 'vehicle-search',
+      loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule', data: { page: 'vehicle-search' } },
+    { path: 'vehicle-detail',
+    loadChildren: 'app/vehicle-detail/vehicle-detail.module#VehicleDetailModule', data: { page: 'vehicle-detail' } },
+    { path: 'trade-in', loadChildren: 'app/trade-in/trade-in.module#TradeInModule', data: { page: 'trade-in' } },
     { path: 'payment-calculator',
-      loadChildren: 'app/payment-calculator/payment-calculator.module#PaymentCalculatorModule'
+      loadChildren: 'app/payment-calculator/payment-calculator.module#PaymentCalculatorModule',
+      data: { page: 'payment-calculator' }
     },
     {
       path: 'externalRedirect',

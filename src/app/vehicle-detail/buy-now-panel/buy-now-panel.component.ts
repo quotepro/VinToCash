@@ -102,4 +102,21 @@ export class BuyNowPanelComponent implements OnInit {
   toMask(input: string): Array<any> {
     return this.data.toMask(input);
   }
+
+  toggleCustom(key: string) {
+    if (this.planPricing['Custom'][key]) {
+      this.planPricing['Custom'][key] = null;
+    } else {
+      this.planPricing['Custom'][key] = this.planPricing['Platinum'][key];
+    }
+  }
+
+  selectPlan(plan: string) {
+    this.car.selectedPlan = plan;
+    if (plan !== 'Custom') {
+      Object.keys(this.planPricing['Custom']).forEach(key => {
+        this.planPricing['Custom'][key] = null;
+      });
+    }
+  }
 }

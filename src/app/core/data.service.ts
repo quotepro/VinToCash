@@ -28,63 +28,61 @@ export class DataService {
   private pricingPlans = {
     'Platinum': {
       'Warranty': new CoveragePlan({
-        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20,
+        description: '48 Month/80K Mile Bumper to Bumper', weekly: 13, biweekly: 25, monthly: 50,
         expanded: false, detail: `
           Covers parts and diagnostics<br/>
           Towing &amp; rental car coverage<br/>
           Travel breakdown coverage` }),
-      'Prepaid Maintenance': new CoveragePlan({
-        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25,
+      'Interior/Exterior': new CoveragePlan({
+        description: 'Interior/Exterior', weekly: 4, biweekly: 8, monthly: 15,
         expanded: false, detail: `
-          Prepaid lube, oil/filter changes<br/>
-          15 point safety inspection<br/>
-          Tire rotation<br/>
-          Documented service records`
+          Keep your car looking like new with our
+          Interior/Exterior service`
        }),
-      'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10,
-      expanded: false, detail: `
-        Pays the difference between the payoff value and actual cash value
-        of your vehicle, up to 150% of MSRP` }),
-      'Road Hazard': new CoveragePlan({ description: 'Road Hazard', weekly: 2, biweekly: 4, monthly: 10,
+      'Tire & Wheel': new CoveragePlan({ description: 'Tire & Wheel Coverage', weekly: 3, biweekly: 5, monthly: 10,
       expanded: false, detail: `
         Pays for repair or replacement of wheels &amp; tires damaged by road debris` }),
-      'Ding & Dent': new CoveragePlan({ description: 'Ding & Dent', weekly: 2, biweekly: 4, monthly: 10,
-      expanded: false, detail: `
-        Dents & dings<br/>
-        Interior &amp; exterior windshield repair<br/>
-        Key Fob replacement` }),
-      'Paint Protection': new CoveragePlan({ description: 'Paint Protection', weekly: 3, biweekly: 6, monthly: 15,
-      expanded: false, detail: `
+      'Paintless Dent Repair': new CoveragePlan({
+        description: 'Paintless Dent Repair', weekly: 3, biweekly: 5, monthly: 10,
+        expanded: false, detail: `
         Repair or buff cosmetic damage to painted exterior surfaces. Does not cover
         repairs due to comprehensive or collision damage of the vehicle` }),
+      'Windshield': new CoveragePlan({ description: 'Windshield', weekly: 3, biweekly: 5, monthly: 10,
+      expanded: false, detail: `
+        Windshield repair of damage from minor impacts.<br/>
+        Does not cover replacement windshields.<br/>` }),
+      'Key Replacement': new CoveragePlan({ description: 'Key Replacement', weekly: 4, biweekly: 8, monthly: 15,
+      expanded: false, detail: `
+        Free Key FOB Replacement if yours is lost or stolen
+      ` }),
     },
     'Gold': {
       'Warranty': new CoveragePlan({
-        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
-      'Prepaid Maintenance': new CoveragePlan({
-        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
-      'GAP': new CoveragePlan({ description: 'GAP Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
-      'Road Hazard': null as CoveragePlan,
-      'Ding & Dent': null as CoveragePlan,
-      'Paint Protection': null as CoveragePlan,
+        description: '36 Month/60K Mile Bumper to Bumper', weekly: 11, biweekly: 21, monthly: 42 }),
+      'Interior/Exterior': new CoveragePlan({
+        description: 'Interior/Exterior', weekly: 4, biweekly: 8, monthly: 15 }),
+      'Tire & Wheel': new CoveragePlan({ description: 'Tire & Wheel Coverage', weekly: 2, biweekly: 4, monthly: 10 }),
+      'Paintless Dent Repair': null as CoveragePlan,
+      'Windshield': null as CoveragePlan,
+      'Key Replacement': null as CoveragePlan,
     },
     'Silver': {
       'Warranty': new CoveragePlan({
-        description: '72 Month/100K Mile Limited Warranty', weekly: 4, biweekly: 8, monthly: 20 }),
-      'Prepaid Maintenance': new CoveragePlan({
-        description: 'Prepaid Maintenance', weekly: 6, biweekly: 12, monthly: 25 }),
-      'GAP': null as CoveragePlan,
-      'Road Hazard': null as CoveragePlan,
-      'Ding & Dent': null as CoveragePlan,
-      'Paint Protection': null as CoveragePlan,
+        description: '24 Month/45K Mile Bumper to Bumper', weekly: 9, biweekly: 18, monthly: 35 }),
+      'Interior/Exterior': new CoveragePlan({
+        description: 'Interior/Exterior', weekly: 4, biweekly: 8, monthly: 15 }),
+      'Tire & Wheel': null as CoveragePlan,
+      'Paintless Dent Repair': null as CoveragePlan,
+      'Windshield': null as CoveragePlan,
+      'Key Replacement': null as CoveragePlan,
     },
-    'None': {
+    'Custom': {
       'Warranty': null as CoveragePlan,
-      'Prepaid Maintenance': null as CoveragePlan,
-      'GAP': null as CoveragePlan,
+      'Interior/Exterior': null as CoveragePlan,
+      'Tire & Wheel': null as CoveragePlan,
       'Road Hazard': null as CoveragePlan,
-      'Ding & Dent': null as CoveragePlan,
-      'Paint Protection': null as CoveragePlan,
+      'Windshield': null as CoveragePlan,
+      'Key Replacement': null as CoveragePlan,
     }
   };
 

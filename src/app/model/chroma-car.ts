@@ -7,7 +7,7 @@ export class ChromaCar {
     model: string;
     retail_price: number;
     sale_price: number;
-    optionList: string;
+    optionList: Array<string>;
     descriptions: string;
     ext_color: string;
     int_color: string;
@@ -25,7 +25,7 @@ export class ChromaCar {
 
     constructor(copy?: Partial<ChromaCar>) {
         if (copy) {
-            this.selectedPlan = 'None';
+            this.selectedPlan = 'Custom';
             Object.assign(this, copy);
             if (copy['image_urls']) {
                 this.imageList = copy['image_urls'].replace(/http:/g, 'https:').split(',');
@@ -39,6 +39,11 @@ export class ChromaCar {
                     }
                     return 0;
                 });
+            } else if ( this.descriptions ) {
+                this.optionList = this.descriptions.split(',').filter(describe => {
+                    return (describe.search(/(no data|\$)/i) === -1);
+                });
+                this.descriptions = '';
             }
         }
         if (this.imageList.length > 0) {

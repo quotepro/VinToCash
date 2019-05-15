@@ -37,3 +37,10 @@ svg.monthly {
     }
 
 }
+
+:host {
+    width: 100%;
+    margin: 3rem auto;    
+    position: relative;
+    top: 0;
+}

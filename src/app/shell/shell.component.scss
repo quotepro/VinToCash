@@ -1,0 +1,11 @@
+.main {
+    position: relative;
+    /* width: 35vw; */
+    height: 100%;
+    margin: 0 auto;
+
+    & .rs-height {
+        min-height: 700px;
+        visibility: hidden;
+    }
+}

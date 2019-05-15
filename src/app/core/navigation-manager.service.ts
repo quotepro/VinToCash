@@ -8,18 +8,22 @@ import { Crumb } from '@app/model/crumb';
 export class NavigationManagerService {
 
   breadcrumbs: Array<Crumb> = [];
+  lastDirection: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   clear() {
     this.breadcrumbs = [];
   }
 
   forward(commands: any[], extras?: NavigationExtras) {
+    this.lastDirection = 'forward';
     this.router.navigate(commands, extras);
   }
 
   goto(crumb: Crumb, i: number): any {
+    this.lastDirection = 'goto';
     if (this.breadcrumbs.length > i) {
       const tail = this.breadcrumbs.splice(i, this.breadcrumbs.length - i);
       this.router.navigate([tail[0].url]);
@@ -29,6 +33,7 @@ export class NavigationManagerService {
 
   back(targetUrl: string) {
     // navigate backward until hitting command url.
+    this.lastDirection = 'back';
     let popped = null;
     if (targetUrl) {
       while (targetUrl && targetUrl !== popped && '/' + targetUrl !== popped) {
@@ -58,6 +63,33 @@ export class NavigationManagerService {
       url: url,
       title: title
     }));
+  }
+
+  getAnimationParameters(page: any) {
+    switch (this.lastDirection) {
+      case 'goto':
+      case 'back':
+        return {
+          value: page,
+          params: {
+            xEnter: -100,
+            xLeave: 100,
+            yEnter: 0,
+            yLeave: 0
+          }
+        };
+      case 'forward':
+      default:
+        return {
+          value: page,
+          params: {
+            xEnter: 100,
+            xLeave: -100,
+            yEnter: 0,
+            yLeave: 0
+          }
+        };
+    }
   }
 
 }

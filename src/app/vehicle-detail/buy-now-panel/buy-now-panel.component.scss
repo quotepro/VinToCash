@@ -14,10 +14,12 @@
 
     }
 }
-.coverage .fa-2x.fa-check {
+.coverage .fa-2x {
+  &.fa-check-square,
+  &.fa-check {
     color: green;
+  }
 }
-
 @media (min-width: 768px) and (max-width: 900px) {
     .buttons {
         zoom: .5;

@@ -33,7 +33,7 @@ export class VehicleDetailComponent implements OnInit {
       this.car.selectedImage = this.car.imageList[0];
     }
     if (!this.car.selectedPlan) {
-      this.car.selectedPlan = 'None';
+      this.car.selectedPlan = 'Custom';
     }
 
     this.togglePanel(this.car.selectedPanel || 'details');
@@ -84,5 +84,9 @@ export class VehicleDetailComponent implements OnInit {
   }
   thumbNavigated(car: ChromaCar, $event: any) {
     car.thumbPage = $event;
+  }
+
+  checkoutClicked() {
+    this.nav.forward(['/checkout']);
   }
 }

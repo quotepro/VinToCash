@@ -131,6 +131,21 @@ body {
     0 1px 0 #ad2936,
     1px 1px 0 #ad2936;
 }
+.btn-custom {
+    background-color: #068b42;
+    border-color: #068b42;
+    color: white;
+    text-shadow: 
+    -1px -1px 0 #015025,
+    0 -1px 0 #015025,
+    1px -1px 0 #015025,
+    -1px 1px 0 #015025,
+    0 1px 0 #015025,
+    1px 1px 0 #015025;
+}
+.toggle {
+    cursor: pointer;
+}
 .zoom {
     zoom: 1.4;
 }
@@ -192,4 +207,11 @@ body {
 .learn select {
     display: none;
 }
-    
+
+.main router-outlet ~ * {
+    width: 100%;
+    // background: #5942f4;
+    margin: 3rem auto;    
+    position: absolute;
+    top: 0;
+}

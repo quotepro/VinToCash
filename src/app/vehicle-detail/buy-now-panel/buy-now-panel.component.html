@@ -15,24 +15,24 @@
     <h5>{{ car.selectedPlan == "None" ? "" : car.selectedPlan }} Monthly {{ calculatePayment(car, 3) | currency }}</h5>
   </div>
   <div class="col-md-6 col-xl-4 text-right buttons d-flex flex-row text-right justify-content-between align-items-end">
-    <button class="btn btn-none" [class.zoom]="car.selectedPlan == 'None'" (click)="car.selectedPlan = 'None'">None</button>
-    <button class="btn btn-silver" [class.zoom]="car.selectedPlan == 'Silver'" (click)="car.selectedPlan = 'Silver'">Silver</button>
-    <button class="btn btn-gold" [class.zoom]="car.selectedPlan == 'Gold'" (click)="car.selectedPlan = 'Gold'">Gold</button>
-    <button class="btn btn-platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="car.selectedPlan = 'Platinum'">Platinum</button>
+    <button class="btn btn-silver" [class.zoom]="car.selectedPlan == 'Silver'" (click)="selectPlan('Silver')">Silver</button>
+    <button class="btn btn-gold" [class.zoom]="car.selectedPlan == 'Gold'" (click)="selectPlan('Gold')">Gold</button>
+    <button class="btn btn-platinum" [class.zoom]="car.selectedPlan == 'Platinum'" (click)="selectPlan('Platinum')">Platinum</button>
+    <button class="btn btn-custom" [class.zoom]="car.selectedPlan == 'Custom'" (click)="selectPlan('Custom')">Custom</button>
   </div>
   <div class="coverage col-12 border d-flex flex-row flex-wrap" *ngFor="let key of coverages">
     <div class="col-md-6 col-xl-8 pointer" (click)="toggleDetail(key)">
-      <span [class.strike]="!planPricing[car.selectedPlan][key]">{{ planPricing['Platinum'][key].description }}
-        (+{{ planPricing['Platinum'][key][installmentKey] | currency }} {{ installmentKey }})
+      <span [class.strike]="!planPricing[car.selectedPlan][key]">{{ planPricing[car.selectedPlan][key] ? planPricing[car.selectedPlan][key].description : planPricing['Platinum'][key].description }}
+        (+{{ planPricing[car.selectedPlan][key] ? planPricing[car.selectedPlan][key][installmentKey] : planPricing['Platinum'][key][installmentKey] | currency }} {{ installmentKey }})
         <i *ngIf="planPricing['Platinum'][key].expanded" class="fas fa-chevron-circle-up yellow"></i>
         <i *ngIf="!planPricing['Platinum'][key].expanded" class="fas fa-chevron-circle-down yellow"></i>
       </span>
     </div>
     <div class="col-md-6 col-xl-4 border d-flex flex-row text-right justify-content-between">
-      <i class="fa-2x" [ngClass]="planPricing['None'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Silver'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Gold'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
       <i class="fa-2x" [ngClass]="planPricing['Platinum'][key] ? 'fas fa-check' : 'fas fa-times'"></i>
+      <i class="toggle fa-2x" [ngClass]="planPricing['Custom'][key] ? 'far fa-check-square' : 'far fa-square'" (click)="toggleCustom(key)"></i>
     </div>
     <div *ngIf="planPricing['Platinum'][key].expanded" class="col-md-6 col-xl-8 pl-5 pb-4" [innerHtml]="planPricing['Platinum'][key].detail">
     </div>

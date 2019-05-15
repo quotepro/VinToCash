@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Angulartics2Module } from 'angulartics2';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
@@ -14,11 +15,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Ng5SliderModule } from 'ng5-slider';
 import { TextMaskModule } from 'angular2-text-mask';
-import { CheckoutComponent } from './checkout/checkout.component';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
+
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     TranslateModule.forRoot(),
@@ -34,8 +36,7 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
   ],
   declarations: [
     AppComponent,
-    CheckoutComponent,
-    ExternalRedirectComponent
+    ExternalRedirectComponent,
   ],
   providers: [
   ],

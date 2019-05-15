@@ -1,3 +1,5 @@
 <app-header></app-header>
-<router-outlet></router-outlet>
+<div class="main" [@routeSlide]="getAnimationParameters(appOutlet)" (@routeSlide.done)="animationFinished(appOutlet)" appMatchHeight=".main router-outlet ~ *">
+  <router-outlet #appOutlet="outlet"></router-outlet>
+</div>
 <app-footer></app-footer>
