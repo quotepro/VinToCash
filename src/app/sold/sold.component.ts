@@ -4,11 +4,11 @@ import { DataService } from '@app/core/data.service';
 import { NavigationManagerService } from '@app/core/navigation-manager.service';
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  selector: 'app-sold',
+  templateUrl: './sold.component.html',
+  styleUrls: ['./sold.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class SoldComponent implements OnInit {
 
   model = {};
   showProgress = true;
@@ -58,7 +58,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   purchase() {
-    this.nav.forward(['/sold']);
+    this.nav.forward(['/success']);
   }
 
 }

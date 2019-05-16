@@ -108,6 +108,7 @@ export class BuyNowPanelComponent implements OnInit {
       this.planPricing['Custom'][key] = null;
     } else {
       this.planPricing['Custom'][key] = this.planPricing['Platinum'][key];
+      this.car.selectedPlan = 'Custom';
     }
   }
 

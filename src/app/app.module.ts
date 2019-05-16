@@ -14,7 +14,6 @@ import { ShellModule } from './shell/shell.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Ng5SliderModule } from 'ng5-slider';
-import { TextMaskModule } from 'angular2-text-mask';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
 
 @NgModule({
@@ -32,7 +31,6 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
     Angulartics2Module.forRoot([]),
     AppRoutingModule,
     Ng5SliderModule,
-    TextMaskModule
   ],
   declarations: [
     AppComponent,

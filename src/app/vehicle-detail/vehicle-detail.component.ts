@@ -33,7 +33,7 @@ export class VehicleDetailComponent implements OnInit {
       this.car.selectedImage = this.car.imageList[0];
     }
     if (!this.car.selectedPlan) {
-      this.car.selectedPlan = 'Custom';
+      this.car.selectedPlan = 'Silver';
     }
 
     this.togglePanel(this.car.selectedPanel || 'details');

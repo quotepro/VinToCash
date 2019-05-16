@@ -15,6 +15,7 @@ const routes: Routes = [
     { path: 'details', loadChildren: 'app/details/details.module#DetailsModule', data: { page: 'details' } },
     { path: 'photos', loadChildren: 'app/photos/photos.module#PhotosModule', data: { page: 'photos' } },
     { path: 'sell', loadChildren: 'app/sell/sell.module#SellModule', data: { page: 'sell' } },
+    { path: 'sold', loadChildren: 'app/sold/sold.module#SoldModule', data: { page: 'sold' } },
     { path: 'vehicle-search',
       loadChildren: 'app/vehicle-search/vehicle-search.module#VehicleSearchModule', data: { page: 'vehicle-search' } },
     { path: 'vehicle-detail',

@@ -1,0 +1,6 @@
+.sold-overlay::after {
+    content: 'SOLD';
+    transform: rotate(-45);
+    color: red;
+    font-size: 200%;
+}

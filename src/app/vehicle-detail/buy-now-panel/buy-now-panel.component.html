@@ -56,12 +56,12 @@
       </div>
       <div class="form-group" [class.has-danger]="phone.touched && phone.invalid" [class.has-success]="phone.valid">
         <input type="phone" #phone="ngModel" name="phone" placeholder="{{ 'Phone Number' | translate }}" pattern="^\(?\d{3}[\)-\s\.]*\d{3}[-\s\.]*\d{4}$"
-        [textMask]="{ mask: toMask('(000) 000-0000'), guide: false}"
+        mask="(000) 000-0000"
           [(ngModel)]="model.phone" class="form-control" required />
       </div>
       <div class="form-group" [class.has-danger]="income.touched && income.invalid" [class.has-success]="income.valid">
-        <input type="number" #income="ngModel" name="income" placeholder="{{ 'Annual Income' | translate }}" pattern="^\d{1,10}\W{0,1}\d{0,2}$"
-          [(ngModel)]="model.income" class="form-control" required />
+        <input type="text" #income="ngModel" name="income" placeholder="{{ 'Annual Income' | translate }}" pattern="^\d{1,10}\W{0,1}\d{0,2}$"
+          [(ngModel)]="model.income" class="form-control" required prefix="$" mask="comma_separator.2" />
         <span *ngIf="income.touched && income.invalid" class="text-danger">Enter your annual income</span>
       </div>
       <div class="form-group" [class.has-danger]="creditscore.touched && creditscore.invalid" [class.has-success]="creditscore.valid">
@@ -84,13 +84,13 @@
         <span *ngIf="city.touched && city.invalid" class="text-danger">Enter your city</span>
       </div>
       <div class="form-group" [class.has-danger]="state.touched && state.invalid" [class.has-success]="state.valid">
-        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" [textMask]="{ mask: toMask('AA'), guide: false }" pattern="^[A-Za-z]{2}$"
+        <input type="text" #state="ngModel" name="state" placeholder="{{ 'State' | translate }}" mask="AA" pattern="^[A-Za-z]{2}$"
           [(ngModel)]="model.state" class="form-control" required />
         <span *ngIf="state.touched && state.invalid" class="text-danger">Enter your 2 character state</span>
       </div>
       <div class="form-group" [class.has-danger]="zipcode.touched && zipcode.invalid" [class.has-success]="zipcode.valid">
         <input type="text" #zipcode="ngModel" name="name" placeholder="{{ 'Zip Code' | translate }}" pattern="^\d{5}$"
-        [textMask]="{ mask: toMask('00000'), guide: false}"
+        mask="00000"
           [(ngModel)]="model.zipcode" class="form-control" required />
         <span *ngIf="zipcode.touched && zipcode.invalid" class="text-danger">Enter your 5 digit zipcode</span>
       </div>
@@ -100,7 +100,7 @@
         <span *ngIf="yearsemployed.touched && yearsemployed.invalid" class="text-danger">How many years have you been employed.</span>
       </div>
       <div class="form-group" [class.has-danger]="ssn.touched && ssn.invalid" [class.has-success]="ssn.valid">
-          <input type="text" #ssn="ngModel" name="ssn" [textMask]="{ mask: toMask('000-00-0000'), guide: false}" placeholder="{{ 'Social Security Number' | translate }}" pattern="^\d{3}[ \.\-]{0,1}\d{2}[ \.\-]{0,1}\d{4}$"
+          <input type="text" #ssn="ngModel" name="ssn" mask="000-00-0000" placeholder="{{ 'Social Security Number' | translate }}" pattern="^\d{3}[ \.\-]{0,1}\d{2}[ \.\-]{0,1}\d{4}$"
             [(ngModel)]="model.ssn" class="form-control" required />
           <span *ngIf="ssn.touched && ssn.invalid" class="text-danger">Enter your social security number.</span>
       </div>
@@ -110,8 +110,8 @@
       to inform you that we've finished preparing your new vehicle. We'll also need to make
       sure that your identification matches this information when you pick up your vehicle.
     </div>
-    <h3 class="col-12 mt-3">Step 3: Vehicle Trade-in</h3>
-    <div class="col-12 col-md-6">
+    <h3 *ngIf="false" class="col-12 mt-3">Step 3: Vehicle Trade-in</h3>
+    <div  *ngIf="false"  class="col-12 col-md-6">
       <div class="form-group" [class.has-danger]="firstName.touched && firstName.invalid" [class.has-success]="firstName.valid">
         <label>Do you have a vehicle to trade-in?</label>
         <div class="btn-group">
@@ -122,13 +122,13 @@
         </div>
       </div>
     </div>
-
+    <div class="col-12 d-flex flex-row align-items-end justify-content-end">
+        <button class="btn btn-secondary text-center m-2" (click)="back.emit()" type="button"><i class="fas fa-chevron-left"></i> Back</button>
+        <button *ngIf="!model.willTradeIn" class="btn btn-2x btn-success text-center m-2" (clickIfValid)="checkout.emit()" type="button">Checkout <i class="fas fa-chevron-right"></i></button>
+        <div *ngIf="model.willTradeIn" (clickIfValid)="tradein.emit()" class="btn btn-2x btn-warning text-center" (click)="tradein()">
+            <h5 class="col-md-6">Maximize My<br/>Trade-in <i class="fas fa-chevron-right"></i></h5>
+          </div>
+        </div>
+    
   </form>
-  <div class="col-12 d-flex flex-row align-items-end justify-content-end">
-    <button class="btn btn-secondary text-center m-2" (click)="back.emit()"><i class="fas fa-chevron-left"></i> Back</button>
-    <button *ngIf="!model.willTradeIn" class="btn btn-2x btn-success text-center m-2" (click)="checkout.emit()">Checkout <i class="fas fa-chevron-right"></i></button>
-    <div *ngIf="model.willTradeIn" (click)="tradein.emit()" class="btn btn-2x btn-warning text-center" (click)="tradein()">
-        <h5 class="col-md-6">Maximize My<br/>Trade-in <i class="fas fa-chevron-right"></i></h5>
-      </div>
-    </div>
 </div>

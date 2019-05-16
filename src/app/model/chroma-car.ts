@@ -25,7 +25,7 @@ export class ChromaCar {
 
     constructor(copy?: Partial<ChromaCar>) {
         if (copy) {
-            this.selectedPlan = 'Custom';
+            this.selectedPlan = 'Silver';
             Object.assign(this, copy);
             if (copy['image_urls']) {
                 this.imageList = copy['image_urls'].replace(/http:/g, 'https:').split(',');

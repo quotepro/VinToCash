@@ -26,7 +26,7 @@ export class ShellComponent implements OnInit {
   }
 
   animationFinished(outlet: RouterOutlet) {
-    [10, 50, 100, 500, 1000, 1500, 2000]
+    [50, 1000, 2000, 3000]
       .forEach(timeout => setTimeout(() => window.dispatchEvent(new Event('resize')), timeout));
     this.cdRef.markForCheck();
   }

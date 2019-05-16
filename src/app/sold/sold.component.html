@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <i class="fas fa-times-circle close" (click)="back()"></i>
+    <div *ngIf="showProgress"
+      class="form-horizontal d-flex flex-column align-items-center justify-content-center flex-wrap">
+      <h2>Processing Down Payment</h2>
+      <circle-progress id="circ" [percent]="100" [radius]="100" [outerStrokeWidth]="24" [innerStrokeWidth]="16"
+        [outerStrokeColor]="'#00cc00'" [innerStrokeColor]="'blue'" [backgroundGradient]="true"
+        [backgroundColor]="'#ffffff'" [backgroundGradientStopColor]="'#f3f3f3'" [animation]="true"
+        [animationDuration]="5000" [titleFontSize]="30" [subtitleFontSize]="15">
+      </circle-progress>
+    </div>
+    <form *ngIf="!showProgress" #jumboForm="ngForm"
+      class="form-horizontal d-flex flex-column align-items-center justify-content-start flex-wrap">
+      <h2 class="col-12">Sold!</h2>
+      <h4>Call us to schedule a time to sign your paperwork and pickup your new vehicle!</h4>
+      <div class="d-flex flex-row align-items-center justify-content-start flex-wrap">
+        <img [src]="car.imageList[0]" class="col-md-6 sold-overlay" />
+        <h3>(888) 418-8517</h3>
+      </div>
+    </form>
+  </div>
+</div>
