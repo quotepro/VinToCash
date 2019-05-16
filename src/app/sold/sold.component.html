@@ -15,7 +15,9 @@
       <h2 class="col-12">Sold!</h2>
       <h4>Call us to schedule a time to sign your paperwork and pickup your new vehicle!</h4>
       <div class="d-flex flex-row align-items-center justify-content-start flex-wrap">
-        <img [src]="car.imageList[0]" class="col-md-6 sold-overlay" />
+        <div class="col-md-6 sold-overlay">
+            <img [src]="car.imageList[0]" class="col-12" />
+        </div>
         <h3>(888) 418-8517</h3>
       </div>
     </form>
